@@ -15,7 +15,7 @@ title: SlideSense
 - E/21/302, Sahandi Perera, [e21302@eng.pdn.ac.lk](mailto:e21302@eng.pdn.ac.lk)
 - E/21/452, Zaid M.R.M., [e21452@eng.pdn.ac.lk](mailto:e21452@eng.pdn.ac.lk)
 
-![SlideSense Final Hardware Prototype](./images/probe.png)
+![SlideSense Final Hardware Prototype](./images/Probe.png)
 
 #### Table of Contents
 1. [Introduction](#introduction)
