@@ -9,7 +9,6 @@ title: SlideSense
   <img src="./images/logo.png" width="160"/>
 </p>
 
-<h1 align="center">SlideSense</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Smart%20•%20Resilient%20•%20Real--Time-2ea44f?style=for-the-badge">
@@ -64,7 +63,7 @@ SlideSense follows a **multi-layer IoT architecture**:
 
 
 <p align="center">
-  <img src="./images/overall-architecture.png" width="750"/>
+  <img src="./images/Overall_Position.png" width="750"/>
 </p>
 
 
@@ -79,7 +78,7 @@ The system ensures reliable and redundant data transmission:
 5. Alerts triggered via Dashboard / SMS / FCM  
 
 <p align="center">
-  <img src="./images/data-flow-diagram.png" width="750"/>
+  <img src="./images/data_flow.png" width="750"/>
 </p>
 
 
@@ -125,10 +124,10 @@ The system ensures reliable and redundant data transmission:
 ## 🛠 Software Stack Diagram
 
 <p align="center">
-  <img src="./images/software-stack.png" width="750"/>
+  <img src="./images/Software_Stack.png" width="750"/>
 </p>
 
-#  Project Timeline
+##  Project Timeline
 
 The project was executed in four structured milestones:
 
@@ -138,10 +137,10 @@ The project was executed in four structured milestones:
 - Milestone 04 – Final Product & Documentation  
 
 <p align="center">
-  <img src="./images/gantt-chart.png" width="900"/>
+  <img src="./images/Time_line.png" width="900"/>
 </p>
 
-# 7️⃣ Testing & Validation
+## Testing & Validation
 
 ## 🔬 Hardware Testing
 - Soil moisture calibration (dry vs saturated soil)
@@ -174,7 +173,7 @@ The project was executed in four structured milestones:
 | **Total Cost** |  |  | **16,275 LKR** |
 
 
-# 9️⃣ Conclusion & Future Work
+## Conclusion & Future Work
 
 SlideSense demonstrates a **cost-effective, scalable, and resilient landslide monitoring system** integrating edge intelligence with cloud-based alerts.
 
