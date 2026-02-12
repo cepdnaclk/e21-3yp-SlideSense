@@ -94,7 +94,7 @@ The system ensures reliable and redundant data transmission:
 - **MPPT Charge Controller**
 - **3.7V Li-Po Battery**
 
-## ⚡ Power System
+##  Power System
 
 - MPPT Solar Charging
 - 3.3V Regulation
@@ -104,19 +104,19 @@ The system ensures reliable and redundant data transmission:
 
 ## Software Architecture & Stack
 
-## 🧠 Firmware
+## Firmware
 - Arduino Framework
 - FreeRTOS Task Management
 - MQTT Communication
 - Deep Sleep Mode
 
-## ☁️ Backend & Cloud
+##  Backend & Cloud
 - AWS IoT Core / Firebase
 - Mosquitto MQTT Broker
 - Node.js Gateway (Optional)
 - Firebase Cloud Messaging (Alerts)
 
-## 🖥 Frontend
+##  Frontend
 - React.js Dashboard
 - Real-time Data Visualization
 - Alert Monitoring Panel
@@ -142,17 +142,17 @@ The project was executed in four structured milestones:
 
 ## Testing & Validation
 
-## 🔬 Hardware Testing
+##  Hardware Testing
 - Soil moisture calibration (dry vs saturated soil)
 - Rain gauge pulse verification
 - Battery discharge & deep sleep measurement
 
-## 🌐 Connectivity Testing
+##  Connectivity Testing
 - MQTT latency: < 2 seconds
 - GSM fallback verification
 - LoRa range testing in open field
 
-## ⚠️ Failover Testing
+##  Failover Testing
 - Local gateway broadcast when WAN disconnected
 - Alert triggering under simulated rainfall conditions
 
