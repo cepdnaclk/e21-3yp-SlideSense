@@ -15,7 +15,9 @@ title: SlideSense
 - E/21/302, Sahandi Perera, [e21302@eng.pdn.ac.lk](mailto:e21302@eng.pdn.ac.lk)
 - E/21/452, Zaid M.R.M., [e21452@eng.pdn.ac.lk](mailto:e21452@eng.pdn.ac.lk)
 
-![SlideSense Final Hardware Prototype](./images/Probe.png)
+<p align="center">
+  <img src="./images/Probe.jpeg" width="450"/>
+</p>
 
 #### Table of Contents
 1. [Introduction](#introduction)
@@ -80,15 +82,17 @@ The core node consists of an **ESP32 Microcontroller** interfaced with:
 
 | Item | Quantity | Unit Cost (LKR) | Total (LKR) |
 | :--- | :---: | :---: | :---: |
-| ESP32 Development Board | 2 | 1,850 | 3,700 |
-| Raspberry Pi 4 (4GB) | 1 | 24,000 | 24,000 |
-| Capacitive Soil Moisture Sensor | 3 | 450 | 1,350 |
-| MPU6050 Gyro/Accel Sensor | 2 | 850 | 1,700 |
-| Rain Gauge Module | 1 | 2,500 | 2,500 |
-| Solar Panel (5V/2W) | 2 | 1,200 | 2,400 |
-| Li-ion Battery (18650) | 2 | 950 | 1,900 |
-| Enclosures & Misc (PVC, Wires) | - | 3,000 | 3,000 |
-| **Total Cost** | | | **40,550 LKR** |
+| 20W Solar Panel | 1 | 3,350 | 3,350 |
+| Li-Po Battery | 1 | 1,185 | 1,185 |
+| MPPT Controller | 1 | 1,450 | 1,450 |
+| Voltage Regulator | 1 | 120 | 120 |
+| ESP32 | 1 | 1,860 | 1,860 |
+| Soil Moisture Sensor | 4 | 290 | 1,160 |
+| Tipping Bucket | 1 | 4,000 | 4,000 |
+| LoRa Module | 1 | 1,500 | 1,500 |
+| Microphone Sensor | 1 | 200 | 200 |
+| SIM900A | 1 | 1,450 | 1,450 |
+| **Total Cost** |  |  | **16,275 LKR** |
 
 
 
