@@ -32,13 +32,11 @@
 1. [Introduction](#introduction)
 2. [Overall System Architecture](#overall-system-architecture)
 3. [Data Flow Architecture](#data-flow-architecture)
-4. [Hardware Design](#hardware-design)
-5. [Software Architecture & Stack](#software-architecture--stack)
-6. [Project Timeline](#project-timeline)
-7. [Testing & Validation](#testing--validation)
-8. [Detailed Budget](#detailed-budget)
-9. [Conclusion & Future Work](#conclusion--future-work)
-10. [Links](#links)
+4. [Software Architecture & Stack](#software-architecture--stack)
+5. [Project Timeline](#project-timeline)
+6. [Detailed Budget](#detailed-budget)
+7. [Conclusion & Future Work](#conclusion--future-work)
+8. [Links](#links)
 
 
 ## Introduction
@@ -58,11 +56,6 @@ SlideSense follows a **multi-layer IoT architecture**:
 - **Perception Layer:** Distributed sensor nodes (ESP32) collect soil moisture, volumetric water content, and tilt data.
 - **Network Layer:** Data is transmitted via MQTT protocol to a central Raspberry Pi gateway and subsequently to the AWS IoT Core.
 - **Application Layer:** A React-based web dashboard and Firebase Cloud Messaging (FCM) provide localized alerts and historical data visualization for authorities.
-
-
-<p align="center">
-  <img src="./docs/images/Overall_Position.png" width="750"/>
-</p>
 
 
 ## Data Flow Architecture
@@ -97,7 +90,6 @@ The system ensures reliable and redundant data transmission:
 - MPPT Solar Charging
 - 3.3V Regulation
 - Deep Sleep Power Optimization
-
 
 
 ## Software Architecture & Stack
@@ -138,21 +130,6 @@ The project was executed in four structured milestones:
   <img src="./docs/images/Time_line.png" width="900"/>
 </p>
 
-## Testing & Validation
-
-## 🔬 Hardware Testing
-- Soil moisture calibration (dry vs saturated soil)
-- Rain gauge pulse verification
-- Battery discharge & deep sleep measurement
-
-## 🌐 Connectivity Testing
-- MQTT latency: < 2 seconds
-- GSM fallback verification
-- LoRa range testing in open field
-
-## ⚠️ Failover Testing
-- Local gateway broadcast when WAN disconnected
-- Alert triggering under simulated rainfall conditions
 
 ## Detailed Budget
 
