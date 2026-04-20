@@ -1,0 +1,20 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: slidesense-timescaledb
+    environment:
+      POSTGRES_DB: slidesense
+      POSTGRES_USER: slidesense
+      POSTGRES_PASSWORD: slidesense
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U slidesense -d slidesense"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  timescaledb_data:
