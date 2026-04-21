@@ -24,6 +24,22 @@ public class ProbeBucketId implements Serializable {
         this.bucket = bucket;
     }
 
+    public UUID getProbeId() {
+        return probeId;
+    }
+
+    public void setProbeId(UUID probeId) {
+        this.probeId = probeId;
+    }
+
+    public OffsetDateTime getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(OffsetDateTime bucket) {
+        this.bucket = bucket;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

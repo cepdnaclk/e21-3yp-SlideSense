@@ -20,7 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "registration_requests")
-@Check(constraints = "(requested_role = 'resident' AND probe_id IS NOT NULL) OR (requested_role = 'researcher' AND probe_id IS NULL)")
+@Check(constraints = "(requested_role = 'RESIDENT' AND probe_id IS NOT NULL) OR (requested_role = 'RESEARCHER' AND probe_id IS NULL)")
 public class RegistrationRequest {
 
     @Id
@@ -61,5 +61,85 @@ public class RegistrationRequest {
     private OffsetDateTime createdAt;
 
     public RegistrationRequest() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public RequestedRole getRequestedRole() {
+        return requestedRole;
+    }
+
+    public void setRequestedRole(RequestedRole requestedRole) {
+        this.requestedRole = requestedRole;
+    }
+
+    public Probe getProbe() {
+        return probe;
+    }
+
+    public void setProbe(Probe probe) {
+        this.probe = probe;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getVerificationNotes() {
+        return verificationNotes;
+    }
+
+    public void setVerificationNotes(String verificationNotes) {
+        this.verificationNotes = verificationNotes;
+    }
+
+    public RegistrationRequestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RegistrationRequestStatus status) {
+        this.status = status;
+    }
+
+    public User getReviewedBy() {
+        return reviewedBy;
+    }
+
+    public void setReviewedBy(User reviewedBy) {
+        this.reviewedBy = reviewedBy;
+    }
+
+    public OffsetDateTime getReviewedAt() {
+        return reviewedAt;
+    }
+
+    public void setReviewedAt(OffsetDateTime reviewedAt) {
+        this.reviewedAt = reviewedAt;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

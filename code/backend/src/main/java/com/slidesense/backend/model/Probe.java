@@ -41,4 +41,60 @@ public class Probe {
 
     public Probe() {
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getHwSerial() {
+        return hwSerial;
+    }
+
+    public void setHwSerial(String hwSerial) {
+        this.hwSerial = hwSerial;
+    }
+
+    public String getFirmwareVer() {
+        return firmwareVer;
+    }
+
+    public void setFirmwareVer(String firmwareVer) {
+        this.firmwareVer = firmwareVer;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public ProbeStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProbeStatus status) {
+        this.status = status;
+    }
+
+    public OffsetDateTime getInstalledAt() {
+        return installedAt;
+    }
+
+    public void setInstalledAt(OffsetDateTime installedAt) {
+        this.installedAt = installedAt;
+    }
 }

@@ -48,4 +48,52 @@ public class ProbeAccessGrant {
 
     public ProbeAccessGrant() {
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Probe getProbe() {
+        return probe;
+    }
+
+    public void setProbe(Probe probe) {
+        this.probe = probe;
+    }
+
+    public User getGrantedBy() {
+        return grantedBy;
+    }
+
+    public void setGrantedBy(User grantedBy) {
+        this.grantedBy = grantedBy;
+    }
+
+    public OffsetDateTime getGrantedAt() {
+        return grantedAt;
+    }
+
+    public void setGrantedAt(OffsetDateTime grantedAt) {
+        this.grantedAt = grantedAt;
+    }
+
+    public OffsetDateTime getRevokedAt() {
+        return revokedAt;
+    }
+
+    public void setRevokedAt(OffsetDateTime revokedAt) {
+        this.revokedAt = revokedAt;
+    }
 }

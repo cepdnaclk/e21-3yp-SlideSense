@@ -22,4 +22,28 @@ public class SensorAggregate {
 
     public SensorAggregate() {
     }
+
+    public ProbeBucketId getId() {
+        return id;
+    }
+
+    public void setId(ProbeBucketId id) {
+        this.id = id;
+    }
+
+    public Float getAvgMoisture() {
+        return avgMoisture;
+    }
+
+    public void setAvgMoisture(Float avgMoisture) {
+        this.avgMoisture = avgMoisture;
+    }
+
+    public Float getMaxVibration() {
+        return maxVibration;
+    }
+
+    public void setMaxVibration(Float maxVibration) {
+        this.maxVibration = maxVibration;
+    }
 }

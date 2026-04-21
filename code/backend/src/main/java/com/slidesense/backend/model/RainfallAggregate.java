@@ -19,4 +19,20 @@ public class RainfallAggregate {
 
     public RainfallAggregate() {
     }
+
+    public ProbeBucketId getId() {
+        return id;
+    }
+
+    public void setId(ProbeBucketId id) {
+        this.id = id;
+    }
+
+    public Float getTotalRainfall() {
+        return totalRainfall;
+    }
+
+    public void setTotalRainfall(Float totalRainfall) {
+        this.totalRainfall = totalRainfall;
+    }
 }

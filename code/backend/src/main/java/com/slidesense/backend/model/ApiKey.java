@@ -42,4 +42,60 @@ public class ApiKey {
 
     public ApiKey() {
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
+
+    public String getKeyHash() {
+        return keyHash;
+    }
+
+    public void setKeyHash(String keyHash) {
+        this.keyHash = keyHash;
+    }
+
+    public Integer getRateLimit() {
+        return rateLimit;
+    }
+
+    public void setRateLimit(Integer rateLimit) {
+        this.rateLimit = rateLimit;
+    }
+
+    public String[] getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String[] scopes) {
+        this.scopes = scopes;
+    }
+
+    public OffsetDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(OffsetDateTime expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

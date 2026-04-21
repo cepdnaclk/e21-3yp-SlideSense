@@ -52,12 +52,22 @@ Open:
 
 - `http://localhost:8080/actuator/health`
 
-## 5) IntelliJ workflow
+## 5) Swagger and security
+
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+
+Auth schemes:
+
+- User APIs use Bearer JWT (`Authorization: Bearer <token>`)
+- Public research APIs use API key header (`X-API-Key: <issued-key>`)
+
+## 6) IntelliJ workflow
 
 - Open the `code/backend` directory as a Maven project in IntelliJ.
 - Use Maven tool window commands (`test`, `package`, `spring-boot:run`) or Run Configuration.
 
-## 6) IntelliJ migration verification checklist
+## 7) IntelliJ migration verification checklist
 
 1. Start DB: `docker compose up -d`
 2. Ensure schema is fresh only if needed:
@@ -70,7 +80,7 @@ Open:
   - `SELECT * FROM flyway_schema_history ORDER BY installed_rank;` should list V1 and V2 success.
 6. Check API health: `http://localhost:8080/actuator/health`
 
-## 7) Next for time-series schema
+## 8) Next for time-series schema
 
 TimescaleDB extension is enabled through Flyway migration `V1__enable_timescaledb.sql`.
 When you start defining your models, add a new migration to create hypertables, for example:
