@@ -1,0 +1,1 @@
+ping a1cvrohkom2hp3-ats.iot.eu-north-1.amazonaws.com

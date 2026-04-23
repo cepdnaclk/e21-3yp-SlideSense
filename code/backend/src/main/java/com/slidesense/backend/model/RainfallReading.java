@@ -37,4 +37,36 @@ public class RainfallReading {
 
     public RainfallReading() {
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Probe getProbe() {
+        return probe;
+    }
+
+    public void setProbe(Probe probe) {
+        this.probe = probe;
+    }
+
+    public OffsetDateTime getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setRecordedAt(OffsetDateTime recordedAt) {
+        this.recordedAt = recordedAt;
+    }
+
+    public Float getRainfallMm() {
+        return rainfallMm;
+    }
+
+    public void setRainfallMm(Float rainfallMm) {
+        this.rainfallMm = rainfallMm;
+    }
 }
