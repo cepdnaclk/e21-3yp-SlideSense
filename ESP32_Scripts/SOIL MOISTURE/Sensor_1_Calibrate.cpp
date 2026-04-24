@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
-#define MOISTURE_SENSOR_PIN 34
+#define MOISTURE_SENSOR_PIN 35
 
-const int dry = 2750;  // dry value (calibrate if needed)
-const int wet = 970;   // wet value (calibrate if needed)
+const int dry = 3200;  // dry value
+const int wet = 2000;   // wet value
 
 void setup() {
   Serial.begin(115200);
