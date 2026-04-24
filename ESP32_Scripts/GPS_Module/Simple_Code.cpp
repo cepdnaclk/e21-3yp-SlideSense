@@ -27,7 +27,7 @@ void loop() {
 
   // If no data coming at all
   if (millis() > 5000 && gps.charsProcessed() < 10) {
-    Serial.println("❌ No GPS detected! Check wiring or power.");
+    Serial.println("No GPS detected! Check wiring or power.");
     while (true);
   }
 }
