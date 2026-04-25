@@ -3,17 +3,21 @@ import StatCard from './components/StatCard';
 import MapView from './components/MapView';
 import ProbeDetailsPanel from './components/ProbeDetailsPanel';
 import AlertsPanel from './components/AlertsPanel';
-import AddProbeForm from './components/AddProbeForm';
 import AlertHistory from './components/AlertHistory';
 import AnalyticsCharts from './components/AnalyticsCharts';
 import CurrentStatusPanel from './components/CurrentStatusPanel';
-import { dummyProbes, createProbeRecord } from './data/dummyProbes';
+import { fetchAllReadings, fetchLatestSimple, mapReadingsToProbes } from './data/landslideApi';
 import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../../shared/utils/riskUtils';
 
+const API_ALL_DATA_URL = import.meta.env.VITE_API_ALL_DATA_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide';
+const API_LATEST_SIMPLE_URL = import.meta.env.VITE_API_LATEST_SIMPLE_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide/latest/simple';
+
 export default function AdminDashboard() {
-  const [probes, setProbes] = useState(dummyProbes);
-  const [selectedProbeId, setSelectedProbeId] = useState(dummyProbes[0]?.id ?? null);
-  const [searchValue, setSearchValue] = useState(dummyProbes[0]?.id ?? '');
+  const [probes, setProbes] = useState([]);
+  const [selectedProbeId, setSelectedProbeId] = useState(null);
+  const [searchValue, setSearchValue] = useState('');
+  const [isLoadingLiveData, setIsLoadingLiveData] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
   const selectedProbe = useMemo(
     () => probes.find((probe) => probe.id === selectedProbeId) ?? null,
@@ -28,6 +32,98 @@ export default function AdminDashboard() {
       setSearchValue(selectedProbe.id);
     }
   }, [selectedProbe]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadLiveData() {
+      setIsLoadingLiveData(true);
+      setLoadError('');
+
+      try {
+        const rows = await fetchAllReadings(API_ALL_DATA_URL);
+        const liveProbes = mapReadingsToProbes(rows);
+
+        if (!active || liveProbes.length === 0) {
+          if (active && liveProbes.length === 0) {
+            setProbes([]);
+            setSelectedProbeId(null);
+            setLoadError('No probe records found from backend API.');
+          }
+          return;
+        }
+
+        setProbes(liveProbes);
+        setSelectedProbeId((currentId) => currentId && liveProbes.some((probe) => probe.id === currentId)
+          ? currentId
+          : liveProbes[0].id);
+      } catch (error) {
+        if (active) {
+          setProbes([]);
+          setSelectedProbeId(null);
+          setLoadError(`Live data unavailable: ${error.message}.`);
+        }
+      } finally {
+        if (active) {
+          setIsLoadingLiveData(false);
+        }
+      }
+    }
+
+    loadLiveData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    async function syncLatestForSelectedProbe() {
+      if (!selectedProbeId) {
+        return;
+      }
+
+      const latest = await fetchLatestSimple(API_LATEST_SIMPLE_URL, selectedProbeId);
+      if (!active || !latest) {
+        return;
+      }
+
+      setProbes((current) => current.map((probe) => {
+        if (probe.id !== selectedProbeId) {
+          return probe;
+        }
+
+        const m2 = Number(probe.metrics?.moistureSensors?.m2 ?? latest.moisture);
+        const m3 = Number(probe.metrics?.moistureSensors?.m3 ?? latest.moisture);
+        const avg = Number(((latest.moisture + m2 + m3) / 3).toFixed(1));
+
+        return {
+          ...probe,
+          metrics: {
+            ...probe.metrics,
+            rainfall: latest.rain,
+            moisture: avg,
+            moistureSensors: {
+              m1: latest.moisture,
+              m2,
+              m3,
+              avg,
+            },
+            tilt: latest.tilt,
+            vibration: latest.tilt === 1 ? 70 : 15,
+          },
+        };
+      }));
+    }
+
+    syncLatestForSelectedProbe();
+
+    return () => {
+      active = false;
+    };
+  }, [selectedProbeId]);
 
   function handleSelectProbe(probeId) {
     setSelectedProbeId(probeId);
@@ -52,18 +148,15 @@ export default function AdminDashboard() {
     }
   }
 
-  function handleAddProbe({ id, latitude, longitude }) {
-    const nextProbe = createProbeRecord({ id, latitude, longitude });
-    setProbes((current) => [...current, nextProbe]);
-    handleSelectProbe(nextProbe.id);
-  }
-
   return (
     <main className="admin-dashboard">
       <header className="dashboard-header">
         <div>
           <span className="section-label">Slide Sense</span>
           <h1>Admin Dashboard</h1>
+          {isLoadingLiveData && <p>Loading live sensor data from backend...</p>}
+          {!isLoadingLiveData && !loadError && <p>Live backend connected.</p>}
+          {loadError && <p>{loadError}</p>}
         </div>
       </header>
 
@@ -101,7 +194,6 @@ export default function AdminDashboard() {
 
         <aside className="details-column">
           <ProbeDetailsPanel probe={selectedProbe} />
-          <AddProbeForm onAddProbe={handleAddProbe} existingIds={probes.map((probe) => probe.id)} />
         </aside>
       </section>
 
