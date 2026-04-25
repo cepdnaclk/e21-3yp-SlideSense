@@ -16,18 +16,18 @@ COOLDOWN_PERIOD = 3600        # 1 hour
 def lambda_handler(event, context):
     table = dynamodb.Table(TABLE_NAME)
     
-    # 1. Get sensor data
+    # Get sensor data
     m1 = event.get("m1", 0)
     m2 = event.get("m2", 0)
     m3 = event.get("m3", 0)
     rain = event.get("rain", 0)
     tilt = event.get("tilt", 0)
     
-    # 2. Define Danger Condition
-    is_dangerous = (m1 > 70 and m2 > 70 and m3 > 70 and rain > 5) or (tilt == 1)
+    # Define Danger Condition
+    is_dangerous = (tilt == 0)
 
     if is_dangerous:
-        # 3. Check DynamoDB for the "LastAlert" timestamp
+        # Check DynamoDB for the "LastAlert" timestamp
         try:
             response = table.get_item(Key={'deviceID': 'SYSTEM_STATUS', 'timestamp': 0})
             last_alert_time = response.get('Item', {}).get('last_email_sent', 0)
@@ -36,7 +36,7 @@ def lambda_handler(event, context):
 
         current_time = int(time.time())
 
-        # 4. Only send if enough time has passed
+        # Only send if enough time has passed
         if (current_time - last_alert_time) > COOLDOWN_PERIOD:
             message = f"🚨 Landslide Warning!\nMoisture: {m1}, {m2}, {m3}\nRain: {rain}mm\nTilt: {tilt}\nCheck system immediately."
             
@@ -46,7 +46,7 @@ def lambda_handler(event, context):
                 Subject="CRITICAL: Landslide Alert"
             )
             
-            # 5. Update the "LastAlert" time in DynamoDB
+            # Update the "LastAlert" time in DynamoDB
             table.put_item(Item={
                 'deviceID': 'SYSTEM_STATUS',
                 'timestamp': 0,

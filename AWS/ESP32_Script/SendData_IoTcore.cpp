@@ -2,7 +2,7 @@
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 #include <TinyGPS++.h>
-#include <ArduinoJson.h> // Make sure to install this library
+#include <ArduinoJson.h> 
 
 // WiFi Credentials
 const char* ssid = "SLT-Fiber-E49E";
@@ -56,7 +56,8 @@ CNRTRZ0DKRcIYZjXeVtN8QU+1M00KaNyAmBrwtqFmNw/48X3eMrCqoYql3X91fMq
 J1HDykOmL4dbBfScDjY+7jCAGvgLv8BgNzwz1i94sXLbuHJAKgXrNqXCE15A1yUB
 TqvLN1KLiSUjksRJAowPs4yQp80YU0VbVWN+CoU6tocM1q80gN0ixWJT6AzX
 -----END CERTIFICATE-----
- )EOF"; // Paste your cert here
+ )EOF"; 
+
 const char* rootCA = R"EOF( -----BEGIN CERTIFICATE-----
 MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF
 ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6
@@ -76,7 +77,8 @@ N+gDS63pYaACbvXy8MWy7Vu33PqUXHeeE6V/Uq2V8viTO96LXFvKWlJbYK8U90vv
 o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU
 5MsI+yMRQ+hDKXJioaldXgjUkK642M4UwtBV8ob2xJNDd2ZhwLnoQdeXeGADbkpy
 rqXRfboQnoZsG4q5WTP468SQvvG5
------END CERTIFICATE----- )EOF";    // Paste your rootCA here
+-----END CERTIFICATE----- )EOF";   
+
 const char* privateKey = R"EOF( -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAumizg69JBLHvrv90eIdwxQge1wGO66rLcXMbxhda3LF7l36u
 WCCGcIj3NlYFvHKhpl/+45TpwdNVi4zFZLsEO8lROCqLTL9/pl2QPjSjRXB/VqD7
@@ -104,7 +106,7 @@ o4HSAQKBgQCDrdcUOsquwRphwV+u1VPxRSeRsbRpCGIkgW2hPO/pCIzEaCLF9IY8
 duDo+jCnojKKEDsx9aNfRaWIQyijYQfGGBPrNd80WeZD00qWQUEJLet7edQIi8bd
 rcqsrUdReBOdp35AB3VguxrtGVISmld9EPq7FVHguXo//ER5BI1z8Q==
 -----END RSA PRIVATE KEY-----
- )EOF"; // Paste your privateKey here
+ )EOF"; 
 
 void IRAM_ATTR countTip() {
   unsigned long currentTime = millis();
@@ -162,19 +164,19 @@ void loop() {
   }
   client.loop();
 
-  // 1. Read GPS
+  // Read GPS
   while (SerialGPS.available()) {
     gps.encode(SerialGPS.read());
   }
 
-  // 2. Read Sensors and Calculate
+  // Read Sensors and Calculate
   int m1 = constrain(map(analogRead(MOISTURE1_PIN), wet1, dry1, 100, 0), 0, 100);
   int m2 = constrain(map(analogRead(MOISTURE2_PIN), wet2, dry2, 100, 0), 0, 100);
   int m3 = constrain(map(analogRead(MOISTURE3_PIN), wet3, dry3, 100, 0), 0, 100);
   float rainfall = tipCount * mmPerPulse;
   bool tiltDetected = digitalRead(tiltPin);
 
-  // 3. Create JSON Payload
+  // Create JSON Payload
   StaticJsonDocument<256> doc;
   doc["m1"] = m1;
   doc["m2"] = m2;
@@ -193,7 +195,7 @@ void loop() {
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer);
 
-  // 4. Publish every 10 seconds
+  // Publish every 10 seconds
   static unsigned long lastMsg = 0;
   if (millis() - lastMsg > 10000) {
     lastMsg = millis();
