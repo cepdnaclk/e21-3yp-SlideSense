@@ -2,11 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import StatCard from './components/StatCard';
 import MapView from './components/MapView';
 import ProbeDetailsPanel from './components/ProbeDetailsPanel';
-import AlertsPanel from './components/AlertsPanel';
 import AddProbeForm from './components/AddProbeForm';
-import AlertHistory from './components/AlertHistory';
 import AnalyticsCharts from './components/AnalyticsCharts';
-import CurrentStatusPanel from './components/CurrentStatusPanel';
+import BelowMapStatusCards from './components/BelowMapStatusCards';
 import { dummyProbes, createProbeRecord } from './data/dummyProbes';
 import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../../shared/utils/riskUtils';
 
@@ -58,6 +56,37 @@ export default function AdminDashboard() {
     handleSelectProbe(nextProbe.id);
   }
 
+  function handleUpdateProbeCoordinate(probeId, field, value) {
+    const nextValue = Number(value);
+    if (!Number.isFinite(nextValue)) {
+      return;
+    }
+
+    setProbes((current) =>
+      current.map((probe) => (probe.id === probeId ? { ...probe, [field]: nextValue } : probe)),
+    );
+  }
+
+  function handleRemoveProbe(probeId) {
+    setProbes((current) => {
+      const nextProbes = current.filter((probe) => probe.id !== probeId);
+
+      if (nextProbes.length === 0) {
+        setSelectedProbeId(null);
+        setSearchValue('');
+        return nextProbes;
+      }
+
+      if (selectedProbeId === probeId) {
+        const nextSelectedId = nextProbes[0].id;
+        setSelectedProbeId(nextSelectedId);
+        setSearchValue(nextSelectedId);
+      }
+
+      return nextProbes;
+    });
+  }
+
   return (
     <main className="admin-dashboard">
       <header className="dashboard-header">
@@ -100,16 +129,23 @@ export default function AdminDashboard() {
         />
 
         <aside className="details-column">
-          <ProbeDetailsPanel probe={selectedProbe} />
+          <ProbeDetailsPanel
+            probe={selectedProbe}
+            onEditCoordinate={handleUpdateProbeCoordinate}
+            onRemoveProbe={handleRemoveProbe}
+          />
           <AddProbeForm onAddProbe={handleAddProbe} existingIds={probes.map((probe) => probe.id)} />
         </aside>
       </section>
 
-      <section className="support-panels">
-        <CurrentStatusPanel probe={selectedProbe} />
-        <AlertsPanel alerts={highRiskProbes} onSelectProbe={handleSelectProbe} />
-        <AlertHistory alerts={highRiskProbes} />
-      </section>
+      <BelowMapStatusCards
+        moistureSensors={selectedProbe?.metrics?.moistureSensors ?? [0, 0, 0]}
+        rainfall={selectedProbe?.metrics?.rainfall ?? 0}
+        tiltDetected={selectedProbe?.metrics?.tiltDetected ?? false}
+        powerLevel={selectedProbe?.metrics?.power ?? 0}
+        mode={selectedProbe?.metrics?.mode ?? 'normal'}
+        signalStrength={selectedProbe?.metrics?.signalStrength ?? 0}
+      />
 
       <section className="analytics-section">
         <AnalyticsCharts probe={selectedProbe} />
