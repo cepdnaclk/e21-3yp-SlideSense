@@ -16,6 +16,26 @@ function normalizeRisk(risk) {
   return 'low';
 }
 
+function normalizeMode(mode) {
+  const normalized = String(mode ?? '').trim().toLowerCase();
+  return normalized === 'burst' ? 'burst' : 'normal';
+}
+
+function getRainValue(source, fallback = 0) {
+  if (!source || typeof source !== 'object') {
+    return fallback;
+  }
+
+  return toNumber(
+    source.rain
+      ?? source.rainfall
+      ?? source.rainfallMm
+      ?? source.rainfall_mm
+      ?? source.totalRainfall,
+    fallback,
+  );
+}
+
 function formatTimestamp(unixSeconds) {
   const timestampMs = toNumber(unixSeconds) * 1000;
   if (!timestampMs) {
@@ -42,7 +62,7 @@ function buildHistory(rows) {
 
     return {
       label: `T-${recentRows.length - index - 1}`,
-      rainfall: toNumber(row.rain),
+      rainfall: getRainValue(row),
       moisture: avgMoisture,
       vibration: tilt === 1 ? 70 : 15,
       power: Math.max(60, 100 - index * 3),
@@ -74,6 +94,9 @@ export function mapReadingsToProbes(readings) {
       const m3 = toNumber(latest.m3);
       const avgMoisture = toNumber(latest.avg_moisture, (m1 + m2 + m3) / 3);
       const tilt = toNumber(latest.tilt);
+      const power = toNumber(latest.power ?? latest.battery ?? latest.batteryLevel, 100);
+      const signalStrength = toNumber(latest.signalStrength ?? latest.signal ?? latest.rssi, 83);
+      const mode = normalizeMode(latest.mode);
 
       return {
         id: deviceId,
@@ -82,7 +105,7 @@ export function mapReadingsToProbes(readings) {
         riskLevel: normalizeRisk(latest.risk),
         lastUpdated: formatTimestamp(latest.timestamp),
         metrics: {
-          rainfall: toNumber(latest.rain),
+          rainfall: getRainValue(latest),
           moisture: avgMoisture,
           moistureSensors: {
             m1,
@@ -91,8 +114,11 @@ export function mapReadingsToProbes(readings) {
             avg: avgMoisture,
           },
           vibration: tilt === 1 ? 70 : 15,
-          power: 100,
+          power,
+          signalStrength,
+          mode,
           tilt,
+          tiltDetected: tilt === 1,
         },
         history: buildHistory(sortedRows),
       };
@@ -163,7 +189,7 @@ export async function fetchLatestSimple(latestSimpleUrl, deviceID) {
   const payload = await response.json();
   return {
     moisture: toNumber(payload?.moisture),
-    rain: toNumber(payload?.rain),
+    rain: getRainValue(payload),
     tilt: toNumber(payload?.tilt),
   };
 }

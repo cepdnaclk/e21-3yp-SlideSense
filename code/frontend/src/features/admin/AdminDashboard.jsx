@@ -6,11 +6,42 @@ import AlertsPanel from './components/AlertsPanel';
 import AlertHistory from './components/AlertHistory';
 import AnalyticsCharts from './components/AnalyticsCharts';
 import CurrentStatusPanel from './components/CurrentStatusPanel';
+import AddProbeForm from './components/AddProbeForm';
+import BelowMapStatusCards from './components/BelowMapStatusCards';
 import { fetchAllReadings, fetchLatestSimple, mapReadingsToProbes } from './data/landslideApi';
 import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../../shared/utils/riskUtils';
 
 const API_ALL_DATA_URL = import.meta.env.VITE_API_ALL_DATA_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide';
 const API_LATEST_SIMPLE_URL = import.meta.env.VITE_API_LATEST_SIMPLE_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide/latest/simple';
+
+function createProbeRecord({ id, latitude, longitude }) {
+  const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
+  return {
+    id,
+    latitude,
+    longitude,
+    riskLevel: 'low',
+    lastUpdated: now,
+    metrics: {
+      rainfall: 0,
+      moisture: 0,
+      moistureSensors: {
+        m1: 0,
+        m2: 0,
+        m3: 0,
+        avg: 0,
+      },
+      vibration: 0,
+      power: 100,
+      tilt: 0,
+      tiltDetected: false,
+      mode: 'normal',
+      signalStrength: 100,
+    },
+    history: [],
+  };
+}
 
 export default function AdminDashboard() {
   const [probes, setProbes] = useState([]);
@@ -240,12 +271,12 @@ export default function AdminDashboard() {
       </section>
 
       <BelowMapStatusCards
-        moistureSensors={selectedProbe?.metrics?.moistureSensors ?? [0, 0, 0]}
-        rainfall={selectedProbe?.metrics?.rainfall ?? 0}
-        tiltDetected={selectedProbe?.metrics?.tiltDetected ?? false}
-        powerLevel={selectedProbe?.metrics?.power ?? 0}
-        mode={selectedProbe?.metrics?.mode ?? 'normal'}
-        signalStrength={selectedProbe?.metrics?.signalStrength ?? 0}
+        moistureSensors={selectedProbe?.metrics?.moistureSensors}
+        rainfall={selectedProbe?.metrics?.rainfall}
+        tiltDetected={selectedProbe?.metrics?.tiltDetected ?? (selectedProbe?.metrics?.tilt === 1)}
+        powerLevel={selectedProbe?.metrics?.power}
+        mode={selectedProbe?.metrics?.mode}
+        signalStrength={selectedProbe?.metrics?.signalStrength}
       />
 
       <section className="analytics-section">
