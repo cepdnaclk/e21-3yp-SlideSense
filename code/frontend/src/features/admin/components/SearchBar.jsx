@@ -1,9 +1,11 @@
-export default function SearchBar({ value, onChange, onSubmit, probeIds }) {
+export default function SearchBar({ value, onChange, onSubmit, probeIds, inline = false }) {
   return (
-    <form className="search-bar card-shell" onSubmit={onSubmit}>
-      <div className="search-bar__label-group">
-        <span className="section-label">Probe search</span>
-      </div>
+    <form className={`search-bar ${inline ? 'search-bar--inline' : 'card-shell'}`} onSubmit={onSubmit}>
+      {!inline && (
+        <div className="search-bar__label-group">
+          <span className="section-label">Probe search</span>
+        </div>
+      )}
       <div className="search-bar__controls">
         <input
           className="search-bar__input"

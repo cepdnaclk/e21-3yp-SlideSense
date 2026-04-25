@@ -44,18 +44,17 @@ export default function MapView({ probes, selectedProbeId, onSelectProbe, search
   return (
     <section className="map-card card-shell">
       <div className="panel-card__title-row map-card__header">
-        <div>
-          <span className="section-label">Monitoring map</span>
+        <div className="map-card__heading">
           <h2 className="panel-card__title">Probe network overview</h2>
         </div>
+        <SearchBar
+          value={searchValue}
+          onChange={onSearchChange}
+          onSubmit={onSearchSubmit}
+          probeIds={probes.map((probe) => probe.id)}
+          inline
+        />
       </div>
-
-      <SearchBar
-        value={searchValue}
-        onChange={onSearchChange}
-        onSubmit={onSearchSubmit}
-        probeIds={probes.map((probe) => probe.id)}
-      />
 
       <div className="map-canvas">
         <MapContainer

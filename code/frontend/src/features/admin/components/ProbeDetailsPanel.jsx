@@ -21,6 +21,30 @@ export default function ProbeDetailsPanel({ probe }) {
     );
   }
 
+  function handleEditCoordinate(field) {
+    const label = field === 'latitude' ? 'Latitude' : 'Longitude';
+    const nextValue = window.prompt(`Enter new ${label} value`, String(probe[field]));
+
+    if (nextValue === null) {
+      return;
+    }
+
+    const parsedValue = Number(nextValue.trim());
+    if (!Number.isFinite(parsedValue)) {
+      window.alert(`Please enter a valid number for ${label}.`);
+      return;
+    }
+
+    onEditCoordinate(probe.id, field, parsedValue);
+  }
+
+  function handleRemove() {
+    const confirmed = window.confirm(`Remove ${probe.id} from monitoring?`);
+    if (confirmed) {
+      onRemoveProbe(probe.id);
+    }
+  }
+
   return (
     <section className="panel-card" id="probe-details-panel">
       <div className="panel-card__title-row">
@@ -28,23 +52,26 @@ export default function ProbeDetailsPanel({ probe }) {
           <span className="section-label">Probe details</span>
           <h2 className="panel-card__title">{probe.id}</h2>
         </div>
-        <span className="risk-pill" style={{ backgroundColor: `${getRiskColor(probe.riskLevel)}18`, color: getRiskColor(probe.riskLevel) }}>
-          {getRiskLabel(probe.riskLevel)}
-        </span>
       </div>
 
       <div className="details-grid">
         <div className="detail-item">
           <span className="detail-item__label">Latitude</span>
-          <span className="detail-item__value">{probe.latitude.toFixed(4)}</span>
+          <div className="detail-item__value-row">
+            <span className="detail-item__value">{probe.latitude.toFixed(4)}</span>
+            <button type="button" className="detail-action-button" onClick={() => handleEditCoordinate('latitude')}>
+              Edit
+            </button>
+          </div>
         </div>
         <div className="detail-item">
           <span className="detail-item__label">Longitude</span>
-          <span className="detail-item__value">{probe.longitude.toFixed(4)}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-item__label">Current risk</span>
-          <span className="detail-item__value">{getRiskLabel(probe.riskLevel)}</span>
+          <div className="detail-item__value-row">
+            <span className="detail-item__value">{probe.longitude.toFixed(4)}</span>
+            <button type="button" className="detail-action-button" onClick={() => handleEditCoordinate('longitude')}>
+              Edit
+            </button>
+          </div>
         </div>
         <div className="detail-item">
           <span className="detail-item__label">Moisture sensors (M1/M2/M3)</span>
@@ -65,6 +92,10 @@ export default function ProbeDetailsPanel({ probe }) {
           <span className="detail-item__value">{probe.lastUpdated}</span>
         </div>
       </div>
+
+      <button type="button" className="remove-probe-button" onClick={handleRemove}>
+        Remove probe
+      </button>
 
     </section>
   );
