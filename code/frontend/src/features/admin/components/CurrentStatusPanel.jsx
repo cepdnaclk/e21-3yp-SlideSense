@@ -10,7 +10,7 @@ export default function CurrentStatusPanel({ probe }) {
             <h2 className="panel-card__title">No probe selected</h2>
           </div>
         </div>
-        <p className="empty-state">Select a probe to view real-time rainfall, moisture, vibration, and power readings.</p>
+        <p className="empty-state">Select a probe to view real-time rainfall, M1/M2/M3 moisture values, average moisture, tilt risk, vibration, and power readings.</p>
       </section>
     );
   }

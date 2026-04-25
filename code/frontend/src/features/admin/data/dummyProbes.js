@@ -14,6 +14,39 @@ function buildHistory(seed) {
 function createProbe(index, overrides) {
   const baseLat = 7.05 + index * 0.08;
   const baseLng = 80.55 + index * 0.07;
+  const defaultMoisture = 44;
+  const defaultMetrics = {
+    rainfall: 32,
+    moisture: defaultMoisture,
+    moistureSensors: {
+      m1: defaultMoisture,
+      m2: defaultMoisture,
+      m3: defaultMoisture,
+      avg: defaultMoisture,
+    },
+    vibration: 16,
+    power: 94,
+    tilt: 0,
+  };
+  const { metrics: overrideMetrics = {}, ...restOverrides } = overrides ?? {};
+  const mergedMetrics = {
+    ...defaultMetrics,
+    ...overrideMetrics,
+  };
+
+  const m1 = Number(mergedMetrics.moistureSensors?.m1 ?? mergedMetrics.m1 ?? mergedMetrics.moisture ?? 0);
+  const m2 = Number(mergedMetrics.moistureSensors?.m2 ?? mergedMetrics.m2 ?? mergedMetrics.moisture ?? 0);
+  const m3 = Number(mergedMetrics.moistureSensors?.m3 ?? mergedMetrics.m3 ?? mergedMetrics.moisture ?? 0);
+  const avg = Number((((m1 + m2 + m3) / 3) || 0).toFixed(1));
+
+  mergedMetrics.moistureSensors = {
+    m1,
+    m2,
+    m3,
+    avg: Number(mergedMetrics.moistureSensors?.avg ?? mergedMetrics.avg_moisture ?? avg),
+  };
+  mergedMetrics.moisture = Number(mergedMetrics.moistureSensors.avg);
+  mergedMetrics.tilt = Number(mergedMetrics.tilt ?? 0);
 
   return {
     id: `PRB-${100 + index}`,
@@ -31,8 +64,9 @@ function createProbe(index, overrides) {
       mode: 'normal',
       signalStrength: 82,
     },
+    metrics: mergedMetrics,
     history: buildHistory(index),
-    ...overrides,
+    ...restOverrides,
   };
 }
 
@@ -50,6 +84,7 @@ export const dummyProbes = [
       mode: 'burst',
       signalStrength: 58,
     },
+    metrics: { rainfall: 86, moistureSensors: { m1: 82, m2: 78, m3: 85, avg: 81.6 }, vibration: 74, power: 63, tilt: 1 },
   }),
   createProbe(2, {
     riskLevel: 'medium',
@@ -64,6 +99,7 @@ export const dummyProbes = [
       mode: 'normal',
       signalStrength: 71,
     },
+    metrics: { rainfall: 58, moistureSensors: { m1: 65, m2: 60, m3: 70, avg: 65.0 }, vibration: 38, power: 79, tilt: 0 },
   }),
   createProbe(3, {
     riskLevel: 'low',
@@ -78,6 +114,7 @@ export const dummyProbes = [
       mode: 'normal',
       signalStrength: 90,
     },
+    metrics: { rainfall: 29, moistureSensors: { m1: 30, m2: 40, m3: 35, avg: 35.0 }, vibration: 14, power: 97, tilt: 0 },
   }),
   createProbe(4, {
     riskLevel: 'high',
@@ -92,6 +129,7 @@ export const dummyProbes = [
       mode: 'burst',
       signalStrength: 53,
     },
+    metrics: { rainfall: 78, moistureSensors: { m1: 88, m2: 90, m3: 86, avg: 88.0 }, vibration: 69, power: 57, tilt: 1 },
   }),
   createProbe(5, {
     riskLevel: 'medium',
@@ -106,6 +144,7 @@ export const dummyProbes = [
       mode: 'normal',
       signalStrength: 77,
     },
+    metrics: { rainfall: 46, moistureSensors: { m1: 62, m2: 57, m3: 64, avg: 61.0 }, vibration: 28, power: 84, tilt: 0 },
   }),
   createProbe(6, {
     riskLevel: 'low',
@@ -120,10 +159,12 @@ export const dummyProbes = [
       mode: 'normal',
       signalStrength: 88,
     },
+    metrics: { rainfall: 24, moistureSensors: { m1: 34, m2: 36, m3: 35, avg: 35.0 }, vibration: 11, power: 92, tilt: 0 },
   }),
 ];
 
 export function createProbeRecord({ id, latitude, longitude }) {
+  const moisture = 38;
   return {
     id: String(id).trim().toUpperCase(),
     latitude: Number(latitude),
@@ -139,6 +180,16 @@ export function createProbeRecord({ id, latitude, longitude }) {
       tiltDetected: false,
       mode: 'normal',
       signalStrength: 85,
+      moisture,
+      moistureSensors: {
+        m1: moisture,
+        m2: moisture,
+        m3: moisture,
+        avg: moisture,
+      },
+      vibration: 12,
+      power: 95,
+      tilt: 0,
     },
     history: buildHistory(Number(String(id).replace(/\D/g, '')) || 10),
   };

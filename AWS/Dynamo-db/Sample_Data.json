@@ -1,0 +1,41 @@
+[
+  {
+    "deviceID": "sensor-01",
+    "timestamp": 1714040000,
+    "m1": 82,
+    "m2": 78,
+    "m3": 85,
+    "avg_moisture": 81.6,
+    "rain": 6.2,
+    "tilt": 1,
+    "risk": "HIGH",
+    "lat": 7.2906,
+    "lng": 80.6337
+  },
+  {
+    "deviceID": "sensor-01",
+    "timestamp": 1714040300,
+    "m1": 65,
+    "m2": 60,
+    "m3": 70,
+    "avg_moisture": 65.0,
+    "rain": 3.0,
+    "tilt": 0,
+    "risk": "MODERATE",
+    "lat": 7.2906,
+    "lng": 80.6337
+  },
+  {
+    "deviceID": "sensor-01",
+    "timestamp": 1714040600,
+    "m1": 30,
+    "m2": 40,
+    "m3": 35,
+    "avg_moisture": 35.0,
+    "rain": 0.5,
+    "tilt": 0,
+    "risk": "LOW",
+    "lat": 7.2906,
+    "lng": 80.6337
+  }
+]
