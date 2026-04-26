@@ -51,16 +51,39 @@ button {
 .admin-dashboard {
   width: min(1440px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 24px 0 32px;
+  padding: 6px 0 32px;
   display: grid;
   gap: 20px;
 }
 
 .dashboard-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+.dashboard-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: transparent;
+}
+
+.dashboard-brand__logo {
+  display: block;
+  width: auto;
+  height: 84px;
+  max-width: 180px;
+  object-fit: contain;
+  background: transparent;
+  transform: scale(1.9);
+  transform-origin: left center;
+}
+
+.dashboard-header__title {
+  margin-left: auto;
+  text-align: right;
 }
 
 .dashboard-header h1,
@@ -1201,12 +1224,30 @@ button {
 @media (max-width: 720px) {
   .admin-dashboard {
     width: min(100%, calc(100% - 20px));
-    padding-top: 18px;
+    padding-top: 6px;
   }
 
   .dashboard-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .dashboard-brand__logo {
+    width: auto;
+    height: 64px;
+    max-width: 130px;
+    background: transparent;
+    transform: scale(1.6);
+  }
+
+  .dashboard-header__title {
+    text-align: right;
+  }
+
+  .dashboard-header h1 {
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
   }
 
   .stat-grid,
