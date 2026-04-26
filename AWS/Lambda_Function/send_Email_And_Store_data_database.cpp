@@ -19,6 +19,8 @@ def lambda_handler(event, context):
     m3 = event.get("m3", 0)
     rain = event.get("rain", 0)
     tilt = event.get("tilt", 0)
+    lat = event.get("lat", 0.0)
+    lng = event.get("lng", 0.0)
 
     # --- Calculate average ---
     avg_moisture = Decimal(str((m1 + m2 + m3) / 3))
@@ -43,7 +45,10 @@ def lambda_handler(event, context):
         'avg_moisture': avg_moisture,
         'rain': rain,
         'tilt': tilt,
-        'risk': risk
+        'risk': risk,
+        'lat': Decimal(str(lat)),
+        'lng': Decimal(str(lng))
+
     })
 
     # --- Alert logic (ONLY for HIGH risk) ---
