@@ -50,6 +50,25 @@ function formatTimestamp(unixSeconds) {
   return date.toISOString().slice(0, 16).replace('T', ' ');
 }
 
+function parseLastUpdated(source) {
+  const rawTimestamp = source?.timestamp ?? source?.time ?? source?.recordedAt ?? source?.updatedAt ?? null;
+
+  if (rawTimestamp === null || rawTimestamp === undefined || rawTimestamp === '') {
+    return null;
+  }
+
+  if (typeof rawTimestamp === 'number' || /^\d+(\.\d+)?$/.test(String(rawTimestamp).trim())) {
+    return formatTimestamp(rawTimestamp);
+  }
+
+  const date = new Date(rawTimestamp);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date.toISOString().slice(0, 16).replace('T', ' ');
+}
+
 function buildHistory(rows) {
   const recentRows = rows.slice(0, 12).reverse();
 
@@ -191,5 +210,6 @@ export async function fetchLatestSimple(latestSimpleUrl, deviceID) {
     moisture: toNumber(payload?.moisture),
     rain: getRainValue(payload),
     tilt: toNumber(payload?.tilt),
+    lastUpdated: parseLastUpdated(payload),
   };
 }

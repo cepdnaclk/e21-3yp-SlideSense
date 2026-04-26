@@ -129,9 +129,18 @@ export default function AdminDashboard() {
         const m2 = Number(probe.metrics?.moistureSensors?.m2 ?? latest.moisture);
         const m3 = Number(probe.metrics?.moistureSensors?.m3 ?? latest.moisture);
         const avg = Number(((latest.moisture + m2 + m3) / 3).toFixed(1));
+        const nextHistory = [...(Array.isArray(probe.history) ? probe.history : []), {
+          label: 'Now',
+          rainfall: latest.rain,
+          moisture: avg,
+          vibration: latest.tilt === 1 ? 70 : 15,
+          power: Number(probe.metrics?.power ?? 100),
+        }].slice(-48);
 
         return {
           ...probe,
+          lastUpdated: latest.lastUpdated ?? new Date().toISOString().slice(0, 16).replace('T', ' '),
+          history: nextHistory,
           metrics: {
             ...probe.metrics,
             rainfall: latest.rain,
