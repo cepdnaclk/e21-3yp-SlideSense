@@ -2,8 +2,20 @@ import { useMemo, useState } from 'react';
 import { chartColors } from '../../../shared/styles/colors';
 
 const METRICS = [
-  { key: 'rainfall', label: 'Rainfall', unit: 'mm', color: chartColors[0] },
-  { key: 'moisture', label: 'Moisture', unit: '%', color: chartColors[1] },
+  {
+    key: 'rainfall',
+    label: 'Rainfall',
+    unit: 'mm',
+    color: chartColors[0],
+    maxValue: 10,
+  },
+  {
+    key: 'moisture',
+    label: 'Moisture',
+    unit: '%',
+    color: chartColors[1],
+    maxValue: 100,
+  },
 ];
 
 const TIME_RANGES = [
@@ -12,18 +24,18 @@ const TIME_RANGES = [
   { key: '7d', label: '7days', points: 7, labels: ['D-6', 'D-5', 'D-4', 'D-3', 'D-2', 'D-1', 'Today'] },
 ];
 
-const CHART_MAX = 500;
 const SVG_WIDTH = 640;
 const SVG_HEIGHT = 300;
 const MARGIN = { top: 18, right: 18, bottom: 58, left: 52 };
 const GRID_STEPS = 10;
 
-function clamp(value) {
-  return Math.max(0, Math.min(100, Number(value) || 0));
-}
+function normalizeMetricValue(metric, value) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) {
+    return 0;
+  }
 
-function scaleToChart(value) {
-  return clamp(value) * 5;
+  return Math.max(0, Math.min(metric.maxValue, parsed));
 }
 
 function resample(values, targetCount) {
@@ -32,7 +44,7 @@ function resample(values, targetCount) {
   }
 
   if (!values.length) {
-    return Array.from({ length: targetCount }, (_, index) => 150 + ((index % 5) * 35));
+    return Array.from({ length: targetCount }, () => 0);
   }
 
   if (values.length === 1) {
@@ -57,10 +69,12 @@ function resample(values, targetCount) {
   });
 }
 
-function buildSeries(history, metricKey, rangeKey) {
+function buildSeries(history, metric, rangeKey) {
   const range = TIME_RANGES.find((item) => item.key === rangeKey) ?? TIME_RANGES[0];
-  const metricHistory = Array.isArray(history) ? history.map((point) => scaleToChart(point?.[metricKey])) : [];
-  const source = metricHistory.length > 0 ? metricHistory : [180, 240, 220, 260, 210, 280, 190, 230, 170, 250, 200, 290];
+  const metricHistory = Array.isArray(history)
+    ? history.map((point) => normalizeMetricValue(metric, point?.[metric.key]))
+    : [];
+  const source = metricHistory.length > 0 ? metricHistory : [];
   const values = resample(source.slice(-Math.max(source.length, 2)), range.points);
 
   return values.map((value, index) => ({
@@ -69,24 +83,27 @@ function buildSeries(history, metricKey, rangeKey) {
   }));
 }
 
-function getTickValues() {
-  return Array.from({ length: GRID_STEPS + 1 }, (_, index) => CHART_MAX - (CHART_MAX / GRID_STEPS) * index);
+function getTickValues(maxValue) {
+  return Array.from({ length: GRID_STEPS + 1 }, (_, index) => maxValue - (maxValue / GRID_STEPS) * index);
 }
 
 function MetricBarChart({ probe, metric }) {
   const [selectedRange, setSelectedRange] = useState('24h');
+  const hasHistoryData = Array.isArray(probe?.history)
+    && probe.history.some((point) => Number.isFinite(Number(point?.[metric.key])));
 
   const series = useMemo(
-    () => buildSeries(probe?.history, metric.key, selectedRange),
-    [probe?.history, metric.key, selectedRange],
+    () => buildSeries(probe?.history, metric, selectedRange),
+    [probe?.history, metric, selectedRange],
   );
 
   const plotWidth = SVG_WIDTH - MARGIN.left - MARGIN.right;
   const plotHeight = SVG_HEIGHT - MARGIN.top - MARGIN.bottom;
   const barGap = 10;
   const barWidth = Math.max(10, (plotWidth - barGap * (series.length - 1)) / series.length);
-  const yTicks = getTickValues();
-  const chartScale = plotHeight / CHART_MAX;
+  const chartMax = metric.maxValue;
+  const yTicks = getTickValues(chartMax);
+  const chartScale = plotHeight / chartMax;
 
   return (
     <article className="chart-card chart-card--bar">
@@ -120,6 +137,19 @@ function MetricBarChart({ probe, metric }) {
         aria-label={`${metric.label} bar chart for ${selectedRange}`}
       >
         <rect x="0" y="0" width={SVG_WIDTH} height={SVG_HEIGHT} rx="14" fill="#f7f8f5" />
+        {!hasHistoryData && (
+          <text
+            x={SVG_WIDTH / 2}
+            y={SVG_HEIGHT / 2}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="#5d7387"
+            fontSize="14"
+            fontWeight="600"
+          >
+            No historical data from API yet
+          </text>
+        )}
 
         <g className="bar-chart-grid">
           {yTicks.map((tick) => {
@@ -174,7 +204,7 @@ function MetricBarChart({ probe, metric }) {
 
         <g className="bar-chart-bars">
           {series.map((entry, index) => {
-            const barHeight = Math.max(6, entry.value * chartScale);
+            const barHeight = entry.value <= 0 ? 0 : Math.max(6, entry.value * chartScale);
             const x = MARGIN.left + index * (barWidth + barGap);
             const y = MARGIN.top + plotHeight - barHeight;
 

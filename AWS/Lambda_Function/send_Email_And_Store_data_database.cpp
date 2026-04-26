@@ -14,11 +14,14 @@ def lambda_handler(event, context):
     table = dynamodb.Table(TABLE_NAME)
 
     # --- Get sensor data ---
+    deviceID = event.get('deviceID', 'Prob-01')
     m1 = event.get("m1", 0)
     m2 = event.get("m2", 0)
     m3 = event.get("m3", 0)
     rain = event.get("rain", 0)
     tilt = event.get("tilt", 0)
+    lat = event.get("lat", 0.0)
+    lng = event.get("lng", 0.0)
 
     # --- Calculate average ---
     avg_moisture = Decimal(str((m1 + m2 + m3) / 3))
@@ -35,7 +38,7 @@ def lambda_handler(event, context):
 
     # --- Store data in DynamoDB ---
     table.put_item(Item={
-        'deviceID': 'sensor-01',
+        'deviceID': deviceID,
         'timestamp': current_time,
         'm1': m1,
         'm2': m2,
@@ -43,7 +46,10 @@ def lambda_handler(event, context):
         'avg_moisture': avg_moisture,
         'rain': rain,
         'tilt': tilt,
-        'risk': risk
+        'risk': risk,
+        'lat': Decimal(str(lat)),
+        'lng': Decimal(str(lng))
+
     })
 
     # --- Alert logic (ONLY for HIGH risk) ---

@@ -1,12 +1,6 @@
 import { getRiskColor, getRiskLabel } from '../../../shared/utils/riskUtils';
 
 export default function ProbeDetailsPanel({ probe }) {
-  const m1 = Number(probe?.metrics?.moistureSensors?.m1 ?? probe?.metrics?.m1 ?? probe?.metrics?.moisture ?? 0);
-  const m2 = Number(probe?.metrics?.moistureSensors?.m2 ?? probe?.metrics?.m2 ?? probe?.metrics?.moisture ?? 0);
-  const m3 = Number(probe?.metrics?.moistureSensors?.m3 ?? probe?.metrics?.m3 ?? probe?.metrics?.moisture ?? 0);
-  const avgMoisture = Number(probe?.metrics?.moistureSensors?.avg ?? probe?.metrics?.avg_moisture ?? ((m1 + m2 + m3) / 3));
-  const isTiltRisky = Number(probe?.metrics?.tilt ?? 0) === 1;
-
   if (!probe) {
     return (
       <section className="panel-card panel-card--empty" id="probe-details-panel">
@@ -72,20 +66,6 @@ export default function ProbeDetailsPanel({ probe }) {
               Edit
             </button>
           </div>
-        </div>
-        <div className="detail-item">
-          <span className="detail-item__label">Moisture sensors (M1/M2/M3)</span>
-          <span className="detail-item__value">{m1.toFixed(1)}% / {m2.toFixed(1)}% / {m3.toFixed(1)}%</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-item__label">Avg moisture</span>
-          <span className="detail-item__value">{avgMoisture.toFixed(1)}%</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-item__label">Tilt</span>
-          <span className={`detail-item__value ${isTiltRisky ? 'tilt-risky' : 'tilt-safe'}`}>
-            {isTiltRisky ? 'Risky (Tilt = 1)' : 'Stable (Tilt = 0)'}
-          </span>
         </div>
         <div className="detail-item">
           <span className="detail-item__label">Last updated</span>

@@ -16,18 +16,83 @@ function normalizeRisk(risk) {
   return 'low';
 }
 
-function formatTimestamp(unixSeconds) {
-  const timestampMs = toNumber(unixSeconds) * 1000;
-  if (!timestampMs) {
-    return new Date().toISOString().slice(0, 16).replace('T', ' ');
+function normalizeMode(mode) {
+  const normalized = String(mode ?? '').trim().toLowerCase();
+  return normalized === 'burst' ? 'burst' : 'normal';
+}
+
+function getRainValue(source, fallback = 0) {
+  if (!source || typeof source !== 'object') {
+    return fallback;
   }
+
+  return toNumber(
+    source.rain
+      ?? source.rainfall
+      ?? source.rainfallMm
+      ?? source.rainfall_mm
+      ?? source.totalRainfall,
+    fallback,
+  );
+}
+
+function getVibrationValue(source, fallback = 0) {
+  if (!source || typeof source !== 'object') {
+    return fallback;
+  }
+
+  return toNumber(
+    source.vibration
+      ?? source.vibrationMag
+      ?? source.vibration_mag
+      ?? source.maxVibration
+      ?? source.max_vibration,
+    fallback,
+  );
+}
+
+function formatDateTimeLocal(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hour}:${minute}`;
+}
+
+function formatTimestamp(rawTimestamp) {
+  const timestamp = toNumber(rawTimestamp);
+  if (!timestamp) {
+    return formatDateTimeLocal(new Date());
+  }
+
+  const timestampMs = timestamp > 1e12 ? timestamp : timestamp * 1000;
 
   const date = new Date(timestampMs);
   if (Number.isNaN(date.getTime())) {
-    return new Date().toISOString().slice(0, 16).replace('T', ' ');
+    return formatDateTimeLocal(new Date());
   }
 
-  return date.toISOString().slice(0, 16).replace('T', ' ');
+  return formatDateTimeLocal(date);
+}
+
+function parseLastUpdated(source) {
+  const rawTimestamp = source?.timestamp ?? source?.time ?? source?.recordedAt ?? source?.updatedAt ?? null;
+
+  if (rawTimestamp === null || rawTimestamp === undefined || rawTimestamp === '') {
+    return null;
+  }
+
+  if (typeof rawTimestamp === 'number' || /^\d+(\.\d+)?$/.test(String(rawTimestamp).trim())) {
+    return formatTimestamp(rawTimestamp);
+  }
+
+  const date = new Date(rawTimestamp);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return formatDateTimeLocal(date);
 }
 
 function buildHistory(rows) {
@@ -39,12 +104,13 @@ function buildHistory(rows) {
     const m3 = toNumber(row.m3);
     const avgMoisture = toNumber(row.avg_moisture, (m1 + m2 + m3) / 3);
     const tilt = toNumber(row.tilt);
+    const vibration = getVibrationValue(row, tilt === 1 ? 70 : 15);
 
     return {
       label: `T-${recentRows.length - index - 1}`,
-      rainfall: toNumber(row.rain),
+      rainfall: getRainValue(row),
       moisture: avgMoisture,
-      vibration: tilt === 1 ? 70 : 15,
+      vibration,
       power: Math.max(60, 100 - index * 3),
     };
   });
@@ -74,6 +140,10 @@ export function mapReadingsToProbes(readings) {
       const m3 = toNumber(latest.m3);
       const avgMoisture = toNumber(latest.avg_moisture, (m1 + m2 + m3) / 3);
       const tilt = toNumber(latest.tilt);
+      const vibration = getVibrationValue(latest, tilt === 1 ? 70 : 15);
+      const power = toNumber(latest.power ?? latest.battery ?? latest.batteryLevel, 100);
+      const signalStrength = toNumber(latest.signalStrength ?? latest.signal ?? latest.rssi, 83);
+      const mode = normalizeMode(latest.mode);
 
       return {
         id: deviceId,
@@ -82,7 +152,7 @@ export function mapReadingsToProbes(readings) {
         riskLevel: normalizeRisk(latest.risk),
         lastUpdated: formatTimestamp(latest.timestamp),
         metrics: {
-          rainfall: toNumber(latest.rain),
+          rainfall: getRainValue(latest),
           moisture: avgMoisture,
           moistureSensors: {
             m1,
@@ -90,9 +160,12 @@ export function mapReadingsToProbes(readings) {
             m3,
             avg: avgMoisture,
           },
-          vibration: tilt === 1 ? 70 : 15,
-          power: 100,
+          vibration,
+          power,
+          signalStrength,
+          mode,
           tilt,
+          tiltDetected: tilt === 1,
         },
         history: buildHistory(sortedRows),
       };
@@ -163,7 +236,9 @@ export async function fetchLatestSimple(latestSimpleUrl, deviceID) {
   const payload = await response.json();
   return {
     moisture: toNumber(payload?.moisture),
-    rain: toNumber(payload?.rain),
+    rain: getRainValue(payload),
     tilt: toNumber(payload?.tilt),
+    vibration: getVibrationValue(payload, toNumber(payload?.tilt) === 1 ? 70 : 15),
+    lastUpdated: parseLastUpdated(payload),
   };
 }

@@ -5,8 +5,8 @@
 #include <ArduinoJson.h> 
 
 // WiFi Credentials
-const char* ssid = "iPhone";
-const char* password = "";
+const char* ssid = "SLT-Fiber-E49E";
+const char* password = "0773918058A";
 
 // AWS IoT Details
 const char* awsEndpoint = "a1cvrohkom2hp3-ats.iot.ap-south-1.amazonaws.com";
@@ -17,6 +17,8 @@ const char* thingName = "LandslideProbe01";
 #define MOISTURE1_PIN 32
 #define MOISTURE2_PIN 33
 #define MOISTURE3_PIN 34
+#define MIC_PIN 36
+
 const int dry1 = 3200, wet1 = 2000;
 const int dry2 = 2600, wet2 = 1000;
 const int dry3 = 2600, wet3 = 1000;
@@ -173,18 +175,19 @@ void loop() {
   int m1 = constrain(map(analogRead(MOISTURE1_PIN), wet1, dry1, 100, 0), 0, 100);
   int m2 = constrain(map(analogRead(MOISTURE2_PIN), wet2, dry2, 100, 0), 0, 100);
   int m3 = constrain(map(analogRead(MOISTURE3_PIN), wet3, dry3, 100, 0), 0, 100);
-
+  int micValue = analogRead(MIC_PIN);
   float rainfall = tipCount * mmPerPulse;
   bool tiltDetected = digitalRead(tiltPin);
 
   // Create JSON Payload
   StaticJsonDocument<256> doc;
-  doc["deviceID"] = "sensor-01";
+  doc["deviceID"] = "Prob-05";
   doc["m1"] = m1;
   doc["m2"] = m2;
   doc["m3"] = m3;
   doc["rain"] = rainfall;
   doc["tilt"] = tiltDetected ? 1 : 0;
+  doc["vibration"] = micValue;
   
   if (gps.location.isValid()) {
     doc["lat"] = gps.location.lat();

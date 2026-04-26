@@ -6,11 +6,52 @@ import AlertsPanel from './components/AlertsPanel';
 import AlertHistory from './components/AlertHistory';
 import AnalyticsCharts from './components/AnalyticsCharts';
 import CurrentStatusPanel from './components/CurrentStatusPanel';
+import AddProbeForm from './components/AddProbeForm';
+import BelowMapStatusCards from './components/BelowMapStatusCards';
 import { fetchAllReadings, fetchLatestSimple, mapReadingsToProbes } from './data/landslideApi';
 import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../../shared/utils/riskUtils';
 
 const API_ALL_DATA_URL = import.meta.env.VITE_API_ALL_DATA_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide';
 const API_LATEST_SIMPLE_URL = import.meta.env.VITE_API_LATEST_SIMPLE_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide/latest/simple';
+
+function formatNowLocal() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hour = String(now.getHours()).padStart(2, '0');
+  const minute = String(now.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hour}:${minute}`;
+}
+
+function createProbeRecord({ id, latitude, longitude }) {
+  const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
+  return {
+    id,
+    latitude,
+    longitude,
+    riskLevel: 'low',
+    lastUpdated: now,
+    metrics: {
+      rainfall: 0,
+      moisture: 0,
+      moistureSensors: {
+        m1: 0,
+        m2: 0,
+        m3: 0,
+        avg: 0,
+      },
+      vibration: 0,
+      power: 100,
+      tilt: 0,
+      tiltDetected: false,
+      mode: 'normal',
+      signalStrength: 100,
+    },
+    history: [],
+  };
+}
 
 export default function AdminDashboard() {
   const [probes, setProbes] = useState([]);
@@ -98,9 +139,21 @@ export default function AdminDashboard() {
         const m2 = Number(probe.metrics?.moistureSensors?.m2 ?? latest.moisture);
         const m3 = Number(probe.metrics?.moistureSensors?.m3 ?? latest.moisture);
         const avg = Number(((latest.moisture + m2 + m3) / 3).toFixed(1));
+        const vibration = Number.isFinite(Number(latest.vibration))
+          ? Number(latest.vibration)
+          : (latest.tilt === 1 ? 70 : 15);
+        const nextHistory = [...(Array.isArray(probe.history) ? probe.history : []), {
+          label: 'Now',
+          rainfall: latest.rain,
+          moisture: avg,
+          vibration,
+          power: Number(probe.metrics?.power ?? 100),
+        }].slice(-48);
 
         return {
           ...probe,
+          lastUpdated: latest.lastUpdated ?? formatNowLocal(),
+          history: nextHistory,
           metrics: {
             ...probe.metrics,
             rainfall: latest.rain,
@@ -112,7 +165,7 @@ export default function AdminDashboard() {
               avg,
             },
             tilt: latest.tilt,
-            vibration: latest.tilt === 1 ? 70 : 15,
+            vibration,
           },
         };
       }));
@@ -242,12 +295,13 @@ export default function AdminDashboard() {
       </section>
 
       <BelowMapStatusCards
-        moistureSensors={selectedProbe?.metrics?.moistureSensors ?? [0, 0, 0]}
-        rainfall={selectedProbe?.metrics?.rainfall ?? 0}
-        tiltDetected={selectedProbe?.metrics?.tiltDetected ?? false}
-        powerLevel={selectedProbe?.metrics?.power ?? 0}
-        mode={selectedProbe?.metrics?.mode ?? 'normal'}
-        signalStrength={selectedProbe?.metrics?.signalStrength ?? 0}
+        moistureSensors={selectedProbe?.metrics?.moistureSensors}
+        rainfall={selectedProbe?.metrics?.rainfall}
+        tiltDetected={selectedProbe?.metrics?.tiltDetected ?? (selectedProbe?.metrics?.tilt === 1)}
+        powerLevel={selectedProbe?.metrics?.power}
+        mode={selectedProbe?.metrics?.mode}
+        signalStrength={selectedProbe?.metrics?.signalStrength}
+        vibration={selectedProbe?.metrics?.vibration}
       />
 
       <section className="analytics-section">
