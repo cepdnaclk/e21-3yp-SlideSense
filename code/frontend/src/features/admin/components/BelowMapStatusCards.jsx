@@ -108,6 +108,7 @@ export default function BelowMapStatusCards({ moistureSensors, rainfall, tiltDet
         <article className="metric-card below-map-card health-card">
           <div className="health-card__head">
             <span className="health-card__title">System Health</span>
+            <span className="health-card__subtitle">Power and mode</span>
           </div>
           <div className="health-card__rows">
             <div className="health-card__row">

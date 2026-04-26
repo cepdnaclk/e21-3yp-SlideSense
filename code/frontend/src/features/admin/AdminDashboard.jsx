@@ -241,8 +241,10 @@ export default function AdminDashboard() {
   return (
     <main className="admin-dashboard">
       <header className="dashboard-header">
-        <div>
-          <span className="section-label">Slide Sense</span>
+        <div className="dashboard-brand">
+          <img src="/logo.png" alt="Slide Sense logo" className="dashboard-brand__logo" />
+        </div>
+        <div className="dashboard-header__title">
           <h1>Admin Dashboard</h1>
           {isLoadingLiveData && <p>Loading live sensor data from backend...</p>}
           {!isLoadingLiveData && !loadError && <p>Live backend connected.</p>}
