@@ -804,12 +804,27 @@ button {
   gap: 12px;
 }
 
+.moisture-sensor-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .detail-item,
 .metric-card,
 .history-row {
   border: 1px solid rgba(223, 232, 227, 0.95);
   border-radius: var(--radius-sm);
   background: #ffffff;
+}
+
+.tilt-risky {
+  color: var(--risk-high);
+}
+
+.tilt-safe {
+  color: var(--risk-low);
 }
 
 .detail-item {
@@ -1254,6 +1269,7 @@ button {
   .support-panels,
   .below-map-grid,
   .details-grid,
+  .moisture-sensor-grid,
   .add-probe-form__row,
   .map-card__header,
   .search-bar__controls {
