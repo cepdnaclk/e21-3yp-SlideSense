@@ -14,6 +14,7 @@ def lambda_handler(event, context):
     table = dynamodb.Table(TABLE_NAME)
 
     # --- Get sensor data ---
+    deviceID = event.get('deviceID', 'Prob-01')
     m1 = event.get("m1", 0)
     m2 = event.get("m2", 0)
     m3 = event.get("m3", 0)
@@ -37,7 +38,7 @@ def lambda_handler(event, context):
 
     # --- Store data in DynamoDB ---
     table.put_item(Item={
-        'deviceID': 'sensor-01',
+        'deviceID': deviceID,
         'timestamp': current_time,
         'm1': m1,
         'm2': m2,

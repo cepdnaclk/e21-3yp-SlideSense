@@ -5,8 +5,8 @@
 #include <ArduinoJson.h> 
 
 // WiFi Credentials
-const char* ssid = "SLT-Fiber-E49E";
-const char* password = "0773918058A";
+const char* ssid = "iPhone";
+const char* password = "";
 
 // AWS IoT Details
 const char* awsEndpoint = "a1cvrohkom2hp3-ats.iot.ap-south-1.amazonaws.com";
@@ -173,11 +173,13 @@ void loop() {
   int m1 = constrain(map(analogRead(MOISTURE1_PIN), wet1, dry1, 100, 0), 0, 100);
   int m2 = constrain(map(analogRead(MOISTURE2_PIN), wet2, dry2, 100, 0), 0, 100);
   int m3 = constrain(map(analogRead(MOISTURE3_PIN), wet3, dry3, 100, 0), 0, 100);
+
   float rainfall = tipCount * mmPerPulse;
   bool tiltDetected = digitalRead(tiltPin);
 
   // Create JSON Payload
   StaticJsonDocument<256> doc;
+  doc["deviceID"] = "sensor-01";
   doc["m1"] = m1;
   doc["m2"] = m2;
   doc["m3"] = m3;

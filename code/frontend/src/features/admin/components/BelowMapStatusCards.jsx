@@ -9,6 +9,7 @@ const DUMMY_FALLBACK = {
   powerLevel: 91,
   mode: 'normal',
   signalStrength: 83,
+  vibration: 15,
 };
 
 function getMoistureValues(moistureSensors) {
@@ -36,7 +37,7 @@ function getMoistureValues(moistureSensors) {
   ];
 }
 
-export default function BelowMapStatusCards({ moistureSensors, rainfall, tiltDetected, powerLevel, mode, signalStrength }) {
+export default function BelowMapStatusCards({ moistureSensors, rainfall, tiltDetected, powerLevel, mode, signalStrength, vibration }) {
   const [sensorOne, sensorTwo, sensorThree] = getMoistureValues(moistureSensors);
   const averageMoisture = Math.round((sensorOne + sensorTwo + sensorThree) / 3);
   const parsedRainfall = Number(rainfall);
@@ -44,6 +45,7 @@ export default function BelowMapStatusCards({ moistureSensors, rainfall, tiltDet
   const rainfallLabel = Number.isInteger(rainfallValue) ? String(rainfallValue) : rainfallValue.toFixed(1);
   const powerValue = clampPercent(powerLevel ?? DUMMY_FALLBACK.powerLevel);
   const signalValue = clampPercent(signalStrength ?? DUMMY_FALLBACK.signalStrength);
+  const vibrationValue = Number.isFinite(Number(vibration)) ? Number(vibration) : DUMMY_FALLBACK.vibration;
   const isTiltDetected = tiltDetected ?? DUMMY_FALLBACK.tiltDetected;
   const normalizedMode = (mode ?? DUMMY_FALLBACK.mode) === 'burst' ? 'Burst Mode' : 'Normal Mode';
 
@@ -121,6 +123,10 @@ export default function BelowMapStatusCards({ moistureSensors, rainfall, tiltDet
             <div className="health-card__row">
               <span className="health-card__row-label">Signal</span>
               <span className="health-card__row-value">{Math.round(signalValue)}%</span>
+            </div>
+            <div className="health-card__row">
+              <span className="health-card__row-label">Vibration</span>
+              <span className="health-card__row-value">{Math.round(vibrationValue)} Hz</span>
             </div>
           </div>
         </article>

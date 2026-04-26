@@ -14,6 +14,16 @@ import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../../sha
 const API_ALL_DATA_URL = import.meta.env.VITE_API_ALL_DATA_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide';
 const API_LATEST_SIMPLE_URL = import.meta.env.VITE_API_LATEST_SIMPLE_URL ?? 'http://landslideproject-env.eba-x9dyqa5g.ap-south-1.elasticbeanstalk.com/api/landslide/latest/simple';
 
+function formatNowLocal() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hour = String(now.getHours()).padStart(2, '0');
+  const minute = String(now.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hour}:${minute}`;
+}
+
 function createProbeRecord({ id, latitude, longitude }) {
   const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
@@ -129,17 +139,20 @@ export default function AdminDashboard() {
         const m2 = Number(probe.metrics?.moistureSensors?.m2 ?? latest.moisture);
         const m3 = Number(probe.metrics?.moistureSensors?.m3 ?? latest.moisture);
         const avg = Number(((latest.moisture + m2 + m3) / 3).toFixed(1));
+        const vibration = Number.isFinite(Number(latest.vibration))
+          ? Number(latest.vibration)
+          : (latest.tilt === 1 ? 70 : 15);
         const nextHistory = [...(Array.isArray(probe.history) ? probe.history : []), {
           label: 'Now',
           rainfall: latest.rain,
           moisture: avg,
-          vibration: latest.tilt === 1 ? 70 : 15,
+          vibration,
           power: Number(probe.metrics?.power ?? 100),
         }].slice(-48);
 
         return {
           ...probe,
-          lastUpdated: latest.lastUpdated ?? new Date().toISOString().slice(0, 16).replace('T', ' '),
+          lastUpdated: latest.lastUpdated ?? formatNowLocal(),
           history: nextHistory,
           metrics: {
             ...probe.metrics,
@@ -152,7 +165,7 @@ export default function AdminDashboard() {
               avg,
             },
             tilt: latest.tilt,
-            vibration: latest.tilt === 1 ? 70 : 15,
+            vibration,
           },
         };
       }));
@@ -286,6 +299,7 @@ export default function AdminDashboard() {
         powerLevel={selectedProbe?.metrics?.power}
         mode={selectedProbe?.metrics?.mode}
         signalStrength={selectedProbe?.metrics?.signalStrength}
+        vibration={selectedProbe?.metrics?.vibration}
       />
 
       <section className="analytics-section">
