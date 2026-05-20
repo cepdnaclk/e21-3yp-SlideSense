@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record CreateProbeRequest(
+    @NotBlank @Size(max = 64) String probeId,
     @NotBlank @Size(max = 64) String hwSerial,
     @Size(max = 20) String firmwareVer,
     @DecimalMin("-90.0") @DecimalMax("90.0") Double latitude,

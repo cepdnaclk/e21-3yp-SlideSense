@@ -21,13 +21,19 @@ public class ProbeAdminService {
 
     @Transactional
     public ProbeResponse createProbe(CreateProbeRequest request) {
+        String normalizedProbeId = request.probeId().trim();
         String normalizedSerial = request.hwSerial().trim();
+
+        if (probeRepository.findByProbeId(normalizedProbeId).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Probe ID already exists");
+        }
 
         if (probeRepository.findByHwSerial(normalizedSerial).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Probe serial already exists");
         }
 
         Probe probe = new Probe();
+        probe.setProbeId(normalizedProbeId);
         probe.setHwSerial(normalizedSerial);
         probe.setFirmwareVer(request.firmwareVer());
         probe.setLatitude(request.latitude());
@@ -39,7 +45,7 @@ public class ProbeAdminService {
 
     private ProbeResponse toResponse(Probe probe) {
         return new ProbeResponse(
-            probe.getId(),
+            probe.getProbeId(),
             probe.getHwSerial(),
             probe.getFirmwareVer(),
             probe.getLatitude(),

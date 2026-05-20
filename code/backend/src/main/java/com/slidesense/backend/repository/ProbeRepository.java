@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProbeRepository extends JpaRepository<Probe, UUID> {
 
+    Optional<Probe> findByProbeId(String probeId);
+
     Optional<Probe> findByHwSerial(String hwSerial);
 }

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.UUID;
 
 public record RegisterRequest(
     @Email @NotBlank String email,
@@ -14,7 +13,7 @@ public record RegisterRequest(
     String address,
     @NotBlank @Size(min = 8, max = 128) String password,
     @NotNull RequestedRole requestedRole,
-    UUID probeId,
+    @Size(max = 64) String probeId,
     @NotBlank String reason
 ) {
 }

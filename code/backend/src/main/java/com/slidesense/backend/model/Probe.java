@@ -21,6 +21,9 @@ public class Probe {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "probe_id", nullable = false, unique = true, length = 64)
+    private String probeId;
+
     @Column(name = "hw_serial", nullable = false, unique = true, length = 64)
     private String hwSerial;
 
@@ -48,6 +51,14 @@ public class Probe {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getProbeId() {
+        return probeId;
+    }
+
+    public void setProbeId(String probeId) {
+        this.probeId = probeId;
     }
 
     public String getHwSerial() {

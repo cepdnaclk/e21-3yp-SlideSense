@@ -2,10 +2,9 @@ package com.slidesense.backend.dto.probe;
 
 import com.slidesense.backend.model.enums.ProbeStatus;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 public record ProbeResponse(
-    UUID id,
+    String probeId,
     String hwSerial,
     String firmwareVer,
     Double latitude,

@@ -9,7 +9,9 @@ import com.slidesense.backend.repository.ProbeRepository;
 import com.slidesense.backend.repository.RainfallReadingRepository;
 import com.slidesense.backend.repository.SensorReadingRepository;
 import java.io.IOException;
-import java.util.UUID;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -53,8 +55,9 @@ public class SqsIngestionService {
 
     @Transactional
     public void processMessage(SqsSensorReadingMessage message) {
-        if (message.recordedAt() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "recordedAt is required");
+        OffsetDateTime recordedAt = resolveRecordedAt(message.recordedAt(), message.deviceTimeMs());
+        if (recordedAt == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "recordedAt or deviceTimeMs is required");
         }
 
         Probe probe = resolveProbe(message.probeId(), message.hwSerial());
@@ -68,7 +71,7 @@ public class SqsIngestionService {
         if (hasSensorData) {
             SensorReading sensorReading = new SensorReading();
             sensorReading.setProbe(probe);
-            sensorReading.setRecordedAt(message.recordedAt());
+            sensorReading.setRecordedAt(recordedAt);
             sensorReading.setMoisture(message.moisture());
             sensorReading.setTiltAngle(message.tiltAngle());
             sensorReading.setVibrationMag(message.vibrationMag());
@@ -79,7 +82,7 @@ public class SqsIngestionService {
         if (message.rainfallMm() != null) {
             RainfallReading rainfallReading = new RainfallReading();
             rainfallReading.setProbe(probe);
-            rainfallReading.setRecordedAt(message.recordedAt());
+            rainfallReading.setRecordedAt(recordedAt);
             rainfallReading.setRainfallMm(message.rainfallMm());
             rainfallReadingRepository.save(rainfallReading);
         }
@@ -88,19 +91,31 @@ public class SqsIngestionService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payload has no reading fields");
         }
 
-        log.debug("Ingested SQS message for probe {} at {}", probe.getId(), message.recordedAt());
+        log.debug("Ingested SQS message for probe {} at {}", probe.getProbeId(), recordedAt);
     }
 
-    private Probe resolveProbe(UUID probeId, String hwSerial) {
-        if (probeId != null) {
+    private OffsetDateTime resolveRecordedAt(OffsetDateTime recordedAt, Long deviceTimeMs) {
+        if (recordedAt != null) {
+            return recordedAt;
+        }
+        if (deviceTimeMs == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(deviceTimeMs), ZoneOffset.UTC);
+    }
+
+    private Probe resolveProbe(String probeId, String hwSerial) {
+        String normalizedProbeId = probeId != null ? probeId.trim() : null;
+        if (normalizedProbeId != null && !normalizedProbeId.isBlank()) {
             return probeRepository
-                .findById(probeId)
+            .findByProbeId(normalizedProbeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Probe not found"));
         }
 
-        if (hwSerial != null && !hwSerial.isBlank()) {
+        String normalizedSerial = hwSerial != null ? hwSerial.trim() : null;
+        if (normalizedSerial != null && !normalizedSerial.isBlank()) {
             return probeRepository
-                .findByHwSerial(hwSerial)
+            .findByHwSerial(normalizedSerial)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Probe not found"));
         }
 

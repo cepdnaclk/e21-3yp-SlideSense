@@ -125,7 +125,7 @@ public class RegistrationAdminService {
             request.getUser().getId(),
             request.getUser().getEmail(),
             request.getRequestedRole(),
-            request.getProbe() != null ? request.getProbe().getId() : null,
+            request.getProbe() != null ? request.getProbe().getProbeId() : null,
             request.getReason(),
             request.getVerificationNotes(),
             request.getStatus(),

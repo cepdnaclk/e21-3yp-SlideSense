@@ -7,31 +7,53 @@
 ## 1. High-Level Overview
 
 ```
-┌──────────────────────────────┐   MQTT    ┌──────────────────┐
-│  Raspberry Pi Node           ├─────────►│  AWS IoT Core     │
-│  (Sensors + Wi-Fi AP + MQTT) │          │  (Message Broker) │
-└──────────┬───────────────────┘          └────────┬───────────┘
-           │ Cloud connectivity                   │
-           ▼                                       ▼
-   ┌──────────────┐                       ┌──────────────────┐
-   │  Mobile App  │◄─────────────────────►│  Backend (FastAPI)│
-   │  (Flutter)   │        HTTPS          │  on AWS EC2       │
-   └──────────────┘                       └────────┬─────────┘
-                                                   │
-                              ┌─────────────────────┼──────────────┐
-                              ▼                     ▼              ▼
-                     ┌─────────────────┐  ┌────────────────┐  ┌──────────────┐
-                     │ PostgreSQL +    │  │ Admin Web      │  │ Research API │
-                     │ TimescaleDB     │  │ Dashboard      │  │ (Public)     │
-                     │ (AWS RDS)       │  │ (React)        │  │ /api/v1/pub  │
-                     └─────────────────┘  └────────────────┘  └──────────────┘
+┌──────────────────────────────┐   MQTT    ┌──────────────────┐   IoT Rules  ┌────────────────┐
+│  ESP32 / Raspberry Pi Node   ├─────────►│  AWS IoT Core     ├─────────────►│  AWS SQS Queue │
+│  (Sensors + Wi-Fi + MQTT)    │          │  (Message Broker) │             │  (Buffer)      │
+└──────────────────────────────┘          └──────────────────┘             └────────┬───────┘
+                                                                                      │
+                                                     ┌────────────────────────────────┘
+                                                     │
+                                                     ▼
+                                          ┌──────────────────────┐
+                                          │  SQS Consumer Worker │
+                                          │  (Validation &       │
+                                          │   Risk Analysis)     │
+                                          └──────────┬───────────┘
+                                                     │
+                                    ┌────────────────┼─────────────────┐
+                                    ▼                ▼                 ▼
+                           ┌─────────────────┐ ┌──────────┐ ┌──────────────────┐
+                           │   PostgreSQL +  │ │Notification│ Backend (FastAPI)
+                           │   TimescaleDB   │ │  Service   │ on AWS EC2
+                           │   (AWS RDS)     │ │(FCM/APNS)  │
+                           └─────────────────┘ └──────────┘ └──────────┬───────┘
+                                                                        │
+                               ┌────────────────┬──────────────────────┤
+                                ▼                ▼                      ▼
+                       ┌──────────────────┐ ┌────────────────┐ ┌──────────────────┐
+                       │  Mobile App      │ │  Admin Web     │ │  Research API    │
+                       │  (Flutter)       │ │  Dashboard     │ │  /api/v1/public  │
+                       │  HTTPS/REST      │ │  (React+Vite)  │ │  (API key auth)  │
+                       └──────────────────┘ └────────────────┘ └──────────────────┘
 ```
 
-**Three layers:** Hardware (Raspberry Pi nodes with sensors) → Cloud Backend → Interface (Mobile + Admin + Research API).
+**Telemetry flow:** ESP32/Raspberry Pi → MQTT → AWS IoT Core → IoT Rules Engine (routes to SQS) → SQS Queue → Spring Boot Backend (SQS Consumer) → Validation/Risk Analysis → DB Write + Notifications.
 
-Each Raspberry Pi node reads sensors directly (GPIO / I2C / SPI) and publishes telemetry to the cloud via MQTT.
+**API flow (external clients):** Mobile App, Admin Dashboard, Research API → Spring Boot Backend on EC2 → PostgreSQL + TimescaleDB.
 
 ---
+
+ESP32 Payload structure
+{
+  "deviceTimeMs": 1716091208000, 
+  "moisture": 45.2,
+  "tiltAngle": 2.1,
+  "vibrationMag": 0.05,
+  "samplingMode": "ACTIVE",
+  "rainfallMm": 12.5,
+  "hwSerial": "ESP32-A1B2"
+}
 
 ## 2. Database Structure
 
@@ -189,65 +211,84 @@ Implemented via TimescaleDB `add_retention_policy()`.
 ### 3.1 Component Map
 
 ```
-                    ┌─────────────────────────────────────────┐
-                    │           AWS EC2 Instance               │
-                    │                                         │
-  MQTT (TLS)        │  ┌────────────┐    ┌────────────────┐  │
-  ──────────────────►  │ MQTT Ingestion│──►│ Validation &   │  │
-  (AWS IoT Core)    │  │ Worker      │   │ Normalisation  │  │
-                    │  └────────────┘    └───────┬────────┘  │
-                    │                            │            │
-                    │                   ┌────────▼────────┐  │
-                    │                   │  Risk Analysis   │  │
-                    │                   │  Engine          │  │
-                    │                   └────────┬────────┘  │
-                    │                            │            │
-                    │         ┌──────────────────┼──────┐    │
-                    │         ▼                  ▼      ▼    │
-                    │  ┌────────────┐  ┌────────┐ ┌───────┐ │
-                    │  │ Notification│  │ DB     │ │ Cache │ │
-                    │  │ Service    │  │ Writer │ │ Redis │ │
-                    │  │ (FCM/APNS) │  │        │ │       │ │
-                    │  └────────────┘  └────────┘ └───────┘ │
-                    │                                        │
-  HTTPS (TLS 1.3)  │  ┌────────────────────────────────┐    │
-  ──────────────────►  │       FastAPI Application       │    │
-  (Mobile/Web/API)  │  │  /auth  /data  /alerts  /admin  │    │
-                    │  │  /api/v1/public (Research)      │    │
-                    │  └────────────────────────────────┘    │
-                    └─────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                         AWS Environment                                  │
+│                                                                          │
+│  ┌──────────────────┐                                                   │
+│  │  AWS IoT Core    │  IoT Rules Engine                                 │
+│  │  (MQTT Broker)   ├──────────────────────────┐                       │
+│  └──────────────────┘                          │                       │
+│                                                  ▼                       │
+│                                        ┌─────────────────┐              │
+│                                        │   AWS SQS       │              │
+│                                        │   Queue         │              │
+│                                        └────────┬────────┘              │
+│                                                  │                       │
+│  ┌────────────────────────────────────────────────────────────────┐   │
+│  │            Spring Boot Application (AWS EC2)                 │   │
+│  │                                                               │   │
+│  │  ┌──────────────────┐        ┌────────────────────────┐     │   │
+│  │  │ SQS Consumer     │        │  Validation &          │     │   │
+│  │  │ (Spring AWS SDK) ├───────►│  Normalisation         │     │   │
+│  │  │ (Long polling)   │        │  + Risk Analysis       │     │   │
+│  │  └──────────────────┘        └──────────┬─────────────┘     │   │
+│  │                                          │                   │   │
+│  │           ┌───────────────────────────────┼──────────┐       │   │
+│  │           ▼                               ▼          ▼       │   │
+│  │     ┌──────────┐              ┌────────┐ ┌──────────────┐  │   │
+│  │     │Notification Service    │ DB     │ │ Cache (Redis)│  │   │
+│  │     │(FCM/APNS + SMS/SNS)    │ Writer │ │              │  │   │
+│  │     └──────────┘              └────────┘ └──────────────┘  │   │
+│  │                                                               │   │
+│  │  ┌────────────────────────────────────────────────────┐     │   │
+│  │  │  Spring Boot REST Controllers (External APIs)      │     │   │
+│  │  │  @RestController /auth  /data  /alerts  /admin    │     │   │
+│  │  │  /api/v1/public (Research API)                     │     │   │
+│  │  └────────────────────────────────────────────────────┘     │   │
+│  │                                                               │   │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│  ┌──────────────────────────┐                  ┌──────────────────────┐ │
+│  │  PostgreSQL +            │                  │ ElastiCache Redis    │ │
+│  │  TimescaleDB (RDS)       │                  │                      │ │
+│  └──────────────────────────┘                  └──────────────────────┘ │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.2 Core Services (Python / FastAPI)
+### 3.2 Core Services (Spring Boot / Java)
 
 | Service | Responsibility |
 |---|---|
-| **MQTT Ingestion Worker** | Subscribes to `probes/{probe_id}/telemetry`. Validates incoming JSON payloads (schema + HMAC signature). |
-| **Validation & Normalisation** | Rejects out-of-range values, converts units, tags `sampling_mode`. |
-| **Risk Analysis Engine** | Applies 3-level alert logic. If vibration + moisture exceed thresholds → level 3 alert. Runs as an async task. |
-| **Notification Service** | Pushes FCM (Android) / APNS (iOS) notifications. Escalates level 3 to SMS via AWS SNS. |
-| **DB Writer** | Batch-inserts readings into TimescaleDB. Writes alerts to the `alerts` table. |
-| **Redis Cache** | Stores latest reading per probe for sub-second API responses. Caches JWT blacklist for logout. |
+| **SQS Consumer Service** | Implements `@Service` with `@SqsListener` (Spring Cloud AWS). Long-polls SQS for telemetry messages. Uses AWS SDK to receive, deserialize, and validate JSON payloads (schema + HMAC signature). Deletes message only after successful processing. |
+| **Validation & Normalisation** | Rejects out-of-range values, converts units, tags `sampling_mode`. Implemented as utility functions. |
+| **Risk Analysis Engine** | Applies 3-level alert logic via business logic layer. If vibration + moisture exceed thresholds → level 3 alert. Runs as an async/threaded task. |
+| **Notification Service** | Pushes FCM (Android) / APNS (iOS) notifications via Firebase Admin SDK. Escalates level 3 to SMS via AWS SNS. |
+| **DB Writer** | Batch-inserts readings into TimescaleDB using JPA/Hibernate repositories. Writes alerts to the `alerts` table. |
+| **Redis Cache** | Stores latest reading per probe using Spring Data Redis. Caches JWT blacklist for logout. |
 
-### 3.3 API Route Groups
+### 3.3 API Route Groups (Spring Boot Controllers)
 
 ```
-/auth
+@RestController
+@RequestMapping("/auth")
     POST   /register          — sign up as pending user (resident/researcher, requires admin verification)
     POST   /login             — returns JWT access + refresh tokens after approval
     POST   /refresh           — rotate access token
     POST   /logout            — blacklists refresh token
 
-/data
+@RestController
+@RequestMapping("/data")
     GET    /probes/{id}/live  — latest cached reading (Redis; residents must be granted, researchers can query all)
     GET    /probes/{id}/history?range=7d  — time-series query (residents: granted probes only, researchers: all)
     GET    /dashboard         — aggregated stats for authorized probes
 
-/alerts
+@RestController
+@RequestMapping("/alerts")
     GET    /alerts            — paginated alert history
     POST   /alerts/{id}/ack  — admin acknowledges an alert
 
-/admin  (role: admin)
+@RestController
+@RequestMapping("/admin")  (role: admin)
     GET    /probes            — all probe statuses
     PUT    /probes/{id}/config — update thresholds / sampling mode
     GET    /users             — user management
@@ -255,13 +296,15 @@ Implemented via TimescaleDB `add_retention_policy()`.
     POST   /registration-requests/{id}/approve — approve requested role + access scope
     POST   /registration-requests/{id}/reject  — reject registration request
 
-/api/v1/public  (API key auth, read-only)
+@RestController
+@RequestMapping("/api/v1/public")  (API key auth, read-only)
     GET    /rainfall-history?region=&from=&to=
     GET    /soil-saturation?region=&from=&to=
 ```
 
 ### 3.4 Device Communication Protocol
 
+#### Device → Cloud (MQTT)
 - **Transport:** MQTT over TLS (port 8883) via AWS IoT Core.
 - **Topic schema:** `probes/{probe_id}/telemetry` (publish), `probes/{probe_id}/cmd` (subscribe for config updates).
 - **Payload (JSON):**
@@ -271,15 +314,28 @@ Implemented via TimescaleDB `add_retention_policy()`.
   "probe_id": "uuid",
   "ts": "2026-03-12T08:30:00Z",
   "moisture": 72.5,
-    "tilt_angle": 0.3,
+  "tilt_angle": 0.3,
   "vibration": 0.04,
-    "rainfall_mm": 2.1,
+  "rainfall_mm": 2.1,
   "mode": "normal",
   "hmac": "sha256-signature"
 }
 ```
 
 `rainfall_mm` is only included by probes with a rainfall gauge installed; other probes publish sensor telemetry without it.
+
+#### IoT Core → SQS (AWS Rules Engine)
+- **Routing:** AWS IoT Core Rules Engine inspects incoming MQTT messages on `probes/+/telemetry` and republishes to SQS queue.
+- **Queue URL:** `https://sqs.{region}.amazonaws.com/{account}/slidesense-telemetry`
+- **Message format:** MQTT payload is wrapped in SQS message with attributes (probe_id, timestamp extracted for indexing).
+- **Retention:** SQS messages expire after 14 days (standard queue); consumer must process within this window.
+
+#### SQS → Backend Consumer
+- **Consumer:** Runs as a long-running process on EC2 (or Fargate task).
+- **Polling:** `receive_message(MaxNumberOfMessages=10, WaitTimeSeconds=20)` — batch pull with long polling.
+- **Processing:** Validate, normalize, run risk analysis, write to DB, send notifications.
+- **Visibility timeout:** 5 minutes — if consumer crashes before `delete_message()`, message returns to queue.
+- **Dead letter queue (DLQ):** Messages that fail after 3 retries go to DLQ for manual inspection.
 
 ### 3.5 Sampling Mode Switching
 
@@ -433,15 +489,20 @@ Presentation (UI)
 ```
 GitHub Actions CI/CD
     ├── Lint + Test + Security Scan
-    ├── Build Docker image → push to ECR
-    └── Deploy to EC2 (blue/green via CodeDeploy)
+    ├── Build Maven JAR → push to ECR (Docker image)
+    └── Deploy services:
+        └── Spring Boot app to EC2 (blue/green via CodeDeploy)
+           - Runs SQS Consumer (via @SqsListener)
+           - Serves REST API (@RestController endpoints)
 
 Infrastructure (Terraform)
     ├── VPC + subnets (public/private)
-    ├── EC2 (FastAPI) in private subnet behind ALB
+    ├── AWS IoT Core (device registry + rules engine → SQS routing)
+    ├── AWS SQS Queue (telemetry buffer)
+    ├── EC2 (Spring Boot) in private subnet behind ALB
+    │   └── Embedded SQS consumer + REST API server
     ├── RDS PostgreSQL (TimescaleDB) in private subnet
     ├── ElastiCache Redis
-    ├── AWS IoT Core (device registry + rules)
     └── S3 (firmware OTA binaries)
 ```
 
@@ -451,15 +512,18 @@ Infrastructure (Terraform)
 
 | Component | Technology |
 |---|---|
-| Node controller | Raspberry Pi (sensors connected directly via GPIO / I2C / SPI) |
+| Node controller | ESP32 / Raspberry Pi (sensors connected via GPIO / I2C / SPI) |
 | Node-to-Cloud comms | MQTT over TLS (Wi-Fi / Ethernet) |
-| Hub-to-Cloud protocol | MQTT over TLS (AWS IoT Core) |
-| Backend language | Python 3.12 |
-| API framework | FastAPI |
+| Message Broker | AWS IoT Core (MQTT) |
+| Queue | AWS SQS (telemetry buffer) |
+| Backend language | Java 17+ |
+| API framework | Spring Boot 3.x |
+| Queue consumer | Spring Cloud AWS (SQS) |
 | Database | PostgreSQL 16 + TimescaleDB |
-| Cache | Redis |
+| Cache | Redis (Spring Data Redis) |
+| ORM | Spring Data JPA / Hibernate |
 | Mobile app | Flutter (Android + iOS) |
 | Admin dashboard | React + Vite |
-| Cloud platform | AWS (EC2, RDS, IoT Core, SNS, S3) |
+| Cloud platform | AWS (EC2, RDS, IoT Core, SNS, SQS, S3) |
 | IaC | Terraform |
 | CI/CD | GitHub Actions |
