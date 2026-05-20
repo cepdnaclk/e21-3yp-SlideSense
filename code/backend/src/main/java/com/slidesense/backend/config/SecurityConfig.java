@@ -3,6 +3,9 @@ package com.slidesense.backend.config;
 import com.slidesense.backend.security.ApiKeyAuthenticationFilter;
 import com.slidesense.backend.security.CustomUserDetailsService;
 import com.slidesense.backend.security.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+
     @Bean
     public SecurityFilterChain securityFilterChain(
         HttpSecurity http,
@@ -32,6 +37,30 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)
+            .exceptionHandling(exception ->
+                exception
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        log.warn(
+                            "401 Unauthorized for {} {}. Reason: {}",
+                            request.getMethod(),
+                            request.getRequestURI(),
+                            authException.getMessage()
+                        );
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    })
+                    .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        String principal =
+                            request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonymous";
+                        log.warn(
+                            "403 Forbidden for {} {}. Principal: {}. Reason: {}",
+                            request.getMethod(),
+                            request.getRequestURI(),
+                            principal,
+                            accessDeniedException.getMessage()
+                        );
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                    })
+            )
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(

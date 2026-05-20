@@ -61,11 +61,13 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already registered");
         }
 
-        if (request.requestedRole() == RequestedRole.RESIDENT && request.probeId() == null) {
+        String normalizedProbeId = request.probeId() != null ? request.probeId().trim() : null;
+
+        if (request.requestedRole() == RequestedRole.RESIDENT && (normalizedProbeId == null || normalizedProbeId.isBlank())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "probeId is required for resident requests");
         }
 
-        if (request.requestedRole() == RequestedRole.RESEARCHER && request.probeId() != null) {
+        if (request.requestedRole() == RequestedRole.RESEARCHER && normalizedProbeId != null && !normalizedProbeId.isBlank()) {
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST,
                 "probeId must not be provided for researcher requests"
@@ -90,7 +92,7 @@ public class AuthService {
 
         if (request.requestedRole() == RequestedRole.RESIDENT) {
             Probe probe = probeRepository
-                .findById(request.probeId())
+                .findByProbeId(normalizedProbeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Probe not found"));
             registrationRequest.setProbe(probe);
         }

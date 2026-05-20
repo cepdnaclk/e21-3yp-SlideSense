@@ -46,6 +46,14 @@ Defaults in `src/main/resources/application.properties` point to local Timescale
 - `SPRING_DATASOURCE_PASSWORD`
 - `SERVER_PORT`
 
+For a ready-to-edit template, copy `.env.example` to `.env` and adjust values for your machine.
+
+Notes:
+
+- `application.properties` is not a shell env file.
+- It is the Spring Boot config file, and it can read environment variables using syntax like `${SPRING_DATASOURCE_URL:defaultValue}`.
+- Use `.env` for local exported variables or editor tooling, and keep `.env.example` in git as the template.
+
 ## 4) Verify health
 
 Open:

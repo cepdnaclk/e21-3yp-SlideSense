@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +32,7 @@ public class PublicApiController {
     @GetMapping("/rainfall-history")
     @Operation(summary = "Get rainfall aggregate history for a probe")
     public ResponseEntity<List<RainfallPointResponse>> rainfallHistory(
-        @RequestParam UUID probeId,
+        @RequestParam String probeId,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime from,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime to
     ) {
@@ -43,7 +42,7 @@ public class PublicApiController {
     @GetMapping("/soil-saturation")
     @Operation(summary = "Get soil saturation aggregates for a probe")
     public ResponseEntity<List<SoilSaturationPointResponse>> soilSaturation(
-        @RequestParam UUID probeId,
+        @RequestParam String probeId,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime from,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime to
     ) {

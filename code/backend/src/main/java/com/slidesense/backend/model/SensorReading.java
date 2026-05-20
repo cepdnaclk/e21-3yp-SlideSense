@@ -49,4 +49,60 @@ public class SensorReading {
 
     public SensorReading() {
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Probe getProbe() {
+        return probe;
+    }
+
+    public void setProbe(Probe probe) {
+        this.probe = probe;
+    }
+
+    public OffsetDateTime getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setRecordedAt(OffsetDateTime recordedAt) {
+        this.recordedAt = recordedAt;
+    }
+
+    public Float getMoisture() {
+        return moisture;
+    }
+
+    public void setMoisture(Float moisture) {
+        this.moisture = moisture;
+    }
+
+    public Float getTiltAngle() {
+        return tiltAngle;
+    }
+
+    public void setTiltAngle(Float tiltAngle) {
+        this.tiltAngle = tiltAngle;
+    }
+
+    public Float getVibrationMag() {
+        return vibrationMag;
+    }
+
+    public void setVibrationMag(Float vibrationMag) {
+        this.vibrationMag = vibrationMag;
+    }
+
+    public SamplingMode getSamplingMode() {
+        return samplingMode;
+    }
+
+    public void setSamplingMode(SamplingMode samplingMode) {
+        this.samplingMode = samplingMode;
+    }
 }

@@ -10,7 +10,7 @@ public record RegistrationRequestResponse(
     UUID userId,
     String userEmail,
     RequestedRole requestedRole,
-    UUID probeId,
+    String probeId,
     String reason,
     String verificationNotes,
     RegistrationRequestStatus status,
