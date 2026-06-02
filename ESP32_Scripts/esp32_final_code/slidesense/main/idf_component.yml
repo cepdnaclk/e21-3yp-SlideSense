@@ -1,6 +1,0 @@
-dependencies:
-  espressif/led_strip: "^3.0.0"
-  espressif/esp_modem: "^1.1.0"
-  mqtt:
-    git: https://github.com/espressif/esp-mqtt.git
-    version: v1.0.0
