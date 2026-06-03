@@ -70,7 +70,8 @@ public class SecurityConfig {
                         "/actuator/health",
                         "/auth/register",
                         "/auth/login",
-                        "/auth/refresh"
+                        "/auth/refresh",
+                        "/ingestion/http"
                     )
                     .permitAll()
                     .requestMatchers("/api/v1/public/**")
