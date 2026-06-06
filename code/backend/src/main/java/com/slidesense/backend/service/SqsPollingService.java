@@ -62,6 +62,19 @@ public class SqsPollingService {
             sqsClient.deleteMessage(
                 DeleteMessageRequest.builder().queueUrl(queueUrl).receiptHandle(message.receiptHandle()).build()
             );
+        } catch (org.springframework.web.server.ResponseStatusException ex) {
+            if (ex.getStatusCode().is4xxClientError()) {
+                log.error("Unrecoverable client error processing SQS message {}: {}. Deleting message to prevent infinite looping.", message.messageId(), ex.getMessage());
+                try {
+                    sqsClient.deleteMessage(
+                        DeleteMessageRequest.builder().queueUrl(queueUrl).receiptHandle(message.receiptHandle()).build()
+                    );
+                } catch (Exception deleteEx) {
+                    log.error("Failed to delete unrecoverable message {}", message.messageId(), deleteEx);
+                }
+            } else {
+                log.error("Recoverable server error processing SQS message {}: {}", message.messageId(), ex.getMessage(), ex);
+            }
         } catch (Exception ex) {
             // Leave the message in queue for retry and DLQ handling by SQS redrive policy.
             log.error("Failed to process SQS message {}: {}", message.messageId(), ex.getMessage(), ex);

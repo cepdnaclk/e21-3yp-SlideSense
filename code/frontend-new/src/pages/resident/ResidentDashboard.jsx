@@ -3,6 +3,7 @@ import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Tabs from '../../components/common/Tabs';
 import RoleLayout from '../../layouts/RoleLayout';
+import HistoricalLineChart from '../../components/dashboard/HistoricalLineChart';
 import { useProbeNetwork } from '../../shared/hooks/useProbeNetwork';
 import { getRiskLabel, normalizeRiskLevel } from '../../shared/utils/riskUtils';
 
@@ -73,7 +74,7 @@ export default function ResidentDashboard({ onLogout }) {
       eyebrow="Resident view"
       title="Community Safety Dashboard"
       status={isLoadingLiveData ? 'Loading live conditions...' : loadError || `Current risk: ${statusTone}`}
-      actions={<Button variant="ghost" onClick={onLogout}>Switch role</Button>}
+      actions={<Button variant="ghost" onClick={onLogout}>Log Out</Button>}
     >
       <main className="role-dashboard role-dashboard--resident">
         <Tabs tabs={tabs} activeTabId={activeTab} onChange={setActiveTab} ariaLabel="Resident dashboard tabs" />
@@ -144,6 +145,18 @@ export default function ResidentDashboard({ onLogout }) {
                 ))}
               </div>
             </Card>
+
+            {probes.map(probe => (
+              <Card key={`history-${probe.id}`} className="history-card">
+                <div className="panel-card__title-row">
+                  <div>
+                    <span className="section-label">Historical Trends</span>
+                    <h2 className="panel-card__title">Recent Data for {probe.id}</h2>
+                  </div>
+                </div>
+                <HistoricalLineChart probe={probe} />
+              </Card>
+            ))}
           </section>
         ) : (
           <section className="dashboard-stack dashboard-stack--safety">
