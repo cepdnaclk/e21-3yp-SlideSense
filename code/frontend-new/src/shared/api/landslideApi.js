@@ -195,7 +195,9 @@ export async function fetchAllReadings(allDataUrl = '') {
     }
 
     const endpoint = `${normalizedAllDataUrl}?${params.toString()}`;
-    const response = await fetch(endpoint);
+    const token = localStorage.getItem('AUTH_TOKEN');
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+    const response = await fetch(endpoint, { headers });
 
     if (!response.ok) {
       const fallbackMessage = `Failed to load probes (${response.status})`;
@@ -239,7 +241,9 @@ export async function fetchLatestSimple(latestSimpleUrl, deviceID) {
   const params = new URLSearchParams();
   params.set('deviceID', deviceID);
 
-  const response = await fetch(`${normalizedLatestSimpleUrl}?${params.toString()}`);
+  const token = localStorage.getItem('AUTH_TOKEN');
+  const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+  const response = await fetch(`${normalizedLatestSimpleUrl}?${params.toString()}`, { headers });
   if (!response.ok) {
     return null;
   }

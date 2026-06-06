@@ -125,7 +125,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(userDetails, claims);
         String refreshToken = jwtService.generateRefreshToken(userDetails, claims);
 
-        return new AuthResponse(accessToken, refreshToken, "Bearer", jwtService.getAccessExpirationMs());
+        return new AuthResponse(accessToken, refreshToken, "Bearer", jwtService.getAccessExpirationMs(), Map.of("role", user.getRole().name()));
     }
 
     public AuthResponse refresh(RefreshRequest request) {
@@ -164,7 +164,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(userDetails, claims);
         String newRefreshToken = jwtService.generateRefreshToken(userDetails, claims);
 
-        return new AuthResponse(accessToken, newRefreshToken, "Bearer", jwtService.getAccessExpirationMs());
+        return new AuthResponse(accessToken, newRefreshToken, "Bearer", jwtService.getAccessExpirationMs(), Map.of("role", user.getRole().name()));
     }
 
     public MessageResponse logout() {

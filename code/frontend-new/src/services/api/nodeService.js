@@ -1,4 +1,5 @@
 import { getMockNodeLatest, mockNodeReadings } from '../mock/nodeMockData.js';
+import { fetchAllReadings, fetchLatestSimple } from '../../shared/api/landslideApi.js';
 
 function toNumber(value, fallback = 0) {
   const parsed = Number(value);
@@ -173,12 +174,23 @@ export function mapReadingsToNodes(readings) {
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
+
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 export async function getNodes() {
-  return mapReadingsToNodes([...mockNodeReadings]);
+  const role = localStorage.getItem('USER_ROLE');
+  const endpoint = role === 'resident' 
+    ? `${API_BASE_URL}/api/v1/probes/my-readings`
+    : `${API_BASE_URL}/api/v1/probes/readings`;
+    
+  const readings = await fetchAllReadings(endpoint);
+  return mapReadingsToNodes(readings);
 }
 
 export async function getLatestNodeSnapshot(deviceID) {
-  return getMockNodeLatest(deviceID);
+  const endpoint = `${API_BASE_URL}/api/v1/probes/latest`;
+  return fetchLatestSimple(endpoint, deviceID);
 }
 
 export function createNodeRecord({ id, latitude, longitude }) {

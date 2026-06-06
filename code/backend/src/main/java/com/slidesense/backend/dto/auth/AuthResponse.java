@@ -4,6 +4,7 @@ public record AuthResponse(
     String accessToken,
     String refreshToken,
     String tokenType,
-    long accessTokenExpiresInMs
+    long accessTokenExpiresInMs,
+    java.util.Map<String, String> user
 ) {
 }
