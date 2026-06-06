@@ -48,6 +48,7 @@ export function useProbeNetwork() {
   const [searchValue, setSearchValue] = useState('');
   const [isLoadingLiveData, setIsLoadingLiveData] = useState(false);
   const [loadError, setLoadError] = useState('');
+  const [focusTrigger, setFocusTrigger] = useState(0);
 
   const selectedProbe = useMemo(
     () => probes.find((probe) => probe.id === selectedProbeId) ?? null,
@@ -170,6 +171,7 @@ export function useProbeNetwork() {
   function selectProbe(probeId) {
     setSelectedProbeId(probeId);
     setSearchValue(probeId);
+    setFocusTrigger((c) => c + 1);
   }
 
   function handleSearchChange(event) {
@@ -225,6 +227,7 @@ export function useProbeNetwork() {
     selectedProbe,
     selectedProbeId,
     searchValue,
+    focusTrigger,
     isLoadingLiveData,
     loadError,
     stats,

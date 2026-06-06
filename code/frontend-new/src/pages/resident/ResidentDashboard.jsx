@@ -75,9 +75,18 @@ export default function ResidentDashboard({ onLogout }) {
       title="Community Safety Dashboard"
       status={isLoadingLiveData ? 'Loading live conditions...' : loadError || `Current risk: ${statusTone}`}
       actions={<Button variant="ghost" onClick={onLogout}>Log Out</Button>}
+      sidebar={
+        <Tabs 
+          tabs={tabs} 
+          activeTabId={activeTab} 
+          onChange={setActiveTab} 
+          ariaLabel="Resident dashboard tabs"
+          variant="vertical"
+          hideDescriptions={true}
+        />
+      }
     >
       <main className="role-dashboard role-dashboard--resident">
-        <Tabs tabs={tabs} activeTabId={activeTab} onChange={setActiveTab} ariaLabel="Resident dashboard tabs" />
 
         {activeTab === 'overview' ? (
           <section className="dashboard-stack">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, Marker, TileLayer, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { getRiskColor, getRiskLabel } from '../../shared/utils/riskUtils';
@@ -18,7 +18,7 @@ function createPinIcon(color, selected) {
 	});
 }
 
-function FocusOnSelection({ selectedProbe }) {
+function FocusOnSelection({ selectedProbe, focusTrigger }) {
 	const map = useMap();
 
 	useEffect(() => {
@@ -30,12 +30,32 @@ function FocusOnSelection({ selectedProbe }) {
 			duration: 1.25,
 			easeLinearity: 0.25,
 		});
-	}, [map, selectedProbe]);
+	}, [map, selectedProbe, focusTrigger]);
 
 	return null;
 }
 
-export default function MapView({ probes, selectedProbeId, onSelectProbe, searchValue, onSearchChange, onSearchSubmit }) {
+function ResetView({ trigger }) {
+	const map = useMap();
+
+	useEffect(() => {
+		if (trigger > 0) {
+			map.flyTo(SRI_LANKA_CENTER, COUNTRY_OVERVIEW_ZOOM, {
+				duration: 1.25,
+				easeLinearity: 0.25,
+			});
+		}
+	}, [map, trigger]);
+
+	return null;
+}
+
+export default function MapView({ probes, selectedProbeId, onSelectProbe, searchValue, onSearchChange, onSearchSubmit, focusTrigger }) {
+	const [resetTrigger, setResetTrigger] = useState(0);
+
+	const handleShowAll = () => {
+		setResetTrigger(c => c + 1);
+	};
 	const selectedProbe = useMemo(
 		() => probes.find((probe) => probe.id === selectedProbeId) ?? null,
 		[probes, selectedProbeId],
@@ -51,6 +71,7 @@ export default function MapView({ probes, selectedProbeId, onSelectProbe, search
 					value={searchValue}
 					onChange={onSearchChange}
 					onSubmit={onSearchSubmit}
+					onShowAll={handleShowAll}
 					probeIds={probes.map((probe) => probe.id)}
 					inline
 				/>
@@ -97,7 +118,8 @@ export default function MapView({ probes, selectedProbeId, onSelectProbe, search
 						);
 					})}
 
-					<FocusOnSelection selectedProbe={selectedProbe} />
+					<FocusOnSelection selectedProbe={selectedProbe} focusTrigger={focusTrigger} />
+					<ResetView trigger={resetTrigger} />
 				</MapContainer>
 			</div>
 

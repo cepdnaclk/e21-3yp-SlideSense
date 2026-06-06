@@ -13,6 +13,7 @@ import AnalyticsCharts from '../../components/admin/AnalyticsCharts';
 import CurrentStatusPanel from '../../components/admin/CurrentStatusPanel';
 import NodeRegistrationForm from '../../components/admin/NodeRegistrationForm';
 import OperationalMetricsCards from '../../components/admin/OperationalMetricsCards';
+import UserManagementPanel from '../../components/admin/UserManagementPanel';
 import { useProbeNetwork } from '../../shared/hooks/useProbeNetwork';
 import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../../shared/utils/riskUtils';
 import { getAdminDashboardData } from '../../services/api/dashboardService';
@@ -99,6 +100,7 @@ export default function AdminDashboard({ onLogout }) {
     selectedProbe,
     selectedProbeId,
     searchValue,
+    focusTrigger,
     isLoadingLiveData,
     loadError,
     stats,
@@ -111,6 +113,7 @@ export default function AdminDashboard({ onLogout }) {
     removeProbe,
   } = useProbeNetwork();
   const [activeTabId, setActiveTabId] = useState('overview');
+  const [activeNodeTab, setActiveNodeTab] = useState('overview');
   const [thresholds, setThresholds] = useState(initialThresholds);
   const [statusMessage, setStatusMessage] = useState('');
   const [acknowledgedAlertIds, setAcknowledgedAlertIds] = useState([]);
@@ -143,24 +146,43 @@ export default function AdminDashboard({ onLogout }) {
     <AdminLayout
       title="Admin Dashboard"
       status={isLoadingLiveData ? 'Loading live sensor data from backend...' : loadError || 'Live backend connected.'}
-      activeTabLabel={tabs.find((tab) => tab.id === activeTabId)?.label ?? 'System Overview'}
-      activeTabDescription={tabs.find((tab) => tab.id === activeTabId)?.description ?? 'Admin control center'}
-      probesCount={stats.total}
-      highRiskCount={stats.high}
-      selectedProbeId={selectedProbeId}
+      actions={<Button variant="ghost" onClick={onLogout}>Log Out</Button>}
+      sidebar={
+        <Tabs 
+          tabs={tabs} 
+          activeTabId={activeTabId} 
+          onChange={setActiveTabId} 
+          ariaLabel="Admin dashboard sections"
+          variant="vertical"
+          hideDescriptions={true}
+        />
+      }
     >
       <main className="admin-dashboard">
-        <div className="dashboard-header-actions">
-          <Button variant="ghost" onClick={onLogout}>Switch role</Button>
-        </div>
-
-        <Tabs tabs={tabs} activeTabId={activeTabId} onChange={setActiveTabId} ariaLabel="Admin dashboard sections" />
 
         {statusMessage ? <p className="dashboard-banner">{statusMessage}</p> : null}
 
         {activeTabId === 'overview' ? (
           <section className="dashboard-stack">
-            <div className="card-grid card-grid--two admin-overview-summary">
+            <div className="card-grid card-grid--three admin-overview-summary">
+              <Card className="admin-sidebar__card admin-sidebar__card--summary">
+                <span className="section-label">Live summary</span>
+                <dl className="admin-summary-list">
+                  <div>
+                    <dt>Probes</dt>
+                    <dd>{stats.total}</dd>
+                  </div>
+                  <div>
+                    <dt>High risk</dt>
+                    <dd>{stats.high}</dd>
+                  </div>
+                  <div>
+                    <dt>Selected</dt>
+                    <dd>{selectedProbeId ?? 'None'}</dd>
+                  </div>
+                </dl>
+              </Card>
+
               <Card className="system-health-card">
                 <span className="section-label">System status indicators</span>
                 <h2>Overall system health: {systemHealthLabel}</h2>
@@ -209,83 +231,114 @@ export default function AdminDashboard({ onLogout }) {
 
         {activeTabId === 'nodes' ? (
           <section className="dashboard-stack">
-            <Card className="node-list-card">
-              <div className="panel-card__title-row">
-                <div>
-                  <span className="section-label">Node list</span>
-                  <h2 className="panel-card__title">Registered probes</h2>
-                </div>
+            <Tabs 
+               tabs={[
+                 {id: 'overview', label: 'Node Overview'}, 
+                 {id: 'registered', label: 'Registered Nodes'}
+               ]}
+               activeTabId={activeNodeTab}
+               onChange={setActiveNodeTab}
+               ariaLabel="Node management sub-tabs"
+            />
+            {activeNodeTab === 'overview' ? (
+              <div className="dashboard-stack">
+                <Card className="node-overview-header">
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                     <span style={{ fontWeight: 'bold' }}>Select Probe:</span>
+                     <select 
+                       value={selectedProbeId || ''} 
+                       onChange={(e) => selectProbe(e.target.value)}
+                       style={{ padding: '0.5rem', borderRadius: '4px', minWidth: '200px', border: '1px solid var(--border)' }}
+                     >
+                       {probes.map(p => <option key={p.id} value={p.id}>{p.id}</option>)}
+                     </select>
+                   </div>
+                </Card>
+                <ProbeMapView
+                  probes={probes}
+                  selectedProbeId={selectedProbeId}
+                  onSelectProbe={selectProbe}
+                  searchValue={searchValue}
+                  onSearchChange={handleSearchChange}
+                  onSearchSubmit={handleSearchSubmit}
+                  focusTrigger={focusTrigger}
+                />
+
+                <section className="card-grid card-grid--two">
+                  <CurrentStatusPanel probe={selectedProbe} />
+                  <Card className="historical-data-card">
+                    <span className="section-label">Selected probe history</span>
+                    <h2>{selectedProbe?.id ?? 'No probe selected'}</h2>
+                    <Table>
+                      <thead>
+                        <tr>
+                          <th>Label</th>
+                          <th>Rainfall</th>
+                          <th>Moisture</th>
+                          <th>Vibration</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(selectedProbe?.history ?? []).slice(-6).map((row) => (
+                          <tr key={`${row.label}-${row.rainfall}`}>
+                            <td>{row.label}</td>
+                            <td>{row.rainfall}</td>
+                            <td>{row.moisture}</td>
+                            <td>{row.vibration}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card>
+
+                  <ProbeDetailsPanel
+                    probe={selectedProbe}
+                    onEditCoordinate={updateProbeCoordinate}
+                    onRemoveProbe={removeProbe}
+                  />
+                </section>
+                <AnalyticsCharts probe={selectedProbe} />
               </div>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Node ID</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                    <th>Last update</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {probes.map((probe) => (
-                    <tr key={probe.id}>
-                      <td>{probe.id}</td>
-                      <td>{probe.latitude.toFixed(4)}, {probe.longitude.toFixed(4)}</td>
-                      <td>{isProbeOffline(probe) ? 'offline' : 'online'}</td>
-                      <td>{probe.lastUpdated}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card>
-
-            <section className="dashboard-content">
-              <ProbeMapView
-                probes={probes}
-                selectedProbeId={selectedProbeId}
-                onSelectProbe={selectProbe}
-                searchValue={searchValue}
-                onSearchChange={handleSearchChange}
-                onSearchSubmit={handleSearchSubmit}
-              />
-
-              <aside className="details-column">
-                <CurrentStatusPanel probe={selectedProbe} />
-                <Card className="historical-data-card">
-                  <span className="section-label">Selected probe history</span>
-                  <h2>{selectedProbe?.id ?? 'No probe selected'}</h2>
+            ) : (
+              <div className="dashboard-stack">
+                <NodeRegistrationForm onAddProbe={addProbe} existingIds={probes.map((probe) => probe.id)} />
+                <Card className="node-list-card">
+                  <div className="panel-card__title-row">
+                    <div>
+                      <span className="section-label">Node list</span>
+                      <h2 className="panel-card__title">Registered probes</h2>
+                    </div>
+                  </div>
                   <Table>
                     <thead>
                       <tr>
-                        <th>Label</th>
-                        <th>Rainfall</th>
-                        <th>Moisture</th>
-                        <th>Vibration</th>
+                        <th>Node ID</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Last update</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {(selectedProbe?.history ?? []).slice(-6).map((row) => (
-                        <tr key={`${row.label}-${row.rainfall}`}>
-                          <td>{row.label}</td>
-                          <td>{row.rainfall}</td>
-                          <td>{row.moisture}</td>
-                          <td>{row.vibration}</td>
+                      {probes.map((probe) => (
+                        <tr key={probe.id}>
+                          <td>{probe.id}</td>
+                          <td>{probe.latitude.toFixed(4)}, {probe.longitude.toFixed(4)}</td>
+                          <td>{isProbeOffline(probe) ? 'offline' : 'online'}</td>
+                          <td>{probe.lastUpdated}</td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                              <Button variant="ghost" onClick={() => alert('Editing functionality will be fully implemented by the backend soon. For now, use the map to update coordinates if needed.')}>Edit</Button>
+                              <Button variant="ghost" onClick={() => removeProbe(probe.id)}>Remove</Button>
+                            </div>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </Table>
                 </Card>
-              </aside>
-            </section>
-
-            <section className="dashboard-content dashboard-content--stacked">
-              <ProbeDetailsPanel
-                probe={selectedProbe}
-                onEditCoordinate={updateProbeCoordinate}
-                onRemoveProbe={removeProbe}
-              />
-              <NodeRegistrationForm onAddProbe={addProbe} existingIds={probes.map((probe) => probe.id)} />
-              <AnalyticsCharts probe={selectedProbe} />
-            </section>
+              </div>
+            )}
           </section>
         ) : null}
 
@@ -378,33 +431,7 @@ export default function AdminDashboard({ onLogout }) {
             </div>
 
             <div className="card-grid card-grid--two">
-              <ConfigCard title="User management">
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Role</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user) => (
-                      <tr key={user.email}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.role}</td>
-                        <td>{user.status}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-                <div className="config-action-row">
-                  <Button>Add user</Button>
-                  <Button variant="outline">Assign roles</Button>
-                  <Button variant="ghost">Disable user</Button>
-                </div>
-              </ConfigCard>
+
 
               <ConfigCard title="Security logs">
                 <Table>
@@ -428,6 +455,10 @@ export default function AdminDashboard({ onLogout }) {
               </ConfigCard>
             </div>
           </section>
+        ) : null}
+
+        {activeTabId === 'user_management' ? (
+          <UserManagementPanel users={users} setUsers={setUsers} />
         ) : null}
       </main>
     </AdminLayout>
