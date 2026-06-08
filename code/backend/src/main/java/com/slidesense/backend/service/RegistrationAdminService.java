@@ -8,7 +8,9 @@ import com.slidesense.backend.model.enums.RegistrationRequestStatus;
 import com.slidesense.backend.model.enums.RequestedRole;
 import com.slidesense.backend.model.enums.UserRegistrationStatus;
 import com.slidesense.backend.model.enums.UserRole;
+import com.slidesense.backend.model.Probe;
 import com.slidesense.backend.repository.ProbeAccessGrantRepository;
+import com.slidesense.backend.repository.ProbeRepository;
 import com.slidesense.backend.repository.RegistrationRequestRepository;
 import com.slidesense.backend.repository.UserRepository;
 import java.time.OffsetDateTime;
@@ -24,18 +26,22 @@ public class RegistrationAdminService {
 
     private final RegistrationRequestRepository registrationRequestRepository;
     private final ProbeAccessGrantRepository probeAccessGrantRepository;
+    private final ProbeRepository probeRepository;
     private final UserRepository userRepository;
 
     public RegistrationAdminService(
         RegistrationRequestRepository registrationRequestRepository,
         ProbeAccessGrantRepository probeAccessGrantRepository,
+        ProbeRepository probeRepository,
         UserRepository userRepository
     ) {
         this.registrationRequestRepository = registrationRequestRepository;
         this.probeAccessGrantRepository = probeAccessGrantRepository;
+        this.probeRepository = probeRepository;
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<RegistrationRequestResponse> listByStatus(RegistrationRequestStatus status) {
         return registrationRequestRepository
             .findByStatusOrderByCreatedAtDesc(status)
@@ -45,7 +51,7 @@ public class RegistrationAdminService {
     }
 
     @Transactional
-    public RegistrationRequestResponse approve(UUID requestId, String adminEmail, String verificationNotes) {
+    public RegistrationRequestResponse approve(UUID requestId, String adminEmail, String verificationNotes, String probeId) {
         RegistrationRequest request = registrationRequestRepository
             .findById(requestId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration request not found"));
@@ -71,13 +77,24 @@ public class RegistrationAdminService {
 
         userRepository.save(user);
 
-        if (request.getRequestedRole() == RequestedRole.RESIDENT && request.getProbe() != null) {
+        if (request.getRequestedRole() == RequestedRole.RESIDENT) {
+            Probe assignedProbe = request.getProbe();
+            if (assignedProbe == null && probeId != null && !probeId.isBlank()) {
+                assignedProbe = probeRepository.findByProbeId(probeId.trim())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assigned probe not found"));
+                request.setProbe(assignedProbe);
+            }
+            if (assignedProbe == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Probe assignment is required for resident requests");
+            }
+            
+            Probe finalAssignedProbe = assignedProbe;
             probeAccessGrantRepository
-                .findByUser_IdAndProbe_IdAndRevokedAtIsNull(user.getId(), request.getProbe().getId())
+                .findByUser_IdAndProbe_IdAndRevokedAtIsNull(user.getId(), finalAssignedProbe.getId())
                 .orElseGet(() -> {
                     ProbeAccessGrant grant = new ProbeAccessGrant();
                     grant.setUser(user);
-                    grant.setProbe(request.getProbe());
+                    grant.setProbe(finalAssignedProbe);
                     grant.setGrantedBy(admin);
                     return probeAccessGrantRepository.save(grant);
                 });

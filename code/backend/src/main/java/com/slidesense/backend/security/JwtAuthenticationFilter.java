@@ -76,12 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 if (adminRequest) {
-                    log.info(
-                        "Admin request {} authenticated as {} with authorities {}",
-                        requestUri,
-                        username,
-                        userDetails.getAuthorities()
-                    );
+                    // Log removed per user request
                 }
             } else if (adminRequest) {
                 log.warn(

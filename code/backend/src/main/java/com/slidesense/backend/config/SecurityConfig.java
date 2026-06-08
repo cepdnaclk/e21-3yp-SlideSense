@@ -76,7 +76,8 @@ public class SecurityConfig {
                         "/auth/register",
                         "/auth/login",
                         "/auth/refresh",
-                        "/ingestion/http"
+                        "/ingestion/http",
+                        "/error"
                     )
                     .permitAll()
                     .requestMatchers("/api/v1/public/**")

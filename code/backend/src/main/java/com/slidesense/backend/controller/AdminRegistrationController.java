@@ -50,7 +50,8 @@ public class AdminRegistrationController {
         Authentication authentication
     ) {
         String notes = review == null ? null : review.verificationNotes();
-        return ResponseEntity.ok(registrationAdminService.approve(requestId, authentication.getName(), notes));
+        String probeId = review == null ? null : review.probeId();
+        return ResponseEntity.ok(registrationAdminService.approve(requestId, authentication.getName(), notes, probeId));
     }
 
     @PostMapping("/{requestId}/reject")

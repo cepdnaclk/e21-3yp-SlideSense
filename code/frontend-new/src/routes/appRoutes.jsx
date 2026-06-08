@@ -1,4 +1,5 @@
 import LoginPage from '../pages/auth/LoginPage';
+import RegisterPage from '../pages/auth/RegisterPage';
 import ResidentDashboard from '../pages/resident/ResidentDashboard';
 import ResearcherDashboard from '../pages/researcher/ResearcherDashboard';
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -12,6 +13,12 @@ export const APP_ROUTES = [
     path: '/login',
     label: 'Login',
     Component: LoginPage,
+  },
+  {
+    key: 'register',
+    path: '/register',
+    label: 'Register',
+    Component: RegisterPage,
   },
   {
     key: 'resident',

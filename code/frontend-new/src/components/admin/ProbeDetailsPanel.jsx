@@ -1,4 +1,20 @@
 import { getRiskColor, getRiskLabel } from '../../shared/utils/riskUtils';
+import Button from '../common/Button';
+
+const EditIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M12 20h9" />
+		<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+	</svg>
+);
+
+const TrashIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M3 6h18" />
+		<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+		<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+	</svg>
+);
 
 export default function ProbeDetailsPanel({ probe, onEditCoordinate, onRemoveProbe }) {
 	if (!probe) {
@@ -33,8 +49,7 @@ export default function ProbeDetailsPanel({ probe, onEditCoordinate, onRemovePro
 	}
 
 	function handleRemove() {
-		const confirmed = window.confirm(`Remove ${probe.id} from monitoring?`);
-		if (confirmed && typeof onRemoveProbe === 'function') {
+		if (typeof onRemoveProbe === 'function') {
 			onRemoveProbe(probe.id);
 		}
 	}
@@ -53,18 +68,18 @@ export default function ProbeDetailsPanel({ probe, onEditCoordinate, onRemovePro
 					<span className="detail-item__label">Latitude</span>
 					<div className="detail-item__value-row">
 						<span className="detail-item__value">{probe.latitude.toFixed(4)}</span>
-						<button type="button" className="detail-action-button" onClick={() => handleEditCoordinate('latitude')}>
-							Edit
-						</button>
+						<Button variant="ghost" className="detail-action-button" onClick={() => handleEditCoordinate('latitude')} title="Edit Latitude">
+							<EditIcon />
+						</Button>
 					</div>
 				</div>
 				<div className="detail-item">
 					<span className="detail-item__label">Longitude</span>
 					<div className="detail-item__value-row">
 						<span className="detail-item__value">{probe.longitude.toFixed(4)}</span>
-						<button type="button" className="detail-action-button" onClick={() => handleEditCoordinate('longitude')}>
-							Edit
-						</button>
+						<Button variant="ghost" className="detail-action-button" onClick={() => handleEditCoordinate('longitude')} title="Edit Longitude">
+							<EditIcon />
+						</Button>
 					</div>
 				</div>
 				<div className="detail-item">
@@ -73,9 +88,9 @@ export default function ProbeDetailsPanel({ probe, onEditCoordinate, onRemovePro
 				</div>
 			</div>
 
-			<button type="button" className="remove-probe-button" onClick={handleRemove}>
-				Remove probe
-			</button>
+			<Button variant="outline" className="remove-probe-button" onClick={handleRemove} title="Remove probe">
+				<TrashIcon />
+			</Button>
 
 		</section>
 	);

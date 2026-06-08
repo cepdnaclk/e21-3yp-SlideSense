@@ -11,4 +11,6 @@ public interface ProbeAccessGrantRepository extends JpaRepository<ProbeAccessGra
     List<ProbeAccessGrant> findByUser_IdAndRevokedAtIsNull(UUID userId);
 
     Optional<ProbeAccessGrant> findByUser_IdAndProbe_IdAndRevokedAtIsNull(UUID userId, UUID probeId);
+
+    void deleteByUser(com.slidesense.backend.model.User user);
 }

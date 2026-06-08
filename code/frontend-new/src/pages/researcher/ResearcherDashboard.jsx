@@ -99,10 +99,19 @@ export default function ResearcherDashboard({ onLogout }) {
       eyebrow="Researcher view"
       title="Environmental Data Workspace"
       status={isLoadingLiveData ? 'Syncing live monitoring data...' : loadError || `Selected node: ${selectedProbeId ?? 'None'}`}
-      actions={<Button variant="ghost" onClick={onLogout}>Switch role</Button>}
+      actions={<Button variant="ghost" onClick={onLogout}>Log Out</Button>}
+      sidebar={
+        <Tabs 
+          tabs={tabs} 
+          activeTabId={activeTab} 
+          onChange={setActiveTab} 
+          ariaLabel="Researcher dashboard tabs"
+          variant="vertical"
+          hideDescriptions={true}
+        />
+      }
     >
       <main className="role-dashboard role-dashboard--researcher">
-        <Tabs tabs={tabs} activeTabId={activeTab} onChange={setActiveTab} ariaLabel="Researcher dashboard tabs" />
 
         {activeTab === 'live' ? (
           <section className="dashboard-stack">

@@ -14,10 +14,16 @@ export const adminDashboardTabs = [
     label: 'Alerts Management',
     description: 'Active alerts, history, and actions',
   },
+
+  {
+    id: 'user_management',
+    label: 'User Management',
+    description: 'Registration approvals, roles, and user access',
+  },
   {
     id: 'configuration',
     label: 'System Configuration',
-    description: 'Thresholds, users, and security logs',
+    description: 'Thresholds, risk rules, and security logs',
   },
 ];
 
@@ -31,6 +37,7 @@ export const adminUsers = [
   { name: 'System Admin', email: 'admin@slidesense.local', role: 'admin', status: 'Enabled' },
   { name: 'Research Lead', email: 'research@slidesense.local', role: 'researcher', status: 'Enabled' },
   { name: 'Community Contact', email: 'resident@slidesense.local', role: 'resident', status: 'Enabled' },
+  { name: 'New Researcher', email: 'new_researcher@slidesense.local', role: 'researcher', status: 'Pending' },
 ];
 
 export const adminSecurityLogs = [

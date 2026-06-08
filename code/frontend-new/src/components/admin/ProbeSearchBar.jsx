@@ -1,4 +1,4 @@
-export default function SearchBar({ value, onChange, onSubmit, probeIds, inline = false }) {
+export default function SearchBar({ value, onChange, onSubmit, onShowAll, probeIds, inline = false }) {
 	return (
 		<form className={`search-bar ${inline ? 'search-bar--inline' : 'card-shell'}`} onSubmit={onSubmit}>
 			{!inline && (
@@ -18,6 +18,11 @@ export default function SearchBar({ value, onChange, onSubmit, probeIds, inline 
 				<button className="primary-button" type="submit">
 					Locate probe
 				</button>
+				{onShowAll && (
+					<button className="primary-button" type="button" onClick={onShowAll}>
+						Show all
+					</button>
+				)}
 			</div>
 			<datalist id="probe-id-options">
 				{probeIds.map((probeId) => (

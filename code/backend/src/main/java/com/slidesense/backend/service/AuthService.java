@@ -63,10 +63,6 @@ public class AuthService {
 
         String normalizedProbeId = request.probeId() != null ? request.probeId().trim() : null;
 
-        if (request.requestedRole() == RequestedRole.RESIDENT && (normalizedProbeId == null || normalizedProbeId.isBlank())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "probeId is required for resident requests");
-        }
-
         if (request.requestedRole() == RequestedRole.RESEARCHER && normalizedProbeId != null && !normalizedProbeId.isBlank()) {
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST,
@@ -90,7 +86,7 @@ public class AuthService {
         registrationRequest.setReason(request.reason());
         registrationRequest.setStatus(RegistrationRequestStatus.PENDING);
 
-        if (request.requestedRole() == RequestedRole.RESIDENT) {
+        if (normalizedProbeId != null && !normalizedProbeId.isBlank()) {
             Probe probe = probeRepository
                 .findByProbeId(normalizedProbeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Probe not found"));

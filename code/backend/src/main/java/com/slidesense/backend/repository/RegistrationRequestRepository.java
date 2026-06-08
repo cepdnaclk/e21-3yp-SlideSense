@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, UUID> {
 
     List<RegistrationRequest> findByStatusOrderByCreatedAtDesc(RegistrationRequestStatus status);
+
+    void deleteByUser(com.slidesense.backend.model.User user);
 }
