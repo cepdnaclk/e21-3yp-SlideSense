@@ -229,7 +229,7 @@ body {
 }
 
 .admin-tabs__button.is-active {
-  background: linear-gradient(180deg, rgba(73, 148, 126, 0.12), rgba(255, 255, 255, 0.96));
+  background: rgba(73, 148, 126, 0.08);
 }
 
 .dashboard-content--stacked {
@@ -267,6 +267,16 @@ body {
   color: var(--primary);
 }
 
+.button--danger {
+  background: var(--high-risk);
+  color: #ffffff;
+}
+
+.button--danger:hover {
+  transform: translateY(-1px);
+  background: #c23333;
+}
+
 .card {
   padding: 18px;
   background: var(--surface);
@@ -276,6 +286,7 @@ body {
 }
 
 .table-shell {
+  margin-top: 16px;
   overflow: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1801,7 +1812,7 @@ svg {
 
 .tabs__button.is-active,
 .admin-tabs__button.is-active {
-  background: linear-gradient(180deg, rgba(73, 148, 126, 0.12), rgba(255, 255, 255, 0.96));
+  background: rgba(73, 148, 126, 0.08);
 }
 
 .role-dashboard {
@@ -1832,9 +1843,6 @@ svg {
 
 .admin-overview-summary {
   align-self: start;
-  position: sticky;
-  top: 16px;
-  z-index: 2;
 }
 
 .admin-overview-summary .system-health-card,
@@ -1872,15 +1880,15 @@ svg {
 }
 
 .priority-card--low {
-  background: linear-gradient(180deg, rgba(34, 197, 94, 0.14), rgba(255, 255, 255, 0.96));
+  background: rgba(34, 197, 94, 0.08);
 }
 
 .priority-card--medium {
-  background: linear-gradient(180deg, rgba(250, 204, 21, 0.14), rgba(255, 255, 255, 0.96));
+  background: rgba(250, 204, 21, 0.08);
 }
 
 .priority-card--high {
-  background: linear-gradient(180deg, rgba(239, 68, 68, 0.16), rgba(255, 255, 255, 0.96));
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .priority-card__row {
@@ -2184,10 +2192,52 @@ svg {
   align-content: center;
 }
 
+.login-page--centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: 0px;
+}
+
+.login-page__logo-container {
+  margin-bottom: 4px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page__logo {
+  height: 90px;
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-page__logo:hover {
+  transform: scale(1.05);
+}
+
 .login-page__hero {
   display: grid;
   gap: 10px;
   max-width: 760px;
+}
+
+.login-page__hero .section-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+}
+
+.login-page__hero--centered {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  margin-bottom: 1.5rem;
 }
 
 .login-page__hero h1 {
@@ -2198,10 +2248,25 @@ svg {
   letter-spacing: -0.04em;
 }
 
+.login-page__hero--centered h1 {
+  text-align: center;
+}
+
 .login-page__hero p {
   margin: 0;
   color: var(--text-muted);
   max-width: 62ch;
+}
+
+.login-page__hero--centered p {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.login-page__content-centered {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .login-role-grid {
@@ -2226,6 +2291,15 @@ svg {
   color: var(--text-muted);
 }
 
+.auth-switch-link a {
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.auth-switch-link a:hover {
+  color: var(--secondary) !important;
+  text-decoration: underline !important;
+}
+
 .login-role-card .button {
   width: 100%;
 }
@@ -2245,11 +2319,7 @@ svg {
     position: static;
   }
 
-  .admin-overview-summary {
-    position: static;
-    top: auto;
-    z-index: auto;
-  }
+
 }
 
 @media (max-width: 980px) {
@@ -2337,4 +2407,97 @@ svg {
   .card-grid--two {
     gap: 20px;
   }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 46, 107, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px var(--shadow-strong);
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+  animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 150ms;
+}
+
+.modal-close:hover {
+  color: var(--primary);
+}
+
+.modal-body {
+  padding: 24px;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.modal-body p {
+  margin: 0 0 12px;
+}
+
+.modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.modal-warning {
+  color: var(--high-risk);
+  font-weight: 600;
+  background: rgba(214, 69, 69, 0.1);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-top: 16px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  background: #f8fbfa;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }

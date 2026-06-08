@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { APP_ROUTES, DEFAULT_ROUTE_KEY, ROLE_ROUTE_KEYS } from './routes/appRoutes';
 import { logout as authLogout, getToken } from './services/api/authService';
+import RegisterPage from './pages/auth/RegisterPage';
 
 const ROLE_STORAGE_KEY = 'slidesense-role';
 
@@ -19,6 +21,31 @@ function RouterWrapper() {
     navigate('/login');
   }
 
+  useEffect(() => {
+    const originalFetch = window.fetch;
+    let isAlerting = false;
+
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args);
+      const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url ? args[0].url : '');
+      // If we get a 401 and it's not the login endpoint itself, we trigger a logout
+      if (response.status === 401 && !url.includes('/auth/login')) {
+        if (!isAlerting) {
+          isAlerting = true;
+          alert('Your session has timed out. You have been logged out.');
+          authLogout();
+          window.localStorage.removeItem(ROLE_STORAGE_KEY);
+          navigate('/login');
+        }
+      }
+      return response;
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, [navigate]);
+
   const storedRole = window.localStorage.getItem(ROLE_STORAGE_KEY);
   const token = getToken();
   
@@ -32,6 +59,7 @@ function RouterWrapper() {
   return (
     <Routes>
       <Route path="/login" element={<Login onLogin={handleLogin} />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route path="/resident" element={token ? <Resident onLogout={handleLogout} currentRouteKey={'resident'} /> : <Navigate to="/login" />} />
       <Route path="/researcher" element={token ? <Researcher onLogout={handleLogout} currentRouteKey={'researcher'} /> : <Navigate to="/login" />} />
       <Route path="/admin" element={token ? <Admin onLogout={handleLogout} currentRouteKey={'admin'} /> : <Navigate to="/login" />} />

@@ -14,15 +14,16 @@ export const adminDashboardTabs = [
     label: 'Alerts Management',
     description: 'Active alerts, history, and actions',
   },
-  {
-    id: 'configuration',
-    label: 'System Configuration',
-    description: 'Thresholds, risk rules, and security logs',
-  },
+
   {
     id: 'user_management',
     label: 'User Management',
     description: 'Registration approvals, roles, and user access',
+  },
+  {
+    id: 'configuration',
+    label: 'System Configuration',
+    description: 'Thresholds, risk rules, and security logs',
   },
 ];
 

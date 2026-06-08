@@ -132,3 +132,11 @@ The backend implements a robust, stateless JWT-based authentication system using
   - Endpoints are explicitly secured based on roles. For example, `GET /api/v1/probes/readings` requires `@PreAuthorize("hasRole('ADMIN') or hasRole('RESEARCHER')")` to prevent unauthorized broad data access.
   - Residents are restricted to `GET /api/v1/probes/my-readings`, where the `FrontendDataService` dynamically filters data to ensure they only receive readings for probes they have been explicitly granted access to via the `probe_access_grants` table.
 - **CORS**: The application is configured with a global CORS policy allowing credentials, ensuring smooth communication between the React frontend and Spring Boot backend.
+
+## 11) Soft Deletion of Probes
+
+Probes (nodes) can be safely "removed" from the active system without deleting their historical data from the database.
+- **Deactivation**: `DELETE /admin/probes/{probeId}` soft-deletes a probe by updating its `status` to `DEACTIVATED`. 
+- **Data Integrity**: All associated `sensor_readings`, `rainfall_readings`, and `alerts` remain intact for historical queries.
+- **Frontend Filtering**: The `FrontendDataService` automatically filters out `DEACTIVATED` probes from active live queries (`/api/v1/probes/readings` and `/api/v1/probes/my-readings`), ensuring removed nodes vanish from the active dashboard immediately.
+- **Database Schema**: A new Flyway migration (`V5__add_deactivated_status_to_probes.sql`) modifies the PostgreSQL `CHECK` constraint on `probes.status` to safely permit the `DEACTIVATED` value.

@@ -43,6 +43,14 @@ public class ProbeAdminService {
         return toResponse(probeRepository.save(probe));
     }
 
+    @Transactional
+    public void deactivateProbe(String probeId) {
+        Probe probe = probeRepository.findByProbeId(probeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Probe not found"));
+        probe.setStatus(ProbeStatus.DEACTIVATED);
+        probeRepository.save(probe);
+    }
+
     private ProbeResponse toResponse(Probe probe) {
         return new ProbeResponse(
             probe.getProbeId(),

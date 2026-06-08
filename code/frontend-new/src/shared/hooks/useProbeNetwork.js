@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getNodes, getLatestNodeSnapshot, mapReadingsToNodes } from '../../services/api/nodeService';
+import { getNodes, getLatestNodeSnapshot, mapReadingsToNodes, createNode, deleteNode } from '../../services/api/nodeService';
 import { getRiskCounts, normalizeRiskLevel, sortByRiskSeverity } from '../utils/riskUtils';
 
 
@@ -13,11 +13,12 @@ function formatNowLocal() {
   return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
-function createProbeRecord({ id, latitude, longitude }) {
+function createProbeRecord({ id, hwSerial, latitude, longitude }) {
   const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   return {
     id,
+    hwSerial,
     latitude,
     longitude,
     riskLevel: 'low',
@@ -187,10 +188,16 @@ export function useProbeNetwork() {
     }
   }
 
-  function addProbe({ id, latitude, longitude }) {
-    const nextProbe = createProbeRecord({ id, latitude, longitude });
-    setProbes((current) => [...current, nextProbe]);
-    selectProbe(nextProbe.id);
+  async function addProbe({ id, hwSerial, latitude, longitude }) {
+    try {
+      await createNode({ id, hwSerial, latitude, longitude });
+      const nextProbe = createProbeRecord({ id, hwSerial, latitude, longitude });
+      setProbes((current) => [...current, nextProbe]);
+      selectProbe(nextProbe.id);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to add probe: ' + err.message);
+    }
   }
 
   function updateProbeCoordinate(probeId, field, value) {
@@ -202,24 +209,30 @@ export function useProbeNetwork() {
     setProbes((current) => current.map((probe) => (probe.id === probeId ? { ...probe, [field]: nextValue } : probe)));
   }
 
-  function removeProbe(probeId) {
-    setProbes((current) => {
-      const nextProbes = current.filter((probe) => probe.id !== probeId);
+  async function removeProbe(probeId) {
+    try {
+      await deleteNode(probeId);
+      setProbes((current) => {
+        const nextProbes = current.filter((probe) => probe.id !== probeId);
 
-      if (nextProbes.length === 0) {
-        setSelectedProbeId(null);
-        setSearchValue('');
+        if (nextProbes.length === 0) {
+          setSelectedProbeId(null);
+          setSearchValue('');
+          return nextProbes;
+        }
+
+        if (selectedProbeId === probeId) {
+          const nextSelectedId = nextProbes[0].id;
+          setSelectedProbeId(nextSelectedId);
+          setSearchValue(nextSelectedId);
+        }
+
         return nextProbes;
-      }
-
-      if (selectedProbeId === probeId) {
-        const nextSelectedId = nextProbes[0].id;
-        setSelectedProbeId(nextSelectedId);
-        setSearchValue(nextSelectedId);
-      }
-
-      return nextProbes;
-    });
+      });
+    } catch (err) {
+      console.error(err);
+      alert('Failed to remove probe: ' + err.message);
+    }
   }
 
   return {

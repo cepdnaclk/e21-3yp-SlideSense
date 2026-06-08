@@ -28,6 +28,23 @@ export async function login(email, password) {
   return data;
 }
 
+export async function register(registrationData) {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(registrationData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Registration failed. Please check your inputs.');
+  }
+
+  return response.json();
+}
+
 export function logout() {
   localStorage.removeItem('AUTH_TOKEN');
   localStorage.removeItem('USER_ROLE');

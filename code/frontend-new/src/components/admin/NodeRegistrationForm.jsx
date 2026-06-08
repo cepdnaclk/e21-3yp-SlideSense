@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
+import Button from '../common/Button';
+
+const PlusIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M5 12h14" />
+		<path d="M12 5v14" />
+	</svg>
+);
 
 const INITIAL_FORM = {
 	id: '',
+	hwSerial: '',
 	latitude: '',
 	longitude: '',
 };
@@ -27,11 +36,12 @@ export default function AddProbeForm({ onAddProbe, existingIds }) {
 		event.preventDefault();
 
 		const id = form.id.trim().toUpperCase();
+		const hwSerial = form.hwSerial.trim();
 		const latitude = Number(form.latitude);
 		const longitude = Number(form.longitude);
 
-		if (!id || Number.isNaN(latitude) || Number.isNaN(longitude)) {
-			setMessage('Enter a valid probe ID, latitude, and longitude.');
+		if (!id || !hwSerial || Number.isNaN(latitude) || Number.isNaN(longitude)) {
+			setMessage('Enter a valid probe ID, HW Serial, latitude, and longitude.');
 			return;
 		}
 
@@ -40,7 +50,7 @@ export default function AddProbeForm({ onAddProbe, existingIds }) {
 			return;
 		}
 
-		onAddProbe({ id, latitude, longitude });
+		onAddProbe({ id, hwSerial, latitude, longitude });
 		setForm(INITIAL_FORM);
 		setMessage(`Probe ${id} added to the map.`);
 	}
@@ -55,14 +65,17 @@ export default function AddProbeForm({ onAddProbe, existingIds }) {
 			</div>
 
 			<form className="add-probe-form" onSubmit={handleSubmit}>
-				<input name="id" value={form.id} onChange={updateField} placeholder="Probe ID" />
+				<div className="add-probe-form__row">
+					<input name="id" value={form.id} onChange={updateField} placeholder="Probe ID" />
+					<input name="hwSerial" value={form.hwSerial} onChange={updateField} placeholder="HW Serial" />
+				</div>
 				<div className="add-probe-form__row">
 					<input name="latitude" value={form.latitude} onChange={updateField} placeholder="Latitude" />
 					<input name="longitude" value={form.longitude} onChange={updateField} placeholder="Longitude" />
 				</div>
-				<button className="primary-button primary-button--full" type="submit">
-					Add probe
-				</button>
+				<Button className="primary-button--full" type="submit" title="Add probe">
+					<PlusIcon />
+				</Button>
 			</form>
 
 			{message ? <p className="form-message">{message}</p> : null}

@@ -178,6 +178,63 @@ export function mapReadingsToNodes(readings) {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
+export async function createNode(nodeData) {
+  const token = localStorage.getItem('AUTH_TOKEN');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+
+  const payload = {
+    probeId: nodeData.id,
+    hwSerial: nodeData.hwSerial,
+    firmwareVer: '1.0.0',
+    latitude: nodeData.latitude,
+    longitude: nodeData.longitude,
+    status: 'ONLINE'
+  };
+
+  const response = await fetch(`${API_BASE_URL}/admin/probes/create`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    let errMessage = 'Unknown error';
+    try {
+      const errPayload = await response.json();
+      errMessage = errPayload.message || errPayload.error || JSON.stringify(errPayload);
+    } catch {
+      errMessage = await response.text() || response.statusText;
+    }
+    throw new Error(`Failed to create node: ${errMessage}`);
+  }
+  return response.json();
+}
+
+export async function deleteNode(deviceId) {
+  const token = localStorage.getItem('AUTH_TOKEN');
+  const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+  const response = await fetch(`${API_BASE_URL}/admin/probes/${deviceId}`, {
+    method: 'DELETE',
+    headers
+  });
+
+  if (!response.ok) {
+    let errMessage = 'Unknown error';
+    try {
+      const errPayload = await response.json();
+      errMessage = errPayload.message || errPayload.error || JSON.stringify(errPayload);
+    } catch {
+      errMessage = await response.text() || response.statusText;
+    }
+    throw new Error(`Failed to delete node: ${errMessage}`);
+  }
+}
+
+
 export async function getNodes() {
   const role = localStorage.getItem('USER_ROLE');
   const endpoint = role === 'resident' 

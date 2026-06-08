@@ -50,7 +50,7 @@ function ResetView({ trigger }) {
 	return null;
 }
 
-export default function MapView({ probes, selectedProbeId, onSelectProbe, searchValue, onSearchChange, onSearchSubmit, focusTrigger }) {
+export default function MapView({ probes, selectedProbeId, onSelectProbe, searchValue, onSearchChange, onSearchSubmit, focusTrigger, hideSearch }) {
 	const [resetTrigger, setResetTrigger] = useState(0);
 
 	const handleShowAll = () => {
@@ -67,14 +67,16 @@ export default function MapView({ probes, selectedProbeId, onSelectProbe, search
 				<div className="map-card__heading">
 					<h2 className="panel-card__title">Probe network overview</h2>
 				</div>
-				<SearchBar
-					value={searchValue}
-					onChange={onSearchChange}
-					onSubmit={onSearchSubmit}
-					onShowAll={handleShowAll}
-					probeIds={probes.map((probe) => probe.id)}
-					inline
-				/>
+				{!hideSearch && (
+					<SearchBar
+						value={searchValue}
+						onChange={onSearchChange}
+						onSubmit={onSearchSubmit}
+						onShowAll={handleShowAll}
+						probeIds={probes.map((probe) => probe.id)}
+						inline
+					/>
+				)}
 			</div>
 
 			<div className="map-canvas">
@@ -96,7 +98,7 @@ export default function MapView({ probes, selectedProbeId, onSelectProbe, search
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					/>
 
-					{probes.map((probe) => {
+					{(selectedProbeId ? probes.filter(p => p.id === selectedProbeId) : probes).map((probe) => {
 						const selected = probe.id === selectedProbeId;
 						const riskLabel = getRiskLabel(probe.riskLevel);
 

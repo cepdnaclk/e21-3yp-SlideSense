@@ -15,6 +15,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.slidesense.backend.model.enums.ProbeStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +75,7 @@ public class FrontendDataService {
 
     @Transactional(readOnly = true)
     public List<FrontendReadingDTO> fetchAllReadings(int limit, String nextToken) {
-        List<Probe> probes = probeRepository.findAll();
+        List<Probe> probes = probeRepository.findAllByStatusNot(ProbeStatus.DEACTIVATED);
         return fetchReadingsForProbes(probes);
     }
 
@@ -85,7 +86,10 @@ public class FrontendDataService {
             return new ArrayList<>();
         }
         List<ProbeAccessGrant> grants = probeAccessGrantRepository.findByUser_IdAndRevokedAtIsNull(user.getId());
-        List<Probe> probes = grants.stream().map(ProbeAccessGrant::getProbe).collect(Collectors.toList());
+        List<Probe> probes = grants.stream()
+                .map(ProbeAccessGrant::getProbe)
+                .filter(p -> p.getStatus() != ProbeStatus.DEACTIVATED)
+                .collect(Collectors.toList());
         return fetchReadingsForProbes(probes);
     }
 
