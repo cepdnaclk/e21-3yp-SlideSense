@@ -92,6 +92,7 @@ You only need to configure the database container once on the EC2 host.
      timescaledb:
        image: timescale/timescaledb:latest-pg16
        container_name: slidesense-timescaledb
+       restart: unless-stopped
        environment:
          POSTGRES_DB: slidesense
          POSTGRES_USER: slidesense
