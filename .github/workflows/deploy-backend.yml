@@ -35,9 +35,9 @@ jobs:
     - name: Copy JAR file to EC2
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets::EC2_HOST }}
-        username: ${{ secrets::EC2_USERNAME }}
-        key: ${{ secrets::EC2_SSH_KEY }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
         source: "code/backend/target/*.jar"
         target: "/var/www/slidesense"
         strip_components: 3 # Strips 'code/backend/target' so the file lands directly in '/var/www/slidesense'
@@ -46,9 +46,9 @@ jobs:
     - name: Restart Application Service
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets::EC2_HOST }}
-        username: ${{ secrets::EC2_USERNAME }}
-        key: ${{ secrets::EC2_SSH_KEY }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           # Rename the uploaded jar to a standardized name (backend.jar)
           mv /var/www/slidesense/*.jar /var/www/slidesense/backend.jar

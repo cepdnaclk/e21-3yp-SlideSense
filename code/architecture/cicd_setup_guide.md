@@ -44,6 +44,83 @@ sudo chown -R ubuntu:ubuntu /var/www/slidesense
 
 ---
 
+## Step 2.5: Install Docker and Run TimescaleDB
+
+Since you are running your TimescaleDB database inside a Docker container, you must install Docker and Docker Compose on your EC2 instance, copy your `docker-compose.yml` file, and start the database.
+
+### 1. Install Docker & Docker Compose on EC2
+Run these commands on your EC2 terminal:
+
+```bash
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg -y
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Install Docker packages:
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+# Add your user to the docker group so you don't need 'sudo' to run docker commands:
+sudo usermod -aG docker ubuntu
+# (Log out of your SSH session and log back in for this to take effect)
+```
+
+### 2. Copy and Run `docker-compose.yml`
+You only need to configure the database container once on the EC2 host.
+
+1. Create a folder for database configuration:
+   ```bash
+   mkdir -p /var/www/slidesense/database
+   cd /var/www/slidesense/database
+   ```
+2. Create a new `docker-compose.yml` file on EC2:
+   ```bash
+   nano docker-compose.yml
+   ```
+3. Copy the contents of your local `code/backend/docker-compose.yml` and paste it here. For reference:
+   ```yaml
+   services:
+     timescaledb:
+       image: timescale/timescaledb:latest-pg16
+       container_name: slidesense-timescaledb
+       environment:
+         POSTGRES_DB: slidesense
+         POSTGRES_USER: slidesense
+         POSTGRES_PASSWORD: slidesense
+       ports:
+         - "127.0.0.1:5432:5432" # Bind to localhost (127.0.0.1) for security so external sources cannot access it
+       volumes:
+         - timescaledb_data:/var/lib/postgresql/data
+       healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U slidesense -d slidesense"]
+         interval: 10s
+         timeout: 5s
+         retries: 5
+
+   volumes:
+     timescaledb_data:
+   ```
+4. Save the file (`Ctrl + O`, `Enter`, `Ctrl + X`).
+5. Run your database in the background:
+   ```bash
+   docker compose up -d
+   ```
+6. Check that the container is up and healthy:
+   ```bash
+   docker ps
+   ```
+
+---
+
 ## Step 3: Configure systemd on EC2
 
 To run your Spring Boot application as a background service that automatically restarts if the server reboots or if the application crashes, create a systemd service.
@@ -145,9 +222,9 @@ jobs:
     - name: Copy JAR file to EC2
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets::EC2_HOST }}
-        username: ${{ secrets::EC2_USERNAME }}
-        key: ${{ secrets::EC2_SSH_KEY }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
         source: "code/backend/target/*.jar"
         target: "/var/www/slidesense"
         strip_components: 3 # Strips 'code/backend/target' so the file lands directly in '/var/www/slidesense'
@@ -156,9 +233,9 @@ jobs:
     - name: Restart Application Service
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets::EC2_HOST }}
-        username: ${{ secrets::EC2_USERNAME }}
-        key: ${{ secrets::EC2_SSH_KEY }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           # Rename the uploaded jar to a standardized name (backend.jar)
           mv /var/www/slidesense/*.jar /var/www/slidesense/backend.jar
