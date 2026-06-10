@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'code/frontend-new/**' # Only trigger when frontend code changes
+  workflow_dispatch: # Allows manual trigger from the Actions tab
 
 jobs:
   build-and-deploy:

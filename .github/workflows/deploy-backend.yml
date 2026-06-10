@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'code/backend/**' # Only trigger when backend code changes
+  workflow_dispatch: # Allows manual trigger from the Actions tab
 
 jobs:
   build-and-deploy:

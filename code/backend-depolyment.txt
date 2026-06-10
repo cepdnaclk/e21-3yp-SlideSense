@@ -1,7 +1,0 @@
-The Manual Way : Every time you change your code:
-
-    1. Run mvn clean package again to create a new .jar file.
-    2. Go to your Elastic Beanstalk Dashboard.
-    3. Click the Upload and Deploy button.
-    4. Select the new .jar file from your target folder.
-    5. AWS will swap the old version for the new one (takes about 2 mins).
