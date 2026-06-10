@@ -270,3 +270,131 @@ jobs:
    ```
 
 Your backend CI/CD pipeline is now fully set up! Every time you push a backend change to `main`, it will automatically build, deploy, and restart on EC2.
+
+---
+
+## Step 7: Host React Frontend with Nginx (on the same EC2)
+
+Hosting your frontend on the same EC2 instance is highly recommended because:
+- **Cost**: It's completely free (uses Nginx, which uses minimal resources).
+- **CORS**: You can configure Nginx to route `/api` requests to the backend. Since the frontend and API are served from the same domain/IP, you bypass all browser CORS blockages.
+
+### 1. Install Nginx on EC2
+Connect to your EC2 instance and install Nginx:
+```bash
+sudo apt update
+sudo apt install nginx -y
+```
+
+### 2. Configure Directory for Frontend
+Create a directory where Nginx will look for your React static files:
+```bash
+sudo mkdir -p /var/www/slidesense/frontend
+sudo chown -R ubuntu:ubuntu /var/www/slidesense/frontend
+```
+
+### 3. Create Nginx Configuration
+We will configure Nginx to:
+1. Serve static React files on port `80` (HTTP).
+2. Proxy any API request starting with `/api/` to your Spring Boot backend running locally on port `8080`.
+
+1. Remove the default Nginx config:
+   ```bash
+   sudo rm /etc/nginx/sites-enabled/default
+   ```
+2. Create a new configuration file:
+   ```bash
+   sudo nano /etc/nginx/sites-available/slidesense
+   ```
+3. Paste the following configuration:
+   ```nginx
+   server {
+       listen 80;
+       server_name _; # Responds to your public EC2 IP address
+
+       # Serve React Static Files
+       location / {
+           root /var/www/slidesense/frontend;
+           index index.html;
+           try_files $uri $uri/ /index.html; # Fallback to index.html for React Router
+       }
+
+       # Proxy API requests to Spring Boot
+       location /api/ {
+           proxy_pass http://127.0.0.1:8080/;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+           
+           # Adjust headers for CORS/Forwarding
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header X-Forwarded-Proto $scheme;
+       }
+   }
+   ```
+4. Enable the configuration and restart Nginx:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/slidesense /etc/nginx/sites-enabled/
+   sudo nginx -t # Test configuration syntax
+   sudo systemctl restart nginx
+   ```
+
+---
+
+## Step 8: Automating Frontend Deployment with GitHub Actions
+
+Now, create a GitHub Actions workflow to build and deploy your React frontend to EC2 automatically.
+
+Create a new file at `.github/workflows/deploy-frontend.yml`:
+
+```yaml
+name: Deploy Frontend to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'code/frontend-new/**' # Only trigger when frontend code changes
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout codebase
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'code/frontend-new/package-lock.json'
+
+    # 3. Install dependencies and build React app
+    - name: Install & Build
+      run: |
+        cd code/frontend-new
+        npm install
+        # Set VITE_API_BASE_URL to /api. Nginx will automatically proxy /api/ requests to http://localhost:8080/
+        VITE_API_BASE_URL=/api npm run build
+
+    # 4. Copy build folder (dist) to EC2 using SCP
+    - name: Copy static files to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "code/frontend-new/dist/*"
+        target: "/var/www/slidesense/frontend"
+        strip_components: 3 # Strips 'code/frontend-new/dist' so files land directly in '/var/www/slidesense/frontend'
+```
+
+Once pushed to `main`, GitHub will automatically build your React app and upload it to `/var/www/slidesense/frontend` where Nginx will serve it instantly!

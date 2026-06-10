@@ -1,0 +1,44 @@
+name: Deploy Frontend to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'code/frontend-new/**' # Only trigger when frontend code changes
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout codebase
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'code/frontend-new/package-lock.json'
+
+    # 3. Install dependencies and build React app
+    - name: Install & Build
+      run: |
+        cd code/frontend-new
+        npm install
+        # Set VITE_API_BASE_URL to /api. Nginx will automatically proxy /api/ requests to http://localhost:8080/
+        VITE_API_BASE_URL=/api npm run build
+
+    # 4. Copy build folder (dist) to EC2 using SCP
+    - name: Copy static files to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "code/frontend-new/dist/*"
+        target: "/var/www/slidesense/frontend"
+        strip_components: 3 # Strips 'code/frontend-new/dist' so files land directly in '/var/www/slidesense/frontend'
