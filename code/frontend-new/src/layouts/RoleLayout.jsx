@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Topbar from '../components/layout/Topbar';
+import Footer from '../components/layout/Footer';
 
 export default function RoleLayout({ eyebrow, title, status, actions, sidebar, children, className = '' }) {
   const hasSidebar = Boolean(sidebar);
@@ -28,7 +29,6 @@ export default function RoleLayout({ eyebrow, title, status, actions, sidebar, c
       <Topbar 
         eyebrow={eyebrow} 
         title={title} 
-        status={status} 
         actions={actions} 
         onToggleSidebar={hasSidebar ? handleToggleSidebar : undefined} 
       />
@@ -36,6 +36,7 @@ export default function RoleLayout({ eyebrow, title, status, actions, sidebar, c
         {hasSidebar ? <aside className={`role-layout__sidebar ${isSidebarContracted ? 'role-layout__sidebar--contracted' : ''}`}>{sidebar}</aside> : null}
         <div className="role-layout__content">{children}</div>
       </div>
+      <Footer status={status} />
     </div>
   );
 }

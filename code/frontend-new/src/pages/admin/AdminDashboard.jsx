@@ -2,11 +2,13 @@ import { useMemo, useState, useEffect } from 'react';
 import Button from '../../components/common/Button';
 import Tabs from '../../components/common/Tabs';
 import ConfirmModal from '../../components/common/ConfirmModal';
+import LogoutButton from '../../components/common/LogoutButton';
 import AdminLayout from '../../layouts/AdminLayout';
 import UserManagementPanel from '../../components/admin/UserManagementPanel';
 import { useProbeNetwork } from '../../shared/hooks/useProbeNetwork';
 import { getAdminDashboardData } from '../../services/api/dashboardService';
 import { isProbeOffline, getAlertRows } from '../../shared/utils/probeUtils';
+
 
 import OverviewTab from './tabs/OverviewTab';
 import NodesTab from './tabs/NodesTab';
@@ -108,7 +110,7 @@ export default function AdminDashboard({ onLogout }) {
     <AdminLayout
       title="Admin Dashboard"
       status={isLoadingLiveData ? 'Loading live sensor data from backend...' : loadError || 'Live backend connected.'}
-      actions={<Button variant="ghost" onClick={onLogout}>Log Out</Button>}
+      actions={<LogoutButton onLogout={onLogout} />}
       sidebar={
         <Tabs 
           tabs={tabs} 

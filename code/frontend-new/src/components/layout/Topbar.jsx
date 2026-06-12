@@ -1,4 +1,4 @@
-export default function Topbar({ eyebrow = 'Landslide monitoring', title, status, actions, onToggleSidebar }) {
+export default function Topbar({ eyebrow = 'Landslide monitoring', title, actions, onToggleSidebar }) {
   return (
     <header className="admin-topbar">
       <div className="admin-topbar__left">
@@ -11,7 +11,10 @@ export default function Topbar({ eyebrow = 'Landslide monitoring', title, status
             ☰
           </button>
         )}
-        <img src="/logo.png" alt="Slide Sense logo" className="admin-topbar__logo" />
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/favicon.png" />
+          <img src="/logo.png" alt="Slide Sense logo" className="admin-topbar__logo" />
+        </picture>
       </div>
 
       <div className="admin-topbar__center">
@@ -20,7 +23,6 @@ export default function Topbar({ eyebrow = 'Landslide monitoring', title, status
       </div>
 
       <div className="admin-topbar__right admin-topbar__meta">
-        <p className="admin-topbar__status">{status}</p>
         {actions ? <div className="admin-topbar__actions">{actions}</div> : null}
       </div>
     </header>

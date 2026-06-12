@@ -3,6 +3,7 @@ import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Table from '../../components/common/Table';
 import Tabs from '../../components/common/Tabs';
+import LogoutButton from '../../components/common/LogoutButton';
 import RoleLayout from '../../layouts/RoleLayout';
 import ProbeMapView from '../../components/admin/ProbeMapView';
 import CurrentStatusPanel from '../../components/admin/CurrentStatusPanel';
@@ -99,7 +100,7 @@ export default function ResearcherDashboard({ onLogout }) {
       eyebrow="Researcher view"
       title="Environmental Data Workspace"
       status={isLoadingLiveData ? 'Syncing live monitoring data...' : loadError || `Selected node: ${selectedProbeId ?? 'None'}`}
-      actions={<Button variant="ghost" onClick={onLogout}>Log Out</Button>}
+      actions={<LogoutButton onLogout={onLogout} />}
       sidebar={
         <Tabs 
           tabs={tabs} 
