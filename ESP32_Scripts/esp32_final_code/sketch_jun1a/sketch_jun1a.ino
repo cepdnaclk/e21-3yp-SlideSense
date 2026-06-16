@@ -18,20 +18,21 @@ constexpr int MOISTURE_RAW_DRY = 3200;
 constexpr int MOISTURE_RAW_WET = 1400;
 
 // Hardware wiring.
-constexpr int SIM808_RX_PIN = 25;
-constexpr int SIM808_TX_PIN = 26;
-constexpr int GPS_RX_PIN = 16;
-constexpr int GPS_TX_PIN = 17;
+constexpr int SIM808_RX_PIN = 17; // Updated
+constexpr int SIM808_TX_PIN = 16; // Updated
+constexpr int GPS_RX_PIN = 25;    // Swapped to avoid conflict
+constexpr int GPS_TX_PIN = 26;    // Swapped to avoid conflict
 constexpr int MOISTURE_PIN = 34;
 constexpr int RAIN_PIN = 27;
 
 // HTTP target. Replace API_HOST with the backend host or IP.
 // This path matches the HTTP ingestion endpoint added to the backend.
-constexpr const char* API_HOST = "65.1.93.145";
+constexpr const char* API_HOST = "3.111.133.133";
 constexpr uint16_t API_PORT = 80;
 constexpr const char* API_PATH = "/ingestion/http";
 constexpr const char* GSM_APN = "mobitel";
 constexpr const char* BRIDGE_SECRET = "278075eb4912a22ff8c6590ddc69adc4ac9f9fd47ee9fdbb31da755433c863db";
+constexpr const char* PROBE_ID = "P-TEST-01";
 constexpr const char* HW_SERIAL = "ESP32-WROOM-32D-01";
 
 // =========================
@@ -267,6 +268,7 @@ bool postJsonPayload(const String& jsonPayload) {
 
 String buildPayload(const SensorSnapshot& snapshot) {
   StaticJsonDocument<256> doc;
+  doc["probe_id"] = PROBE_ID;
   doc["deviceTimeMs"] = snapshot.deviceTimeMs;
   doc["moisture"] = snapshot.moisture;
   doc["tiltAngle"] = snapshot.tiltAngle;
@@ -334,8 +336,15 @@ void publishTask(void* parameter) {
 
   Serial.println("[INIT] Core 0 publishing task initialized");
   bool gsmReady = gsmInit();
+  uint8_t packetsSent = 0; // New counter to track successful transmissions
 
   for (;;) {
+    // Check if we hit the 10 packet limit
+    if (packetsSent >= 10) {
+      Serial.println("[PUBLISH] Reached maximum of 10 test packets. Stopping publish task.");
+      vTaskDelete(nullptr); // Safely terminates this FreeRTOS task
+    }
+
     SensorSnapshot snapshot;
     if (xSemaphoreTake(stateMutex, portMAX_DELAY) == pdTRUE) {
       snapshot = latestSnapshot;
@@ -356,6 +365,8 @@ void publishTask(void* parameter) {
         gsmReady = false;
       } else {
         Serial.println("[PUBLISH] Publish complete");
+        packetsSent++; // Increment the counter upon success
+        Serial.printf("[PUBLISH] Packets sent: %d/10\n", packetsSent);
       }
     }
 

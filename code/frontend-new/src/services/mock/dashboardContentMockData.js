@@ -23,7 +23,7 @@ export const adminDashboardTabs = [
   {
     id: 'configuration',
     label: 'System Configuration',
-    description: 'Thresholds, risk rules, and security logs',
+    description: 'Thresholds and security logs',
   },
 ];
 

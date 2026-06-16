@@ -98,19 +98,19 @@ export default function NodesTab({
             <Card className="historical-data-card">
               <span className="section-label">Selected probe history</span>
               <h2>{selectedProbe?.id ?? 'No probe selected'}</h2>
-              <Table>
+              <Table style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <thead>
                   <tr>
-                    <th>Label</th>
-                    <th>Rainfall</th>
-                    <th>Moisture</th>
-                    <th>Vibration</th>
+                    <th style={{ position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 1 }}>Date & Time</th>
+                    <th style={{ position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 1 }}>Rainfall</th>
+                    <th style={{ position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 1 }}>Moisture</th>
+                    <th style={{ position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 1 }}>Vibration</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {(selectedProbe?.history ?? []).slice(-6).map((row) => (
-                    <tr key={`${row.label}-${row.rainfall}`}>
-                      <td>{row.label}</td>
+                  {[...(selectedProbe?.history ?? [])].reverse().map((row) => (
+                    <tr key={`${row.timestamp || row.label}-${row.rainfall}`}>
+                      <td>{row.timestamp || row.label}</td>
                       <td>{row.rainfall}</td>
                       <td>{row.moisture}</td>
                       <td>{row.vibration}</td>

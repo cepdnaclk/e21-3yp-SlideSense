@@ -88,7 +88,7 @@ export function useProbeNetwork() {
         }
 
         setProbes(liveProbes);
-        setSelectedProbeId((currentId) => (currentId && liveProbes.some((probe) => probe.id === currentId) ? currentId : liveProbes[0].id));
+        setSelectedProbeId((currentId) => (currentId && liveProbes.some((probe) => probe.id === currentId) ? currentId : null));
       } catch (error) {
         if (active) {
           setProbes([]);
@@ -135,6 +135,7 @@ export function useProbeNetwork() {
           : (latest.tilt === 1 ? 70 : 15);
         const nextHistory = [...(Array.isArray(probe.history) ? probe.history : []), {
           label: 'Now',
+          timestamp: latest.lastUpdated ?? formatNowLocal(),
           rainfall: latest.rain,
           moisture: avg,
           vibration,
