@@ -78,7 +78,7 @@ function formatTimestamp(rawTimestamp) {
 }
 
 function buildHistory(rows) {
-  const recentRows = rows.slice(0, 12).reverse();
+  const recentRows = [...rows].reverse();
 
   return recentRows.map((row, index) => {
     const m1 = toNumber(row.m1);
@@ -90,6 +90,7 @@ function buildHistory(rows) {
 
     return {
       label: `T-${recentRows.length - index - 1}`,
+      timestamp: parseLastUpdated(row) || formatDateTimeLocal(new Date()),
       rainfall: getRainValue(row),
       moisture: avgMoisture,
       vibration,

@@ -22,7 +22,7 @@ function FocusOnSelection({ selectedProbe, focusTrigger }) {
 	const map = useMap();
 
 	useEffect(() => {
-		if (!selectedProbe) {
+		if (!selectedProbe || focusTrigger === 0) {
 			return;
 		}
 
@@ -98,7 +98,7 @@ export default function MapView({ probes, selectedProbeId, onSelectProbe, search
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					/>
 
-					{(selectedProbeId ? probes.filter(p => p.id === selectedProbeId) : probes).map((probe) => {
+					{probes.map((probe) => {
 						const selected = probe.id === selectedProbeId;
 						const riskLabel = getRiskLabel(probe.riskLevel);
 

@@ -1,4 +1,3 @@
-connecting-iot-core
 #include <Arduino.h>
 
 #define SENSOR_PIN 21

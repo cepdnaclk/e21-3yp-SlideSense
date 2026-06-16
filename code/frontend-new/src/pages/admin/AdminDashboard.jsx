@@ -6,7 +6,7 @@ import LogoutButton from '../../components/common/LogoutButton';
 import AdminLayout from '../../layouts/AdminLayout';
 import UserManagementPanel from '../../components/admin/UserManagementPanel';
 import { useProbeNetwork } from '../../shared/hooks/useProbeNetwork';
-import { getAdminDashboardData } from '../../services/api/dashboardService';
+import { getAdminDashboardData, updateThresholds } from '../../services/api/dashboardService';
 import { isProbeOffline, getAlertRows } from '../../shared/utils/probeUtils';
 
 
@@ -85,8 +85,16 @@ export default function AdminDashboard({ onLogout }) {
     setStatusMessage('Resolved alerts cleared from the active list.');
   }
 
-  function saveThresholds() {
-    setStatusMessage('Threshold settings saved locally for the current session.');
+  async function saveThresholds() {
+    try {
+      await updateThresholds(thresholds);
+      setStatusMessage('Threshold settings saved successfully to the database.');
+      // Refresh admin dashboard data (e.g. security logs)
+      const data = await getAdminDashboardData();
+      setSecurityLogs(data.securityLogs ?? []);
+    } catch (err) {
+      setStatusMessage(`Failed to save thresholds: ${err.message}`);
+    }
   }
 
   function handleThresholdChange(event) {

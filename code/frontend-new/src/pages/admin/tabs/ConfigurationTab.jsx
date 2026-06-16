@@ -19,6 +19,7 @@ export default function ConfigurationTab({
 }) {
   return (
     <section className="dashboard-stack">
+
       <div className="card-grid card-grid--two">
         <ConfigCard title="Threshold settings">
           <div className="config-form-grid">
@@ -36,24 +37,6 @@ export default function ConfigurationTab({
             </label>
           </div>
           <Button onClick={saveThresholds}>Save thresholds</Button>
-        </ConfigCard>
-
-        <ConfigCard title="Risk rules editor">
-          <p>Define risk levels and update detection logic parameters.</p>
-          <div className="config-form-grid">
-            <label>
-              Low risk label
-              <input defaultValue="Stable" />
-            </label>
-            <label>
-              Warning label
-              <input defaultValue="Watch closely" />
-            </label>
-            <label>
-              Critical label
-              <input defaultValue="Evacuate" />
-            </label>
-          </div>
         </ConfigCard>
       </div>
 
