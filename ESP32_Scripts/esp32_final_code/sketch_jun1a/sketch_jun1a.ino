@@ -33,7 +33,7 @@ constexpr const char* API_PATH = "/ingestion/http";
 constexpr const char* GSM_APN = "mobitel";
 constexpr const char* BRIDGE_SECRET = "278075eb4912a22ff8c6590ddc69adc4ac9f9fd47ee9fdbb31da755433c863db";
 constexpr const char* PROBE_ID = "P-TEST-01";
-constexpr const char* HW_SERIAL = "ESP32-WROOM-32D-01";
+constexpr const char* HW_SERIAL = "SN-TEST-01";
 
 // =========================
 // SERIAL PORTS AND GPS

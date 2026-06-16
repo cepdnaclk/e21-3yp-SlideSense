@@ -91,7 +91,7 @@ public class SqsIngestionService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payload has no reading fields");
         }
 
-        log.debug("Ingested SQS message for probe {} at {}", probe.getProbeId(), recordedAt);
+        log.info("Ingested SQS message for probe {} at {}", probe.getProbeId(), recordedAt);
     }
 
     private OffsetDateTime resolveRecordedAt(OffsetDateTime recordedAt, Long deviceTimeMs) {
