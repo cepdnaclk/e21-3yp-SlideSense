@@ -27,12 +27,14 @@ public class ProbeDataController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('RESEARCHER')")
     public ResponseEntity<Map<String, Object>> getReadings(
             @RequestParam(defaultValue = "200") int limit,
-            @RequestParam(required = false) String nextToken) {
+            @RequestParam(required = false) String nextToken,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.OffsetDateTime startDate,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.OffsetDateTime endDate) {
         
-        List<FrontendReadingDTO> items = frontendDataService.fetchAllReadings(limit, nextToken);
+        List<FrontendReadingDTO> items = frontendDataService.fetchAllReadings(limit, nextToken, startDate, endDate);
         Map<String, Object> response = new java.util.HashMap<>();
         response.put("items", items);
-        response.put("nextToken", nextToken == null ? "page2" : null);
+        response.put("nextToken", null);
         return ResponseEntity.ok(response);
     }
 
@@ -41,13 +43,15 @@ public class ProbeDataController {
     public ResponseEntity<Map<String, Object>> getMyReadings(
             Authentication authentication,
             @RequestParam(defaultValue = "200") int limit,
-            @RequestParam(required = false) String nextToken) {
+            @RequestParam(required = false) String nextToken,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.OffsetDateTime startDate,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.OffsetDateTime endDate) {
         
         String email = authentication.getName();
-        List<FrontendReadingDTO> items = frontendDataService.fetchMyReadings(email, limit, nextToken);
+        List<FrontendReadingDTO> items = frontendDataService.fetchMyReadings(email, limit, nextToken, startDate, endDate);
         Map<String, Object> response = new java.util.HashMap<>();
         response.put("items", items);
-        response.put("nextToken", nextToken == null ? "page2" : null);
+        response.put("nextToken", null);
         return ResponseEntity.ok(response);
     }
 

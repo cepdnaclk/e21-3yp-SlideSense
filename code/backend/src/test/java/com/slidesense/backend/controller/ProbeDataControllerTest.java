@@ -18,6 +18,7 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -49,14 +50,14 @@ class ProbeDataControllerTest {
                 0f, 0f, 0f, 0f, 5f, 0f, 100f, 100f, "normal"
         );
 
-        when(frontendDataService.fetchAllReadings(anyInt(), isNull())).thenReturn(List.of(reading));
+        when(frontendDataService.fetchAllReadings(anyInt(), isNull(), any(), any())).thenReturn(List.of(reading));
 
         mockMvc.perform(get("/api/v1/probes/readings")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items", hasSize(1)))
                 .andExpect(jsonPath("$.items[0].deviceID").value("probe-1"))
-                .andExpect(jsonPath("$.nextToken").value("page2"));
+                .andExpect(jsonPath("$.nextToken").isEmpty());
     }
 
     @Test
@@ -66,7 +67,7 @@ class ProbeDataControllerTest {
                 0f, 0f, 0f, 0f, 5f, 0f, 100f, 100f, "normal"
         );
 
-        when(frontendDataService.fetchMyReadings(anyString(), anyInt(), isNull())).thenReturn(List.of(reading));
+        when(frontendDataService.fetchMyReadings(anyString(), anyInt(), isNull(), any(), any())).thenReturn(List.of(reading));
 
         Authentication mockPrincipal = new TestingAuthenticationToken("test@example.com", null);
 

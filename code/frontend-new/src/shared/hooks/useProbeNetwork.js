@@ -44,6 +44,7 @@ function createProbeRecord({ id, hwSerial, latitude, longitude }) {
 }
 
 export function useProbeNetwork() {
+  const [dateRange, setDateRange] = useState({ start: '', end: '' });
   const [probes, setProbes] = useState([]);
   const [selectedProbeId, setSelectedProbeId] = useState(null);
   const [searchValue, setSearchValue] = useState('');
@@ -76,7 +77,10 @@ export function useProbeNetwork() {
       setLoadError('');
 
       try {
-        const liveProbes = await getNodes();
+        const liveProbes = await getNodes(
+          dateRange.start ? new Date(dateRange.start).toISOString() : null,
+          dateRange.end ? new Date(dateRange.end).toISOString() : null
+        );
 
         if (!active || !Array.isArray(liveProbes) || liveProbes.length === 0) {
           if (active && (!Array.isArray(liveProbes) || liveProbes.length === 0)) {
@@ -107,7 +111,7 @@ export function useProbeNetwork() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [dateRange.start, dateRange.end]);
 
   useEffect(() => {
     let active = true;
@@ -254,5 +258,7 @@ export function useProbeNetwork() {
     removeProbe,
     setSelectedProbeId,
     setSearchValue,
+    dateRange,
+    setDateRange,
   };
 }

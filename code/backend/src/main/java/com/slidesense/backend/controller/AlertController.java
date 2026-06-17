@@ -25,7 +25,7 @@ public class AlertController {
     @GetMapping
     public ResponseEntity<List<FrontendAlertDTO>> getAlerts() {
         List<FrontendAlertDTO> alerts = new ArrayList<>();
-        List<FrontendReadingDTO> readings = frontendDataService.fetchAllReadings(200, null);
+        List<FrontendReadingDTO> readings = frontendDataService.fetchAllReadings(200, null, null, null);
 
         for (FrontendReadingDTO reading : readings) {
             if (reading.tilt() != null && reading.tilt() > 15) {

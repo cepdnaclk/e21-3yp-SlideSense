@@ -61,6 +61,8 @@ export default function AdminDashboard({ onLogout }) {
     addProbe,
     updateProbeCoordinate,
     removeProbe,
+    dateRange,
+    setDateRange,
   } = useProbeNetwork();
   
   const [activeTabId, setActiveTabId] = useState('overview');
@@ -169,6 +171,8 @@ export default function AdminDashboard({ onLogout }) {
             updateProbeCoordinate={updateProbeCoordinate}
             confirmRemoveProbe={confirmRemoveProbe}
             addProbe={addProbe}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
           />
         ) : null}
 

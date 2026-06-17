@@ -37,7 +37,9 @@ export default function NodesTab({
   selectedProbe,
   updateProbeCoordinate,
   confirmRemoveProbe,
-  addProbe
+  addProbe,
+  dateRange,
+  setDateRange
 }) {
   return (
     <section className="dashboard-stack">
@@ -98,6 +100,24 @@ export default function NodesTab({
             <Card className="historical-data-card">
               <span className="section-label">Selected probe history</span>
               <h2>{selectedProbe?.id ?? 'No probe selected'}</h2>
+              <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <input 
+                  type="datetime-local" 
+                  title="Start Date"
+                  value={dateRange?.start || ''} 
+                  onChange={e => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                  style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border)', fontSize: '0.9rem' }}
+                />
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-light)' }}>to</span>
+                <input 
+                  type="datetime-local" 
+                  title="End Date"
+                  value={dateRange?.end || ''} 
+                  onChange={e => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                  style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border)', fontSize: '0.9rem' }}
+                />
+                <Button variant="outline" type="button" onClick={() => setDateRange({ start: '', end: '' })} style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem' }}>Clear Range</Button>
+              </div>
               <Table style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <thead>
                   <tr>
@@ -126,7 +146,7 @@ export default function NodesTab({
               onRemoveProbe={confirmRemoveProbe}
             />
           </section>
-          <AnalyticsCharts probe={selectedProbe} />
+          <AnalyticsCharts probe={selectedProbe} dateRange={dateRange} />
         </div>
       ) : (
         <div className="dashboard-stack">

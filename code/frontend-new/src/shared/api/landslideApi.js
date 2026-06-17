@@ -178,7 +178,7 @@ export function mapReadingsToProbes(readings) {
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export async function fetchAllReadings(allDataUrl = '') {
+export async function fetchAllReadings(allDataUrl = '', startDate, endDate) {
   if (USE_MOCKS) {
     // return a shallow copy of the mock readings to simulate network data
     return [...MOCK_READINGS];
@@ -193,6 +193,12 @@ export async function fetchAllReadings(allDataUrl = '') {
     params.set('limit', String(DEFAULT_PAGE_LIMIT));
     if (nextToken) {
       params.set('nextToken', nextToken);
+    }
+    if (startDate) {
+      params.set('startDate', startDate);
+    }
+    if (endDate) {
+      params.set('endDate', endDate);
     }
 
     const endpoint = `${normalizedAllDataUrl}?${params.toString()}`;

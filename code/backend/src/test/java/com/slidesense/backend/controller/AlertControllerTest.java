@@ -50,7 +50,7 @@ class AlertControllerTest {
                 0.1f, 0.2f, 0.3f, 0.2f, 20.0f, 0.5f, 3.3f, -70.0f, "ALERT"
         );
 
-        when(frontendDataService.fetchAllReadings(eq(200), any())).thenReturn(List.of(normalReading, criticalReading));
+        when(frontendDataService.fetchAllReadings(eq(200), any(), any(), any())).thenReturn(List.of(normalReading, criticalReading));
 
         // Act & Assert
         mockMvc.perform(get("/api/v1/alerts")

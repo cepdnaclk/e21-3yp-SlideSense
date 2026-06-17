@@ -37,14 +37,15 @@ public class FrontendDataService {
         this.probeAccessGrantRepository = probeAccessGrantRepository;
     }
 
-    private List<FrontendReadingDTO> fetchReadingsForProbes(List<Probe> probes) {
+    private List<FrontendReadingDTO> fetchReadingsForProbes(List<Probe> probes, OffsetDateTime startDate, OffsetDateTime endDate, int limit) {
         List<FrontendReadingDTO> result = new ArrayList<>();
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-        OffsetDateTime from = now.minusDays(7); // default 7 days history
+        OffsetDateTime from = startDate != null ? startDate : now.minusDays(7);
+        OffsetDateTime to = endDate != null ? endDate : now;
 
         for (Probe probe : probes) {
             List<SensorReading> readings = sensorReadingRepository.findByProbe_IdAndRecordedAtBetweenOrderByRecordedAtDesc(
-                probe.getId(), from, now
+                probe.getId(), from, to
             );
             
             if (readings.isEmpty()) {
@@ -55,7 +56,7 @@ public class FrontendDataService {
                     0f, 0f, 0f, 0f, 0f, 0f, 100f, 100f, "normal"
                 ));
             } else {
-                for (int i = 0; i < Math.min(readings.size(), 20); i++) {
+                for (int i = 0; i < Math.min(readings.size(), limit > 0 ? limit : 200); i++) {
                     SensorReading r = readings.get(i);
                     Float moisture = r.getMoisture() != null ? r.getMoisture() : 0f;
                     result.add(new FrontendReadingDTO(
@@ -74,13 +75,13 @@ public class FrontendDataService {
     }
 
     @Transactional(readOnly = true)
-    public List<FrontendReadingDTO> fetchAllReadings(int limit, String nextToken) {
+    public List<FrontendReadingDTO> fetchAllReadings(int limit, String nextToken, OffsetDateTime startDate, OffsetDateTime endDate) {
         List<Probe> probes = probeRepository.findAllByStatusNot(ProbeStatus.DEACTIVATED);
-        return fetchReadingsForProbes(probes);
+        return fetchReadingsForProbes(probes, startDate, endDate, limit);
     }
 
     @Transactional(readOnly = true)
-    public List<FrontendReadingDTO> fetchMyReadings(String email, int limit, String nextToken) {
+    public List<FrontendReadingDTO> fetchMyReadings(String email, int limit, String nextToken, OffsetDateTime startDate, OffsetDateTime endDate) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             return new ArrayList<>();
@@ -90,7 +91,7 @@ public class FrontendDataService {
                 .map(ProbeAccessGrant::getProbe)
                 .filter(p -> p.getStatus() != ProbeStatus.DEACTIVATED)
                 .collect(Collectors.toList());
-        return fetchReadingsForProbes(probes);
+        return fetchReadingsForProbes(probes, startDate, endDate, limit);
     }
 
     @Transactional(readOnly = true)

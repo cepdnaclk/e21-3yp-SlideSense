@@ -80,7 +80,7 @@ class FrontendDataServiceTest {
         when(sensorReadingRepository.findByProbe_IdAndRecordedAtBetweenOrderByRecordedAtDesc(
                 eq(testProbe.getId()), any(), any())).thenReturn(List.of(testReading));
 
-        List<FrontendReadingDTO> readings = frontendDataService.fetchAllReadings(10, null);
+        List<FrontendReadingDTO> readings = frontendDataService.fetchAllReadings(10, null, null, null);
 
         assertThat(readings).hasSize(1);
         assertThat(readings.get(0).deviceID()).isEqualTo("test-probe-1");
@@ -100,7 +100,7 @@ class FrontendDataServiceTest {
         when(sensorReadingRepository.findByProbe_IdAndRecordedAtBetweenOrderByRecordedAtDesc(
                 eq(testProbe.getId()), any(), any())).thenReturn(List.of(testReading));
 
-        List<FrontendReadingDTO> readings = frontendDataService.fetchMyReadings("test@example.com", 10, null);
+        List<FrontendReadingDTO> readings = frontendDataService.fetchMyReadings("test@example.com", 10, null, null, null);
 
         assertThat(readings).hasSize(1);
         assertThat(readings.get(0).deviceID()).isEqualTo("test-probe-1");
@@ -110,7 +110,7 @@ class FrontendDataServiceTest {
     void fetchMyReadings_returnsEmptyIfUserNotFound() {
         when(userRepository.findByEmail("unknown@example.com")).thenReturn(Optional.empty());
 
-        List<FrontendReadingDTO> readings = frontendDataService.fetchMyReadings("unknown@example.com", 10, null);
+        List<FrontendReadingDTO> readings = frontendDataService.fetchMyReadings("unknown@example.com", 10, null, null, null);
 
         assertThat(readings).isEmpty();
     }

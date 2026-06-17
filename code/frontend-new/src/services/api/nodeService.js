@@ -84,7 +84,14 @@ function buildHistory(rows) {
     const m1 = toNumber(row.m1);
     const m2 = toNumber(row.m2);
     const m3 = toNumber(row.m3);
-    const avgMoisture = toNumber(row.avg_moisture, (m1 + m2 + m3) / 3);
+    
+    let sensorCount = 0;
+    let sum = 0;
+    if (m1 > 0 || row.m1 !== undefined) { sensorCount++; sum += m1; }
+    if (m2 > 0 || row.m2 !== undefined) { sensorCount++; sum += m2; }
+    if (m3 > 0 || row.m3 !== undefined) { sensorCount++; sum += m3; }
+    const fallbackAvg = sensorCount > 0 ? sum / sensorCount : 0;
+    const avgMoisture = toNumber(row.avg_moisture, fallbackAvg);
     const tilt = toNumber(row.tilt);
     const vibration = getVibrationValue(row, tilt === 1 ? 70 : 15);
 
@@ -140,7 +147,14 @@ export function mapReadingsToNodes(readings) {
       const m1 = toNumber(latest.m1);
       const m2 = toNumber(latest.m2);
       const m3 = toNumber(latest.m3);
-      const avgMoisture = toNumber(latest.avg_moisture, (m1 + m2 + m3) / 3);
+      
+      let sensorCount = 0;
+      let sum = 0;
+      if (m1 > 0 || latest.m1 !== undefined) { sensorCount++; sum += m1; }
+      if (m2 > 0 || latest.m2 !== undefined) { sensorCount++; sum += m2; }
+      if (m3 > 0 || latest.m3 !== undefined) { sensorCount++; sum += m3; }
+      const fallbackAvg = sensorCount > 0 ? sum / sensorCount : 0;
+      const avgMoisture = toNumber(latest.avg_moisture, fallbackAvg);
       const tilt = toNumber(latest.tilt);
       const vibration = getVibrationValue(latest, tilt === 1 ? 70 : 15);
       const power = toNumber(latest.power ?? latest.battery ?? latest.batteryLevel, 100);
@@ -236,13 +250,13 @@ export async function deleteNode(deviceId) {
 }
 
 
-export async function getNodes() {
+export async function getNodes(startDate, endDate) {
   const role = localStorage.getItem('USER_ROLE');
   const endpoint = role === 'resident' 
     ? `${API_BASE_URL}/api/v1/probes/my-readings`
     : `${API_BASE_URL}/api/v1/probes/readings`;
     
-  const readings = await fetchAllReadings(endpoint);
+  const readings = await fetchAllReadings(endpoint, startDate, endDate);
   return mapReadingsToNodes(readings);
 }
 

@@ -77,15 +77,47 @@ function getTickValues(maxValue) {
 	return Array.from({ length: GRID_STEPS + 1 }, (_, index) => maxValue - (maxValue / GRID_STEPS) * index);
 }
 
-function MetricBarChart({ probe, metric, timeRanges = DEFAULT_TIME_RANGES }) {
+function MetricBarChart({ probe, metric, timeRanges = DEFAULT_TIME_RANGES, dateRange }) {
+	const isCustomRange = Boolean(dateRange?.start || dateRange?.end);
 	const [selectedRange, setSelectedRange] = useState(timeRanges[1]?.key ?? timeRanges[0]?.key ?? '24h');
 	const hasHistoryData = Array.isArray(probe?.history)
 		&& probe.history.some((point) => Number.isFinite(Number(point?.[metric.key])));
 
-	const series = useMemo(
-		() => buildSeries(probe?.history, metric, selectedRange, timeRanges),
-		[probe?.history, metric, selectedRange, timeRanges],
-	);
+	const series = useMemo(() => {
+		if (isCustomRange && hasHistoryData) {
+			const source = probe.history;
+			const points = Math.min(source.length, 24);
+			const values = resample(source.map(p => normalizeMetricValue(metric, p?.[metric.key])), points);
+			
+			const labelSource = source.map(p => {
+				const parts = String(p.timestamp || '').split(' ');
+				if (parts.length === 2) {
+					const dateParts = parts[0].split('-');
+					return `${dateParts[1] || ''}-${dateParts[2] || ''} ${parts[1]}`;
+				}
+				return p.timestamp || '';
+			});
+			
+			const labels = [];
+			for (let i = 0; i < points; i++) {
+				if (points === 1) {
+					labels.push(labelSource[0]);
+				} else if (points === labelSource.length) {
+					labels.push(labelSource[i]);
+				} else {
+					const position = (i / (points - 1)) * (labelSource.length - 1);
+					labels.push(labelSource[Math.round(position)]);
+				}
+			}
+
+			return values.map((value, index) => ({
+				label: labels[index] || `P${index+1}`,
+				value: Math.round(value)
+			}));
+		}
+
+		return buildSeries(probe?.history, metric, selectedRange, timeRanges);
+	}, [probe?.history, metric, selectedRange, timeRanges, isCustomRange, hasHistoryData]);
 
 	const plotWidth = SVG_WIDTH - MARGIN.left - MARGIN.right;
 	const plotHeight = SVG_HEIGHT - MARGIN.top - MARGIN.bottom;
@@ -105,20 +137,28 @@ function MetricBarChart({ probe, metric, timeRanges = DEFAULT_TIME_RANGES }) {
 				<span className="chart-card__unit">{metric.unit}</span>
 			</div>
 
-			<div className="chart-toggle-group" role="tablist" aria-label={`${metric.label} time range`}>
-				{timeRanges.map((range) => (
-					<button
-						key={range.key}
-						type="button"
-						className={`chart-toggle ${selectedRange === range.key ? 'is-active' : ''}`}
-						onClick={() => setSelectedRange(range.key)}
-						role="tab"
-						aria-selected={selectedRange === range.key}
-					>
-						{range.label}
-					</button>
-				))}
-			</div>
+			{isCustomRange ? (
+				<div className="chart-toggle-group">
+					<span style={{ padding: '0.4rem 1rem', fontSize: '0.9rem', color: 'var(--text-light)', background: '#f0f0f0', borderRadius: '4px' }}>
+						Custom Range Active
+					</span>
+				</div>
+			) : (
+				<div className="chart-toggle-group" role="tablist" aria-label={`${metric.label} time range`}>
+					{timeRanges.map((range) => (
+						<button
+							key={range.key}
+							type="button"
+							className={`chart-toggle ${selectedRange === range.key ? 'is-active' : ''}`}
+							onClick={() => setSelectedRange(range.key)}
+							role="tab"
+							aria-selected={selectedRange === range.key}
+						>
+							{range.label}
+						</button>
+					))}
+				</div>
+			)}
 
 			<svg
 				className="bar-chart-svg"
@@ -227,7 +267,7 @@ function MetricBarChart({ probe, metric, timeRanges = DEFAULT_TIME_RANGES }) {
 	);
 }
 
-export default function AnalyticsCharts({ probe }) {
+export default function AnalyticsCharts({ probe, dateRange }) {
 	if (!probe) {
 		return (
 			<section className="panel-card panel-card--analytics panel-card--empty">
@@ -271,7 +311,7 @@ export default function AnalyticsCharts({ probe }) {
 
 			<div className="charts-grid">
 				{metrics.map((metric) => (
-					<MetricBarChart key={metric.key} metric={metric} probe={probe} timeRanges={timeRanges} />
+					<MetricBarChart key={metric.key} metric={metric} probe={probe} timeRanges={timeRanges} dateRange={dateRange} />
 				))}
 			</div>
 		</section>
