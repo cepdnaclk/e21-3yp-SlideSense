@@ -11,7 +11,9 @@ constexpr uint32_t PUBLISH_INTERVAL_MS = 10000;
 // Each hall-effect pulse represents one bucket tip.
 // Keep this configurable in case the rain gauge is recalibrated.
 constexpr float RAIN_MM_PER_TIP = 0.173f;
-constexpr uint32_t RAIN_DEBOUNCE_MS = 200;
+
+constexpr int RAIN_THRESHOLD_HIGH = 2020;
+constexpr int RAIN_THRESHOLD_LOW  = 1900;
 
 // Moisture calibration values. Update after field calibration.
 constexpr int MOISTURE_RAW_DRY = 3200;
@@ -27,7 +29,7 @@ constexpr int RAIN_PIN = 27;
 
 // HTTP target. Replace API_HOST with the backend host or IP.
 // This path matches the HTTP ingestion endpoint added to the backend.
-constexpr const char* API_HOST = "3.111.133.133";
+constexpr const char* API_HOST = "3.7.191.76";
 constexpr uint16_t API_PORT = 80;
 constexpr const char* API_PATH = "/ingestion/http";
 constexpr const char* GSM_APN = "mobitel";
@@ -66,7 +68,7 @@ size_t historyCount = 0;
 SemaphoreHandle_t stateMutex = nullptr;
 
 volatile uint32_t rainTipCount = 0;
-volatile uint32_t lastRainInterruptMs = 0;
+bool rainWasHigh = false;
 
 struct GpsClockState {
   bool valid = false;
@@ -79,11 +81,27 @@ GpsClockState gpsClockState;
 // =========================
 // HELPERS
 // =========================
-void IRAM_ATTR countRainTip() {
-  uint32_t now = millis();
-  if (now - lastRainInterruptMs >= RAIN_DEBOUNCE_MS) {
-    rainTipCount++;
-    lastRainInterruptMs = now;
+void rainTask(void* parameter) {
+  (void)parameter;
+  for (;;) {
+    int analogValue = analogRead(RAIN_PIN);
+
+    // Determine state using hysteresis instead of a single threshold
+    bool isHigh = rainWasHigh; // default: stay in current state
+    if (!rainWasHigh && analogValue > RAIN_THRESHOLD_HIGH) {
+      isHigh = true;
+    } else if (rainWasHigh && analogValue < RAIN_THRESHOLD_LOW) {
+      isHigh = false;
+    }
+
+    // Check for state change (the tip)
+    if (isHigh != rainWasHigh) {
+      rainTipCount++;
+      rainWasHigh = isHigh;
+      vTaskDelay(pdMS_TO_TICKS(50)); // debounce
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
 
@@ -383,8 +401,9 @@ void setup() {
   analogReadResolution(12);
   analogSetPinAttenuation(MOISTURE_PIN, ADC_11db);
 
-  pinMode(RAIN_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(RAIN_PIN), countRainTip, FALLING);
+  pinMode(RAIN_PIN, INPUT);
+  analogSetPinAttenuation(RAIN_PIN, ADC_11db);
+  xTaskCreatePinnedToCore(rainTask, "rainTask", 4096, nullptr, 3, nullptr, 1);
 
   SerialGsm.begin(9600, SERIAL_8N1, SIM808_RX_PIN, SIM808_TX_PIN);
   SerialGps.begin(9600, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
