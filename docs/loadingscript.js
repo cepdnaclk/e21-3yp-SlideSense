@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                         sessionStorage.setItem("slidesense-loading-complete", "true");
-                        window.location.replace("index.html");
+                        window.location.replace("main.html");
 
         }, 1000);
 
