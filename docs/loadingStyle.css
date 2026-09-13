@@ -1,0 +1,882 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+
+    width: 100%;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background: #020a0f;
+
+    color: white;
+
+    font-family: "Inter", sans-serif;
+
+}
+
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.background {
+
+    position: fixed;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(1, 8, 14, 0.56) 0%,
+            rgba(2, 10, 16, 0.28) 44%,
+            rgba(1, 7, 12, 0.82) 100%
+        ),
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(0, 70, 80, 0.2),
+            transparent 45%
+        ),
+        url('./images/LoadBackground.jpg') center center / 100% 100% no-repeat;
+
+}
+
+
+/* =========================================
+   GRID
+========================================= */
+
+.grid {
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 35%;
+
+    opacity: 0.18;
+
+    background-image:
+        linear-gradient(
+            rgba(0,255,150,0.2) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,255,150,0.2) 1px,
+            transparent 1px
+        );
+
+    background-size: 50px 50px;
+
+    transform:
+        perspective(400px)
+        rotateX(60deg);
+
+    transform-origin: bottom;
+
+}
+
+
+/* =========================================
+   PARTICLES
+========================================= */
+
+#particles {
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+}
+
+
+.particle {
+
+    position: absolute;
+
+    width: 2px;
+
+    height: 2px;
+
+    background: #4cff00;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px #4cff00;
+
+    animation:
+        particleFloat
+        6s infinite ease-in-out;
+
+}
+
+
+@keyframes particleFloat {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translateY(-80px);
+
+    }
+
+}
+
+
+/* =========================================
+   SENSOR NETWORK
+========================================= */
+
+.network-status {
+
+    position: absolute;
+
+    top: 25px;
+
+    right: 40px;
+
+    left: auto;
+
+    width: 215px;
+
+    height: 70px;
+
+    border: 1px solid
+        rgba(0, 180, 255, 0.35);
+
+    border-radius: 12px;
+
+    background:
+        rgba(2, 15, 22, 0.75);
+
+    backdrop-filter: blur(10px);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 15px;
+
+}
+
+
+.network-icon {
+
+    position: relative;
+
+    width: 35px;
+
+    height: 35px;
+
+}
+
+
+.signal {
+
+    position: absolute;
+
+    border: 2px solid #45ff00;
+
+    border-left-color: transparent;
+
+    border-bottom-color: transparent;
+
+    border-radius: 50%;
+
+    transform: rotate(-45deg);
+
+}
+
+
+.signal-1 {
+
+    width: 12px;
+
+    height: 12px;
+
+    left: 12px;
+
+    top: 11px;
+
+}
+
+
+.signal-2 {
+
+    width: 23px;
+
+    height: 23px;
+
+    left: 6px;
+
+    top: 5px;
+
+}
+
+
+.signal-3 {
+
+    width: 34px;
+
+    height: 34px;
+
+    left: 0;
+
+    top: -1px;
+
+}
+
+
+.signal-dot {
+
+    position: absolute;
+
+    width: 5px;
+
+    height: 5px;
+
+    background: #4cff00;
+
+    border-radius: 50%;
+
+    left: 15px;
+
+    top: 15px;
+
+    box-shadow:
+        0 0 10px #4cff00;
+
+}
+
+
+.network-title {
+
+    font-size: 12px;
+
+    color: #d4e2e7;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.network-online {
+
+    margin-top: 5px;
+
+    font-size: 14px;
+
+    color: #4cff00;
+
+    font-weight: 600;
+
+}
+
+
+.network-online span {
+
+    display: inline-block;
+
+    width: 7px;
+
+    height: 7px;
+
+    margin-right: 7px;
+
+    background: #4cff00;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 10px #4cff00;
+
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main {
+
+    position: absolute;
+
+    top: 17%;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 520px;
+
+    text-align: center;
+
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+.logo-image {
+
+    display: block;
+
+    width: min(340px, 78vw);
+
+    height: auto;
+
+    object-fit: contain;
+
+    filter: drop-shadow(0 0 22px rgba(76, 255, 0, 0.28));
+
+}
+
+
+/* =========================================
+   TAGLINE
+========================================= */
+
+.tagline {
+
+    margin-top: 10px;
+
+    color: #a9bac0;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* =========================================
+   RADAR
+========================================= */
+
+.radar {
+
+    position: relative;
+
+    width: 110px;
+
+    height: 110px;
+
+    margin: 10px auto 20px;
+
+}
+
+
+.radar-ring {
+
+    position: absolute;
+
+    border: 1px solid
+        rgba(76,255,0,0.5);
+
+    border-radius: 50%;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+}
+
+
+.ring-1 {
+
+    width: 35px;
+    height: 35px;
+
+}
+
+
+.ring-2 {
+
+    width: 65px;
+    height: 65px;
+
+}
+
+
+.ring-3 {
+
+    width: 100px;
+    height: 100px;
+
+}
+
+
+.radar-sweep {
+
+    position: absolute;
+
+    width: 50%;
+
+    height: 50%;
+
+    left: 50%;
+
+    top: 0;
+
+    transform-origin: bottom left;
+
+    background:
+        linear-gradient(
+            45deg,
+            transparent,
+            rgba(76,255,0,0.4)
+        );
+
+    clip-path:
+        polygon(
+            0 100%,
+            100% 0,
+            0 0
+        );
+
+    animation:
+        radarRotate
+        2s linear infinite;
+
+}
+
+
+@keyframes radarRotate {
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+.radar-dot {
+
+    position: absolute;
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #4cff00;
+
+    box-shadow:
+        0 0 15px #4cff00;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading-text {
+
+    font-size: 17px;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.progress-container {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.progress-background {
+
+    position: relative;
+
+    height: 16px;
+
+    flex: 1;
+
+    border: 1px solid
+        rgba(0,200,255,0.5);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background:
+        rgba(0,20,25,0.8);
+
+}
+
+
+.progress-bar {
+
+    height: 100%;
+
+    width: 0%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4cff00,
+            #65ff22
+        );
+
+    box-shadow:
+        0 0 15px
+        rgba(76,255,0,0.8);
+
+    transition:
+        width 0.1s linear;
+
+}
+
+
+.progress-number {
+
+    width: 40px;
+
+    color: #4cff00;
+
+    font-size: 13px;
+
+}
+
+
+.loading-description {
+
+    margin-top: 15px;
+
+    color: #9baeb4;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.features {
+
+    position: absolute;
+
+    bottom: 28px;
+
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 75%;
+
+    max-width: 1050px;
+
+    min-height: 124px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    border: 1px solid
+        rgba(0,180,255,0.25);
+
+    border-radius: 14px;
+
+    background:
+        rgba(2,15,22,0.75);
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+.feature {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 18px;
+    padding: 14px 20px;
+    text-align: center;
+
+    border-right: 1px solid
+        rgba(100,200,220,0.12);
+
+}
+
+
+.feature:last-child {
+
+    border-right: none;
+
+}
+
+
+.feature-icon {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 46px;
+    font-size: 42px;
+
+}
+
+.feature-icon img {
+
+    display: block;
+
+    width: 42px;
+
+    height: 42px;
+
+    object-fit: contain;
+
+}
+
+
+.feature-title {
+
+    color: #b9cbd1;
+
+    font-size: 13px;
+    font-weight: 600;
+
+}
+
+
+.feature-subtitle {
+
+    color: #b9cbd1;
+
+    font-size: 13px;
+    font-weight: 600;
+
+}
+
+
+.feature-description {
+
+    margin-top: 8px;
+
+    color: #7f949b;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .features {
+
+        width: 90%;
+
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .network-status {
+        top: 15px;
+        right: 15px;
+        left: auto;
+    }
+
+    .main {
+        width: min(90%, 520px);
+        top: 20%;
+
+    }
+
+    .features {
+
+        bottom: 35px;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .feature {
+        min-width: 0;
+        padding: 12px 10px;
+        gap: 12px;
+
+        border-bottom:
+            1px solid
+            rgba(100,200,220,0.12);
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .network-status {
+
+        top: 15px;
+
+        right: 15px;
+
+        left: auto;
+
+        transform: scale(0.8);
+
+        transform-origin: right top;
+
+    }
+
+    .main {
+        top: 22%;
+        width: calc(100% - 30px);
+
+    }
+
+    .tagline {
+
+        font-size: 9px;
+
+    }
+
+    .features {
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+        width: auto;
+        min-height: 0;
+        transform: none;
+
+    }
+
+    .feature {
+        min-height: 66px;
+        gap: 8px;
+        padding: 8px 6px;
+
+    }
+
+    .feature-icon {
+
+        flex-basis: 32px;
+        font-size: 30px;
+
+    }
+
+    .feature-icon img {
+
+        width: 30px;
+
+        height: 30px;
+
+    }
+
+    .feature-description {
+
+        display: none;
+
+    }
+
+}
+
+@media (max-width: 360px) {
+    .logo-image {
+        width: min(260px, 72vw);
+    }
+
+    .tagline {
+        font-size: 8px;
+        letter-spacing: 0.6px;
+    }
+
+    .loading-text {
+        font-size: 14px;
+    }
+
+    .feature-title,
+    .feature-subtitle {
+        font-size: 10px;
+    }
+}
+

@@ -1,117 +1,603 @@
-// Intersection Observer for reveal animations
-const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('vis');
+/* =========================================================
+   SLIDESENSE
+   Hero Section JavaScript
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const navbar =
+        document.querySelector(".navbar");
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const navigation =
+        document.getElementById("navigation");
+
+    const navLinks =
+        document.querySelectorAll(
+            ".navigation a"
+        );
+
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    if (menuButton && navigation) {
+
+        menuButton.addEventListener(
+            "click",
+            () => {
+
+                const isOpen =
+                    navigation.classList.toggle(
+                        "nav-open"
+                    );
+
+                menuButton.classList.toggle(
+                    "menu-open",
+                    isOpen
+                );
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    isOpen
+                );
+
             }
+        );
+
+
+        /* Close menu after clicking link */
+
+        navLinks.forEach(link => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    navigation.classList.remove(
+                        "nav-open"
+                    );
+
+                    menuButton.classList.remove(
+                        "menu-open"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+            );
+
         });
-    },
-    { threshold: 0.08 }
-);
 
-document.querySelectorAll('.rev').forEach((el) => observer.observe(el));
 
-// Interactive feature list (click to activate)
-document.querySelectorAll('.fi').forEach((item) => {
-    item.addEventListener('click', () => {
-        document.querySelectorAll('.fi').forEach((i) => i.classList.remove('act'));
-        item.classList.add('act');
-    });
-});
+        /* Close menu when clicking outside */
 
-// Dark / Light mode toggle
-(function () {
-    const toggle = document.getElementById('theme-toggle');
-    const root = document.documentElement;
+        document.addEventListener(
+            "click",
+            event => {
 
-    // Apply saved preference on page load
-    const saved = localStorage.getItem('slidesense-theme');
-    if (saved === 'light') {
-        root.setAttribute('data-theme', 'light');
+                const clickedNavigation =
+                    navigation.contains(
+                        event.target
+                    );
+
+                const clickedMenu =
+                    menuButton.contains(
+                        event.target
+                    );
+
+
+                if (
+                    !clickedNavigation &&
+                    !clickedMenu
+                ) {
+
+                    navigation.classList.remove(
+                        "nav-open"
+                    );
+
+                    menuButton.classList.remove(
+                        "menu-open"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* Reset menu when returning to desktop */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                if (
+                    window.innerWidth > 1060
+                ) {
+
+                    navigation.classList.remove(
+                        "nav-open"
+                    );
+
+                    menuButton.classList.remove(
+                        "menu-open"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+
+            }
+        );
+
     }
 
-    toggle.addEventListener('click', () => {
-        const isLight = root.getAttribute('data-theme') === 'light';
-        if (isLight) {
-            root.removeAttribute('data-theme');
-            localStorage.setItem('slidesense-theme', 'dark');
-        } else {
-            root.setAttribute('data-theme', 'light');
-            localStorage.setItem('slidesense-theme', 'light');
+
+    /* =====================================================
+       NAVBAR SCROLL EFFECT
+    ===================================================== */
+
+    function updateNavbar() {
+
+        if (!navbar) {
+            return;
         }
-    });
-})();
 
-// Typewriter effect
-class TypewriterEffect {
-    constructor(element, text, speed = 100) {
-        this.element = element;
-        this.text = text;
-        this.speed = speed;
-        this.currentIndex = 0;
-        this.isDeleting = false;
-    }
 
-    start() {
-        this.type();
-    }
+        if (
+            window.scrollY > 30
+        ) {
 
-    type() {
-        this.element.textContent = this.text.substring(0, this.currentIndex);
+            navbar.classList.add(
+                "navbar-scrolled"
+            );
 
-        if (!this.isDeleting && this.currentIndex < this.text.length) {
-            this.currentIndex++;
-            setTimeout(() => this.type(), this.speed);
-        } else if (!this.isDeleting && this.currentIndex === this.text.length) {
-            setTimeout(() => { this.isDeleting = true; this.type(); }, 2000);
-        } else if (this.isDeleting && this.currentIndex > 0) {
-            this.currentIndex--;
-            setTimeout(() => this.type(), this.speed / 2);
         } else {
-            this.isDeleting = false;
-            setTimeout(() => this.type(), 500);
+
+            navbar.classList.remove(
+                "navbar-scrolled"
+            );
+
         }
-    }
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-    const el = document.querySelector('.typewriter-text');
-    if (el) {
-        const text = el.getAttribute('data-text');
-        const tw = new TypewriterEffect(el, text, 80);
-        tw.start();
     }
+
+
+    updateNavbar();
+
+
+    window.addEventListener(
+        "scroll",
+        updateNavbar,
+        {
+            passive: true
+        }
+    );
+
+
+    /* =====================================================
+       SMOOTH SCROLL
+    ===================================================== */
+
+    const internalLinks =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+
+    internalLinks.forEach(link => {
+
+        link.addEventListener(
+            "click",
+            event => {
+
+                const targetID =
+                    link.getAttribute(
+                        "href"
+                    );
+
+
+                /*
+                   Ignore empty anchors
+                */
+
+                if (
+                    !targetID ||
+                    targetID === "#"
+                ) {
+
+                    return;
+
+                }
+
+
+                const target =
+                    document.querySelector(
+                        targetID
+                    );
+
+
+                /*
+                   The hero-only version may contain
+                   navigation links for sections that
+                   will be added later.
+
+                   Therefore, do nothing when the
+                   section doesn't exist.
+                */
+
+                if (!target) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+
+                const navbarHeight =
+                    navbar
+                        ? navbar.offsetHeight
+                        : 0;
+
+
+                const targetPosition =
+                    target
+                        .getBoundingClientRect()
+                        .top
+                    +
+                    window.scrollY
+                    -
+                    navbarHeight;
+
+
+                window.scrollTo({
+
+                    top:
+                        targetPosition,
+
+                    behavior:
+                        "smooth"
+
+                });
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       HERO ENTRANCE ANIMATION
+    ===================================================== */
+
+    const heroElements =
+        document.querySelectorAll(
+            ".hero-animate"
+        );
+
+
+    /*
+       Check whether the user prefers
+       reduced motion.
+    */
+
+    const reducedMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+    if (reducedMotion) {
+
+        heroElements.forEach(
+            element => {
+
+                element.classList.add(
+                    "hero-visible"
+                );
+
+            }
+        );
+
+    } else {
+
+        heroElements.forEach(
+            (element, index) => {
+
+                setTimeout(
+                    () => {
+
+                        element.classList.add(
+                            "hero-visible"
+                        );
+
+                    },
+
+                    120 +
+                    index * 100
+
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       BUTTON FEEDBACK
+    ===================================================== */
+
+    const buttons =
+        document.querySelectorAll(
+            ".btn, .button"
+        );
+
+
+    buttons.forEach(button => {
+
+        button.addEventListener(
+            "pointerdown",
+            () => {
+
+                button.classList.add(
+                    "button-pressed"
+                );
+
+            }
+        );
+
+
+        button.addEventListener(
+            "pointerup",
+            () => {
+
+                button.classList.remove(
+                    "button-pressed"
+                );
+
+            }
+        );
+
+
+        button.addEventListener(
+            "pointerleave",
+            () => {
+
+                button.classList.remove(
+                    "button-pressed"
+                );
+
+            }
+        );
+
+
+        button.addEventListener(
+            "pointercancel",
+            () => {
+
+                button.classList.remove(
+                    "button-pressed"
+                );
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       ACTIVE NAVIGATION
+    ===================================================== */
+
+    function updateActiveNavigation() {
+
+        const sections =
+            document.querySelectorAll(
+                "section[id]"
+            );
+
+
+        if (
+            sections.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        let currentSection =
+            "home";
+
+
+        const scrollPosition =
+            window.scrollY + 160;
+
+
+        sections.forEach(
+            section => {
+
+                const top =
+                    section.offsetTop;
+
+                const bottom =
+                    top +
+                    section.offsetHeight;
+
+
+                if (
+                    scrollPosition >= top &&
+                    scrollPosition < bottom
+                ) {
+
+                    currentSection =
+                        section.id;
+
+                }
+
+            }
+        );
+
+
+        navLinks.forEach(
+            link => {
+
+                const href =
+                    link.getAttribute(
+                        "href"
+                    );
+
+
+                link.classList.toggle(
+
+                    "active",
+
+                    href ===
+                    "#" +
+                    currentSection
+
+                );
+
+            }
+        );
+
+    }
+
+
+    updateActiveNavigation();
+
+
+    window.addEventListener(
+        "scroll",
+        updateActiveNavigation,
+        {
+            passive: true
+        }
+    );
+
+
+    /* =====================================================
+       SCROLL INDICATOR
+    ===================================================== */
+
+    const scrollIndicator =
+        document.querySelector(
+            ".scroll-indicator"
+        );
+
+
+    if (scrollIndicator) {
+
+        scrollIndicator.addEventListener(
+            "click",
+            () => {
+
+                const nextSection =
+                    document.querySelector(
+                        "#about"
+                    );
+
+
+                if (nextSection) {
+
+                    nextSection.scrollIntoView({
+
+                        behavior:
+                            reducedMotion
+                                ? "auto"
+                                : "smooth"
+
+                    });
+
+                } else {
+
+                    window.scrollTo({
+
+                        top:
+                            window.innerHeight,
+
+                        behavior:
+                            reducedMotion
+                                ? "auto"
+                                : "smooth"
+
+                    });
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       KEYBOARD SUPPORT
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            /*
+               Escape closes mobile menu
+            */
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                if (
+                    navigation &&
+                    menuButton
+                ) {
+
+                    navigation.classList.remove(
+                        "nav-open"
+                    );
+
+                    menuButton.classList.remove(
+                        "menu-open"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    updateNavbar();
+    updateActiveNavigation();
+
 });
-
-// Mobile nav hamburger
-(function () {
-    const hamburger = document.getElementById('nav-hamburger');
-    const navList = document.querySelector('.nls');
-    if (!hamburger || !navList) return;
-
-    hamburger.addEventListener('click', function () {
-        const isOpen = navList.classList.toggle('open');
-        hamburger.classList.toggle('open', isOpen);
-        hamburger.setAttribute('aria-expanded', String(isOpen));
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    navList.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', function () {
-            navList.classList.remove('open');
-            hamburger.classList.remove('open');
-            hamburger.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        });
-    });
-})();
-
-// Architecture layer tab switcher
-function arcSwitchTab(index) {
-    document.querySelectorAll('.arc-tab').forEach((t, i) => t.classList.toggle('active', i === index));
-    document.querySelectorAll('.arc-panel').forEach((p, i) => {
-        p.classList.toggle('active', i === index);
-        if (i === index) { p.style.animation = 'none'; p.offsetHeight; p.style.animation = ''; }
-    });
-}

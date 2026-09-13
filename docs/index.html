@@ -1,604 +1,3667 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SlideSense — IoT Landslide Detection & Early Warning System</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Link to External CSS -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SlideSense - AI-enhanced IoT landslide monitoring and early-warning system." />
+  <title>SlideSense | Landslide Monitoring</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-    <div class="gbg"></div>
-    <nav>
-        <a href="#" class="nl"><img src="images/logo.png" alt="SlideSense" class="nav-logo"></a>
-        <ul class="nls">
-            <li><a href="#problem">Problem</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#techstack">Tech Stack</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="#budget">Budget</a></li>
-        </ul>
-        <div class="nb">3YP · 2025–2026</div>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
-            <!-- Sun icon (shown in dark mode → click to go light) -->
-            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-            <!-- Moon icon (shown in light mode → click to go dark) -->
-            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </nav>
 
-    <section id="hero">
-        <div class="con hero-inner">
-            <div class="hleft">
-                <div class="ht">IoT · Embedded Systems · Cloud · Mobile</div>
-                <h1><span class="g">Slide</span><span class="s">Sense</span><span class="sub typewriter-text" data-text="Real-Time Landslide Detection &amp; Early Warning System"></span></h1>
-                <p class="hd">A multi-layered IoT platform combining embedded sensor probes, AWS cloud intelligence, and a dual-connectivity mobile app to protect mountain communities — before disaster strikes.</p>
-                <div class="hb">
-                    <a href="#architecture" class="bp">Explore Architecture</a>
-                    <a href="#team" class="bs">Meet the Team</a>
+  <!-- ============================================
+       NAVIGATION
+  ============================================= -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+
+    <a href="#home" class="brand" aria-label="SlideSense home">
+        <img
+            src="assets/slidesense-logo.png"
+            alt="SlideSense"
+            class="brand-logo-img"
+        >
+    </a>
+
+      <button class="menu-button" id="menuButton" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="navigation" id="navigation" aria-label="Main navigation">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#solution">Solution</a>
+        <a href="#components">Components</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#videos">Videos</a>
+        <a href="#team">Team</a>
+      </nav>
+
+      <a href="#contact" class="contact-button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span>Get In Touch</span>
+      </a>
+
+       
+
+
+    </div>
+  </header>
+
+
+  <!-- ============================================
+       HERO
+  ============================================= -->
+  <main>
+    <section class="hero" id="home">
+
+      <div class="hero-background" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="hero-container">
+        <!-- LEFT CONTENT -->
+        <div class="hero-content">
+          <h1>
+            Protecting <span>Lives</span><br>
+            Through Intelligent<br>
+            <span>Technology</span>
+          </h1>
+
+          <p class="hero-description">
+            SlideSense is an AI-enhanced IoT landslide monitoring system designed to
+            continuously observe environmental conditions, identify potential risks and
+            deliver real-time early warnings to save lives.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#about" class="btn btn-primary">
+              <span>Explore Project</span>
+              <img src="assets/icons/right-arrow.png" alt="">
+            </a>
+
+            <a href="#videos" class="btn btn-secondary">
+              <span class="play-icon">▶</span>
+              <span>Watch Demo</span>
+            </a>
+          </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-icon">
+                     <img src="assets/icons/24-hour-clock.png" alt="">
+                </div>
+                <div>
+                    <strong>24/7</strong>
+                    <span>MONITORING</span>
                 </div>
             </div>
-            <div class="hright">
-                <img src="./images/Probe.png" alt="SlideSense Probe" class="probe-img">
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                     <img src="assets/icons/antenna.png" alt="">
+                </div>
+                <div>
+                    <strong>IoT</strong>
+                    <span>SENSORS</span>
+                </div>
             </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                     <img src="assets/icons/artificial-intelligence.png" alt="">
+                </div>
+                <div>
+                    <strong>AI</strong>
+                    <span>ANALYSIS</span>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                     <img src="assets/icons/notification.png" alt="">
+                </div>
+                <div>
+                    <strong>LIVE</strong>
+                    <span>ALERTS</span>
+                </div>
+            </div>
+
         </div>
-        <div class="hs">
-            <div class="st"><div class="sn">4</div><div class="sl">System Layers</div></div>
-            <div class="st"><div class="sn">6</div><div class="sl">Sensor Types</div></div>
-            <div class="st"><div class="sn">3</div><div class="sl">Alert Levels</div></div>
+
         </div>
-        <div class="sh"><div class="sln"></div>SCROLL TO EXPLORE</div>
+
+
+        <!-- RIGHT-SIDE SUPPORTING LABEL -->
+        <div class="hero-side-note">
+          <div class="side-line"></div>
+          <p>
+            A safer tomorrow<br>
+            for mountain communities
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- SCROLL INDICATOR -->
+      <a href="#about" class="scroll-indicator" aria-label="Scroll to explore">
+        <div class="mouse-icon">
+          <span></span>
+        </div>
+        <span>Scroll to explore</span>
+      </a>
+
     </section>
 
-    <section id="problem">
-        <div class="con">
-            <div class="shd rev">
-                <div class="stg">01 · Problem Statement</div>
-                <h2>Why This<br>Matters</h2>
-                <p class="sd">Existing landslide monitoring systems fail communities at the most critical moments. We identified four core gaps.</p>
-            </div>
-            <div class="pg rev">
-                <div class="pc"><div class="pn">01</div><div class="pt">No Real-Time Access for Residents</div><p class="px">Current systems centralize data for authorities only. Residents in high-risk zones receive warnings too late, if at all. Our system pushes alerts directly to household mobile devices in seconds.</p></div>
-                <div class="pc"><div class="pn">02</div><div class="pt">Single-Point Internet Dependency</div><p class="px">Disaster events destroy the very internet infrastructure needed for alerts. Our dual-connection architecture ensures the app continues working via local Wi-Fi even when cellular networks are down.</p></div>
-                <div class="pc"><div class="pn">03</div><div class="pt">Siloed Environmental Data</div><p class="px">Valuable soil and rainfall data collected by monitoring hardware is never exposed to researchers. Our open Research API democratizes access to anonymized environmental datasets for geological studies.</p></div>
-                <div class="pc"><div class="pn">04</div><div class="pt">Binary Alert Systems</div><p class="px">Most systems use a simple on/off alarm. Our 3-level warning logic (Normal → Warning → Dangerous) allows communities to take graduated precautions rather than reacting only when it is too late.</p></div>
-            </div>
-        </div>
-    </section>
+    <!-- =====================================================
+         ABOUT SLIDESENSE
+    ===================================================== -->
 
+    <section class="about-section" id="about">
 
-    <!-- Architecture Section -->
-    <section id="architecture">
-        <div class="con">
+        <div class="about-container">
 
-            <!-- Header -->
-            <div class="shd rev">
-                <div class="stg">02 · System Architecture</div>
-                <h2>Four<br>Layer</h2>
-                <p class="sd">A vertically integrated system — from physical sensors in the ground to the cloud and into residents' pockets.</p>
-            </div>
+            <!-- Section Heading -->
+            <div class="about-heading">
 
-            <!-- Tabs -->
-            <div class="arc-tabs rev">
-                <div class="arc-tab arc-t1 active" onclick="arcSwitchTab(0)">
-                    <div class="arc-tab-num">01</div>
-                    <div class="arc-tab-name">Hardware</div>
-                    <div class="arc-tab-sub">Embedded Probes</div>
-                </div>
-                <div class="arc-tab arc-t2" onclick="arcSwitchTab(1)">
-                    <div class="arc-tab-num">02</div>
-                    <div class="arc-tab-name">Cloud</div>
-                    <div class="arc-tab-sub">AWS Backend</div>
-                </div>
-                <div class="arc-tab arc-t3" onclick="arcSwitchTab(2)">
-                    <div class="arc-tab-num">03</div>
-                    <div class="arc-tab-name">Interface</div>
-                    <div class="arc-tab-sub">App &amp; Dashboard</div>
-                </div>
-                <div class="arc-tab arc-t4" onclick="arcSwitchTab(3)">
-                    <div class="arc-tab-num">04</div>
-                    <div class="arc-tab-name">Research</div>
-                    <div class="arc-tab-sub">3rd Party API</div>
-                </div>
+                <span class="section-label">
+                    ABOUT THE PROJECT
+                </span>
+
+                <h2>
+                    What is
+                    <span>SlideSense?</span>
+                </h2>
+
+                <p class="section-intro">
+                    Understanding the conditions before a landslide occurs
+                    is the first step toward building safer communities.
+                </p>
+
             </div>
 
-            <!-- Panels -->
-            <div class="arc-panels">
 
-                <!-- Panel 1 — Hardware -->
-                <div class="arc-panel arc-p1 active">
-                    <div class="arc-panel-hero" data-num="01">
+            <!-- Main About Content -->
+            <div class="about-grid">
+
+                <!-- LEFT -->
+                <div class="about-content">
+                    <h3>
+                        Landslides can happen suddenly.
+                        <span>
+                            The warning signs often develop gradually.
+                        </span>
+                    </h3>
+
+                    <p>
+                        SlideSense is an AI-enhanced IoT landslide monitoring
+                        system designed to continuously observe environmental
+                        and geological conditions in landslide-prone areas.
+                    </p>
+
+                    <p>
+                        A network of field sensors collects rainfall, soil
+                        moisture, slope movement and vibration data. These
+                        measurements are transmitted to the cloud for
+                        continuous monitoring and intelligent risk analysis.
+                    </p>
+
+                    <p>
+                        By identifying potentially dangerous changes early,
+                        SlideSense aims to provide timely warnings that support
+                        faster decisions and safer communities.
+                    </p>
+
+
+                    <!-- Highlight -->
+                    <div class="about-highlight">
+
+                        <div class="highlight-line"></div>
+
                         <div>
-                            <div class="arc-hero-tag">Layer 01 · Physical</div>
-                            <div class="arc-hero-title">Hardware &amp;<br>Embedded Probes</div>
+                            <span>OUR PURPOSE</span>
+
+                            <strong>
+                                Detect the warning signs before
+                                the disaster.
+                            </strong>
                         </div>
-                        <div class="arc-hero-badge">6 Components</div>
-                    </div>
-                    <div class="arc-panel-items">
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🧠</span><div class="arc-pitem-title">Core Controller</div><div class="arc-pitem-desc">ESP32 Central Unit aggregates data from all peripheral sensor probes.</div><span class="arc-pitem-tag">ESP32</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">💧</span><div class="arc-pitem-title">Soil Moisture</div><div class="arc-pitem-desc">Dielectric sensors measure soil water content saturation continuously.</div><span class="arc-pitem-tag">Dielectric</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🌧️</span><div class="arc-pitem-title">Rain Gauge</div><div class="arc-pitem-desc">Tracks precipitation intensity to model slope loading conditions.</div><span class="arc-pitem-tag">Tipping Bucket</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">📐</span><div class="arc-pitem-title">Tilt / Orientation</div><div class="arc-pitem-desc">BNO055 (9-axis) + SCA60C (single-axis) detect slope instability.</div><span class="arc-pitem-tag">BNO055 · SCA60C</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">📳</span><div class="arc-pitem-title">Vibration</div><div class="arc-pitem-desc">Geophones and piezoelectric sensors detect ground movement events.</div><span class="arc-pitem-tag">Geophone</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">📡</span><div class="arc-pitem-title">Comms Bus</div><div class="arc-pitem-desc">RS485 wired or LoRa/ESP-NOW wireless mesh between probes.</div><span class="arc-pitem-tag">RS485 · LoRa</span></div>
+
                     </div>
                 </div>
 
-                <!-- Panel 2 — Cloud -->
-                <div class="arc-panel arc-p2">
-                    <div class="arc-panel-hero" data-num="02">
+
+                <!-- RIGHT IMAGE -->
+                <div class="about-visual">
+
+                    <div class="about-image-wrapper">
+
+                        <img
+                            src="assets/about/about-slidesense.png"
+                            alt="SlideSense landslide early detection monitoring system"
+                            class="about-image"
+                        >
+
+                    </div>
+
+                    <!-- Small floating label -->
+                    <div class="about-visual-tag">
+
+                        <span class="tag-dot"></span>
+
                         <div>
-                            <div class="arc-hero-tag">Layer 02 · Backend</div>
-                            <div class="arc-hero-title">Cloud &amp;<br>AWS Backend</div>
+                            <small>SLIDESENSE</small>
+                            <strong>Early Warning System</strong>
                         </div>
-                        <div class="arc-hero-badge">4 Services</div>
+
                     </div>
-                    <div class="arc-panel-items">
-                        <div class="arc-pitem"><span class="arc-pitem-icon">☁️</span><div class="arc-pitem-title">AWS IoT Core</div><div class="arc-pitem-desc">Managed MQTT broker with device shadows and certificate-based authentication.</div><span class="arc-pitem-tag">MQTT · TLS</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🖥️</span><div class="arc-pitem-title">EC2 Backend</div><div class="arc-pitem-desc">FastAPI Python engine validates payloads, runs risk analysis, triggers alerts.</div><span class="arc-pitem-tag">FastAPI · Python</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">📊</span><div class="arc-pitem-title">Time-Series DB</div><div class="arc-pitem-desc">PostgreSQL + TimescaleDB for high-frequency sensor reads and range queries.</div><span class="arc-pitem-tag">TimescaleDB</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🗄️</span><div class="arc-pitem-title">Relational DB</div><div class="arc-pitem-desc">AWS RDS stores user profiles, probe configurations, and alert history.</div><span class="arc-pitem-tag">AWS RDS</span></div>
-                    </div>
+
                 </div>
 
-                <!-- Panel 3 — Interface -->
-                <div class="arc-panel arc-p3">
-                    <div class="arc-panel-hero" data-num="03">
-                        <div>
-                            <div class="arc-hero-tag">Layer 03 · Frontend</div>
-                            <div class="arc-hero-title">Interface &amp;<br>Applications</div>
-                        </div>
-                        <div class="arc-hero-badge">3 Surfaces</div>
-                    </div>
-                    <div class="arc-panel-items">
-                        <div class="arc-pitem"><span class="arc-pitem-icon">📱</span><div class="arc-pitem-title">Mobile App</div><div class="arc-pitem-desc">Flutter dual-mode: local Wi-Fi (direct probe) ↔ cellular cloud, auto-switching.</div><span class="arc-pitem-tag">Flutter · JWT</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🔐</span><div class="arc-pitem-title">Digital Key System</div><div class="arc-pitem-desc">Max 2 authorized household devices connect locally to prevent overcrowding.</div><span class="arc-pitem-tag">JWT · Device Auth</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🖥️</span><div class="arc-pitem-title">Admin Dashboard</div><div class="arc-pitem-desc">React web console for authorities to monitor probes, visualize trends, set thresholds.</div><span class="arc-pitem-tag">React · Chart.js</span></div>
-                    </div>
-                </div>
-
-                <!-- Panel 4 — Research -->
-                <div class="arc-panel arc-p4">
-                    <div class="arc-panel-hero" data-num="04">
-                        <div>
-                            <div class="arc-hero-tag">Layer 04 · Open Data</div>
-                            <div class="arc-hero-title">Research &amp;<br>3rd Party API</div>
-                        </div>
-                        <div class="arc-hero-badge">3 Endpoints</div>
-                    </div>
-                    <div class="arc-panel-items">
-                        <div class="arc-pitem"><span class="arc-pitem-icon">🔬</span><div class="arc-pitem-title">Public Research API</div><div class="arc-pitem-desc">REST endpoints exposing anonymized environmental data to universities and institutes.</div><span class="arc-pitem-tag">REST · Read-Only</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">⚡</span><div class="arc-pitem-title">Rate Limiting</div><div class="arc-pitem-desc">API key-gated access protects core infrastructure from research load spikes.</div><span class="arc-pitem-tag">API Keys</span></div>
-                        <div class="arc-pitem"><span class="arc-pitem-icon">📈</span><div class="arc-pitem-title">Historical Datasets</div><div class="arc-pitem-desc">Returns rainfall patterns, moisture retention trends spanning months of recordings.</div><span class="arc-pitem-tag">Time-Series JSON</span></div>
-                    </div>
-                </div>
-
-            </div><!-- /.arc-panels -->
-        </div>
-    </section>
-
-
-    <!-- TechStack Section -->
-    <section id="techstack">
-        <div class="con">
-            <div class="shd rev">
-                <div class="stg">03 · Technology Stack</div>
-                <h2>System<br>Data Flow</h2>
-                <p class="sd">From sensor probe to resident screen — every technology chosen for a specific reason.</p>
-            </div>
-
-            <div class="tsf-img rev">
-                <img
-                    src="./images/TechStack.png"
-                    alt="SlideSense Technology Stack — Data Flow Diagram"
-                    class="tsf-diagram"
-                >
             </div>
 
         </div>
+
+    </section>
+    
+    <!-- =====================================================
+     SOLUTION SECTION
+    ===================================================== -->
+
+    <section class="solution-section" id="solution">
+
+        <div class="solution-container">
+
+            <!-- Section heading -->
+            <div class="solution-heading">
+
+                <span class="section-label">
+                    OUR SOLUTION
+                </span>
+
+                <h2>
+                    From Slope Conditions
+                    <span>to Early Warning</span>
+                </h2>
+
+                <p>
+                    SlideSense combines field sensors, embedded systems,
+                    cloud processing and intelligent risk analysis into one
+                    continuous landslide monitoring workflow.
+                </p>
+
+            </div>
+
+
+            <!-- Main pipeline -->
+            <div class="solution-pipeline">
+
+                <!-- STEP 01 -->
+                <article class="solution-card">
+
+                    <div class="solution-card-top">
+
+                        <span class="solution-number">
+                            01
+                        </span>
+
+                        <div class="solution-icon">
+                            <img
+                                src="assets/solution/sensor.png"
+                                alt=""
+                            >
+                        </div>
+
+                    </div>
+
+                    <span class="solution-stage">
+                        PERCEPTION LAYER
+                    </span>
+
+                    <h3>
+                        Sense
+                    </h3>
+
+                    <p>
+                        Sensors installed on the slope continuously
+                        collect environmental and geological measurements.
+                    </p>
+
+                    <ul>
+                        <li>Soil moisture</li>
+                        <li>Rainfall intensity</li>
+                        <li>Slope tilt</li>
+                        <li>Ground vibration</li>
+                    </ul>
+
+                </article>
+
+
+                <!-- CONNECTOR -->
+                <div class="solution-connector">
+                    <span></span>
+                    <div>→</div>
+                </div>
+
+
+                <!-- STEP 02 -->
+                <article class="solution-card">
+
+                    <div class="solution-card-top">
+
+                        <span class="solution-number">
+                            02
+                        </span>
+
+                        <div class="solution-icon">
+                            <img
+                                src="assets/solution/wi-fi.png"
+                                alt=""
+                            >
+                        </div>
+
+                    </div>
+
+                    <span class="solution-stage">
+                        COMMUNICATION LAYER
+                    </span>
+
+                    <h3>
+                        Connect
+                    </h3>
+
+                    <p>
+                        The ESP32 collects sensor readings and securely
+                        transmits telemetry to the cloud using MQTT.
+                    </p>
+
+                    <ul>
+                        <li>ESP32 controller</li>
+                        <li>MQTT communication</li>
+                        <li>Wireless transmission</li>
+                        <li>Real-time telemetry</li>
+                    </ul>
+
+                </article>
+
+
+                <!-- CONNECTOR -->
+                <div class="solution-connector">
+                    <span></span>
+                    <div>→</div>
+                </div>
+
+
+                <!-- STEP 03 -->
+                <article class="solution-card">
+
+                    <div class="solution-card-top">
+
+                        <span class="solution-number">
+                            03
+                        </span>
+
+                        <div class="solution-icon">
+                            <img
+                                src="assets/solution/ai.png"
+                                alt=""
+                            >
+                        </div>
+
+                    </div>
+
+                    <span class="solution-stage">
+                        INTELLIGENCE LAYER
+                    </span>
+
+                    <h3>
+                        Analyze
+                    </h3>
+
+                    <p>
+                        AWS services store and process sensor data while
+                        the risk model evaluates current landslide conditions.
+                    </p>
+
+                    <ul>
+                        <li>AWS IoT Core</li>
+                        <li>AWS Lambda</li>
+                        <li>DynamoDB storage</li>
+                        <li>Risk evaluation</li>
+                    </ul>
+
+                </article>
+
+
+                <!-- CONNECTOR -->
+                <div class="solution-connector">
+                    <span></span>
+                    <div>→</div>
+                </div>
+
+
+                <!-- STEP 04 -->
+                <article class="solution-card">
+
+                    <div class="solution-card-top">
+
+                        <span class="solution-number">
+                            04
+                        </span>
+
+                        <div class="solution-icon">
+                            <img
+                                src="assets/solution/alert.png"
+                                alt=""
+                            >
+                        </div>
+
+                    </div>
+
+                    <span class="solution-stage">
+                        PROTECTION LAYER
+                    </span>
+
+                    <h3>
+                        Alert
+                    </h3>
+
+                    <p>
+                        When dangerous conditions are detected,
+                        SlideSense provides immediate warnings to
+                        monitoring teams and nearby communities.
+                    </p>
+
+                    <ul>
+                        <li>Live dashboard</li>
+                        <li>Push notifications</li>
+                        <li>SMS alerts</li>
+                        <li>Local warning system</li>
+                    </ul>
+
+                </article>
+
+            </div>
+
+
+            <!-- Bottom summary -->
+            <div class="solution-summary">
+
+                <div class="summary-status">
+                    <span></span>
+                    CONTINUOUS MONITORING PIPELINE
+                </div>
+
+                <p>
+                    Field Sensors
+                    <b>→</b>
+                    ESP32
+                    <b>→</b>
+                    AWS IoT Core
+                    <b>→</b>
+                    Risk Analysis
+                    <b>→</b>
+                    Early Warning
+                </p>
+
+            </div>
+
+        </div>
+
     </section>
 
 
 
-    <!-- Features Section -->
-    <section id="features">
-        <div class="con">
-            <div class="shd rev">
-                <div class="stg">04 · Key Features</div>
-                <h2>Intelligent<br>By Design</h2>
-                <p class="sd">Every feature engineered to function when conventional systems fail.</p>
+    <!-- =====================================================
+     COMPONENTS SECTION
+    ===================================================== -->
+
+    <section class="components-section" id="components">
+
+        <div class="components-container">
+
+            <!-- Section Heading -->
+            <div class="components-heading">
+
+                <span class="section-label">
+                    HARDWARE COMPONENTS
+                </span>
+
+                <h2>
+                    Built for
+                    <span>Real-World Monitoring</span>
+                </h2>
+
+                <p>
+                    SlideSense combines environmental sensors, embedded
+                    processing and communication hardware to continuously
+                    monitor landslide-prone slopes.
+                </p>
+
             </div>
-            <div class="fl2">
-                <div class="fv rev">
+
+
+            <!-- Components Grid -->
+            <div class="components-grid">
+
+
+                <!-- COMPONENT 01 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/soli-moisture.jpg"
+                            alt="Soil moisture sensor"
+                        >
+
+                        <div class="component-badge">
+                            SENSOR 01
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            SUBSURFACE HYDROLOGY
+                        </span>
+
+                        <h3>
+                            Soil Moisture Sensor
+                        </h3>
+
+                        <p>
+                            Measures soil moisture at multiple depths to
+                            identify increasing saturation levels within
+                            the slope.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Technology</span>
+                                <strong>Capacitive</strong>
+                            </div>
+
+                            <div>
+                                <span>Output</span>
+                                <strong>Analog</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Soil Saturation</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 02 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/tipping_bucket.webp"
+                            alt="Tipping bucket rain gauge"
+                        >
+
+                        <div class="component-badge">
+                            SENSOR 02
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            PRECIPITATION MONITORING
+                        </span>
+
+                        <h3>
+                            Tipping Bucket Rain Gauge
+                        </h3>
+
+                        <p>
+                            Measures rainfall accumulation and intensity
+                            by detecting every tip of the internal bucket
+                            using a Hall-effect sensor.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Resolution</span>
+                                <strong>0.173 mm / tip</strong>
+                            </div>
+
+                            <div>
+                                <span>Sensor</span>
+                                <strong>Hall Effect</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Rainfall Rate</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 03 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/tilt_sesnsor.webp"
+                            alt="Tilt and angle sensor"
+                        >
+
+                        <div class="component-badge">
+                            SENSOR 03
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            SLOPE MOVEMENT
+                        </span>
+
+                        <h3>
+                            Tilt / Angle Sensor
+                        </h3>
+
+                        <p>
+                            Detects changes in slope orientation and helps
+                            identify gradual movement or displacement of
+                            the monitored terrain.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Type</span>
+                                <strong>Angle Sensor</strong>
+                            </div>
+
+                            <div>
+                                <span>Output</span>
+                                <strong>Digital / Analog</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Slope Movement</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 04 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/microphone.jpg"
+                            alt="Geophone vibration sensor"
+                        >
+
+                        <div class="component-badge">
+                            SENSOR 04
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            GROUND VIBRATION
+                        </span>
+
+                        <h3>
+                            Geophone
+                        </h3>
+
+                        <p>
+                            Detects low-frequency ground vibrations and
+                            micro-movements that may indicate underground
+                            slope instability.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Measurement</span>
+                                <strong>Vibration</strong>
+                            </div>
+
+                            <div>
+                                <span>Use</span>
+                                <strong>Ground Motion</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Early Detection</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 05 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/esp32.jpg"
+                            alt="ESP32 microcontroller"
+                        >
+
+                        <div class="component-badge">
+                            CONTROLLER
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            EDGE PROCESSING
+                        </span>
+
+                        <h3>
+                            ESP32 Controller
+                        </h3>
+
+                        <p>
+                            Reads all sensor measurements, performs basic
+                            preprocessing and publishes telemetry to the
+                            cloud using MQTT.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Controller</span>
+                                <strong>ESP32</strong>
+                            </div>
+
+                            <div>
+                                <span>Protocol</span>
+                                <strong>MQTT</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Edge Node</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 06 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/aws-iot-core.png"
+                            alt="Cloud connectivity"
+                        >
+
+                        <div class="component-badge">
+                            CLOUD LINK
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            CLOUD CONNECTIVITY
+                        </span>
+
+                        <h3>
+                            Communication & Cloud
+                        </h3>
+
+                        <p>
+                            Sensor data is securely transmitted to AWS IoT
+                            Core for storage, processing, risk analysis and
+                            alert generation.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Cloud</span>
+                                <strong>AWS</strong>
+                            </div>
+
+                            <div>
+                                <span>Service</span>
+                                <strong>IoT Core</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Remote Monitoring</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 06 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/sim_card.jpg"
+                            alt="SIM GSM communication module"
+                        >
+
+                        <div class="component-badge">
+                            COMMUNICATION
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            CELLULAR CONNECTIVITY
+                        </span>
+
+                        <h3>
+                            SIM / GSM Module
+                        </h3>
+
+                        <p>
+                            Provides cellular communication for transmitting
+                            sensor data and emergency alerts when Wi-Fi or
+                            other local network connections are unavailable.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Technology</span>
+                                <strong>GSM / Cellular</strong>
+                            </div>
+
+                            <div>
+                                <span>Interface</span>
+                                <strong>UART</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Remote Communication</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMPONENT 07 -->
+                <article class="component-card">
+
+                    <div class="component-image">
+
+                        <img
+                            src="assets/Compenents/GPS_module.jpg"
+                            alt="GPS location module"
+                        >
+
+                        <div class="component-badge">
+                            POSITIONING
+                        </div>
+
+                    </div>
+
+                    <div class="component-content">
+
+                        <span class="component-category">
+                            GEOLOCATION
+                        </span>
+
+                        <h3>
+                            GPS Module
+                        </h3>
+
+                        <p>
+                            Provides geographic coordinates for each monitoring
+                            node so sensor measurements and landslide warnings
+                            can be associated with the correct slope location.
+                        </p>
+
+                        <div class="component-specs">
+
+                            <div>
+                                <span>Measurement</span>
+                                <strong>Latitude / Longitude</strong>
+                            </div>
+
+                            <div>
+                                <span>Interface</span>
+                                <strong>UART</strong>
+                            </div>
+
+                            <div>
+                                <span>Purpose</span>
+                                <strong>Node Location</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+     FINAL HARDWARE ASSEMBLY
+    ===================================================== -->
+
+    <section class="hardware-assembly" id="assembly">
+
+        <div class="assembly-container">
+
+            <!-- Heading -->
+            <div class="assembly-heading">
+
+                <span class="section-label">
+                    FINAL HARDWARE ASSEMBLY
+                </span>
+
+                <h2>
+                    From Individual Modules to a
+                    <span>Complete Field System</span>
+                </h2>
+
+                <p>
+                    The final SlideSense prototype integrates the subsurface
+                    sensor probe, rainfall monitoring, embedded control,
+                    positioning, cellular communication and solar power into
+                    one deployable landslide monitoring platform.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                ITEM 01 - FINAL SENSOR PROBE
+            ================================================= -->
+
+            <article class="assembly-card">
+
+                <div class="assembly-media">
+
                     <img
-                        src="./images/dataflow.png"
-                        alt="SlideSense System Data Flow"
-                        class="feature-flow-img"
+                        src="assets/final_product/probe.png"
+                        alt="Final SlideSense subsurface sensor probe"
                     >
+
+                    <div class="assembly-media-tag">
+                        <span></span>
+                        FINAL PROTOTYPE
+                    </div>
+
                 </div>
-                <div class="flist rev">
-                    <div class="fi act"><div class="fit"><span class="fic">�</span> Dual-Mode Data Collection</div><p class="fd">Two sampling modes: <strong>Normal Mode</strong> polls sensors every 15 minutes to conserve battery; <strong>Burst Mode</strong> escalates to 10-second intervals automatically when vibration or tilt thresholds are crossed — capturing events in full resolution.</p></div>
-                    <div class="fi"><div class="fit"><span class="fic">☁️</span> Daily Cloud Transfer</div><p class="fd">Aggregated sensor readings are transferred to the cloud every day via AWS IoT Core over a secured MQTT/TLS channel, ensuring a continuous and tamper-resistant time-stamped record.</p></div>
-                    <div class="fi"><div class="fit"><span class="fic">🗄️</span> Time-Series Storage</div><p class="fd">All telemetry is persisted in PostgreSQL + TimescaleDB — purpose-built for high-frequency sensor data. Enables fast range queries and long-term trend analysis across months of recordings.</p></div>
-                    <div class="fi"><div class="fit"><span class="fic">🔬</span> Researcher Data Access</div><p class="fd">Anonymized environmental datasets are exposed to third-party universities and research institutes via a dedicated read-only REST API. Rate-limited and API key-gated to protect core system performance.</p></div>
-                    <div class="fi"><div class="fit"><span class="fic">🧠</span> Analysis &amp; Prediction Engine</div><p class="fd">The EC2-hosted FastAPI backend validates incoming payloads, runs multi-parameter risk analysis, and generates predictive landslide probability scores to drive intelligent alert decisions.</p></div>
-                    <div class="fi"><div class="fit"><span class="fic">🚨</span> Configurable Authority Alerts</div><p class="fd">Alert rules are fully configurable per probe zone. Authorities receive notifications across three warning levels — <strong>Normal</strong>, <strong>Warning</strong>, and <strong>Dangerous</strong> — with escalating notification channels.</p></div>
-                    <div class="fi"><div class="fit"><span class="fic">📱</span> Resident Mobile App</div><p class="fd">A Flutter mobile app with a registration system lets households monitor their local slope in real time. Long-term historical graphs let residents track gradual ground movement trends over weeks and months.</p></div>
+
+
+                <div class="assembly-content">
+
+                    <span class="assembly-unit">
+                        UNIT 01 · SUBSURFACE SENSOR SYSTEM
+                    </span>
+
+                    <h3>
+                        Final Multi-Sensor Probe
+                    </h3>
+
+                    <p>
+                        The SlideSense probe is designed to be inserted
+                        vertically into the monitored slope and collect
+                        measurements from multiple positions below the
+                        ground surface.
+                    </p>
+
+
+                    <div class="assembly-feature-list">
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Multi-Depth Soil Moisture Measurement
+                                </strong>
+
+                                <p>
+                                    Three soil-moisture sensors provide
+                                    readings from different probe positions,
+                                    allowing the system to estimate overall
+                                    soil saturation more reliably.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Slope Condition Monitoring
+                                </strong>
+
+                                <p>
+                                    The probe structure allows additional
+                                    ground-movement and vibration sensing
+                                    to be integrated with the moisture data.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Field-Replaceable Connection
+                                </strong>
+
+                                <p>
+                                    The probe connects to the main control
+                                    unit through a dedicated wired interface
+                                    for practical installation and maintenance.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
+            </article>
+
+
+            <!-- =================================================
+                ITEM 02 - TIPPING BUCKET
+            ================================================= -->
+
+            <article class="assembly-card assembly-reverse">
+
+                <div class="assembly-media">
+
+                    <img
+                        src="assets/assembly/tipping-bucket.jpg"
+                        alt="SlideSense tipping bucket rain gauge"
+                    >
+
+                    <div class="assembly-media-tag">
+                        <span></span>
+                        RAINFALL MONITORING
+                    </div>
+
+                </div>
+
+
+                <div class="assembly-content">
+
+                    <span class="assembly-unit">
+                        UNIT 02 · RAINFALL MONITORING
+                    </span>
+
+                    <h3>
+                        Tipping Bucket Rain Gauge
+                    </h3>
+
+                    <p>
+                        Rainfall is one of the most important environmental
+                        factors influencing slope instability. SlideSense
+                        uses a tipping bucket mechanism to continuously
+                        measure accumulated rainfall.
+                    </p>
+
+
+                    <div class="assembly-feature-list">
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Hall-Effect Tip Detection
+                                </strong>
+
+                                <p>
+                                    Each bucket movement is detected
+                                    electronically and counted by the ESP32.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Rainfall Conversion
+                                </strong>
+
+                                <p>
+                                    Each recorded tip corresponds to
+                                    approximately 0.173 mm of rainfall,
+                                    allowing real-time rainfall accumulation
+                                    to be calculated.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Continuous Outdoor Monitoring
+                                </strong>
+
+                                <p>
+                                    The rain gauge operates alongside the
+                                    subsurface probe and transmits its readings
+                                    through the same SlideSense field node.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                ITEM 03 - MAIN CONTROL UNIT INTERNAL
+            ================================================= -->
+
+            <article class="assembly-card">
+
+                <div class="assembly-media">
+
+                    <img
+                        src="assets/final_product/main-unit-internal.png"
+                        alt="Internal electronics of the SlideSense main control unit"
+                    >
+
+                    <div class="assembly-media-tag">
+                        <span></span>
+                        CONTROL UNIT INTERNALS
+                    </div>
+
+                </div>
+
+
+                <div class="assembly-content">
+
+                    <span class="assembly-unit">
+                        UNIT 03 · EDGE CONTROL & COMMUNICATION
+                    </span>
+
+                    <h3>
+                        Main Control Unit
+                    </h3>
+
+                    <p>
+                        The central field unit integrates processing,
+                        communication, positioning and power management
+                        hardware into a single embedded control assembly.
+                    </p>
+
+
+                    <div class="assembly-feature-list">
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    ESP32 Controller
+                                </strong>
+
+                                <p>
+                                    Reads sensor measurements, performs
+                                    local preprocessing and prepares telemetry
+                                    for cloud transmission.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    SIM / GSM Communication
+                                </strong>
+
+                                <p>
+                                    Provides cellular connectivity for
+                                    transmitting sensor data from remote
+                                    landslide-prone areas.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    GPS Positioning
+                                </strong>
+
+                                <p>
+                                    Associates monitoring data with the
+                                    geographic location of the deployed node.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Buck Converter & MPPT Power Control
+                                </strong>
+
+                                <p>
+                                    The power stage regulates the solar
+                                    supply and provides stable operating
+                                    voltages for the embedded electronics.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            <!-- =================================================
+                ITEM 04 - SOLAR POWERED FIELD STATION
+            ================================================= -->
+
+            <article class="assembly-card assembly-reverse">
+
+                <div class="assembly-media">
+
+                    <img
+                        src="assets/assembly/solar-field-station.jpg"
+                        alt="Final SlideSense solar powered field monitoring station"
+                    >
+
+                    <div class="assembly-media-tag">
+                        <span></span>
+                        COMPLETE FIELD STATION
+                    </div>
+
+                </div>
+
+
+                <div class="assembly-content">
+
+                    <span class="assembly-unit">
+                        UNIT 04 · POWER & FIELD DEPLOYMENT
+                    </span>
+
+                    <h3>
+                        Solar-Powered Monitoring Stand
+                    </h3>
+
+                    <p>
+                        The final above-ground SlideSense station brings together
+                        the solar power system, main control unit, communication
+                        hardware and rainfall monitoring equipment on a single
+                        field-deployable structure.
+                    </p>
+
+
+                    <div class="assembly-feature-list">
+
+                        <!-- Solar Panel -->
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Solar-Powered Operation
+                                </strong>
+
+                                <p>
+                                    The mounted solar panel supplies renewable
+                                    energy to the monitoring station, supporting
+                                    operation in remote landslide-prone areas
+                                    where grid power may not be available.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Main Unit -->
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Integrated Main Control Unit
+                                </strong>
+
+                                <p>
+                                    The control enclosure houses the ESP32,
+                                    communication modules and power-management
+                                    electronics required to collect and transmit
+                                    environmental sensor data.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Rain Gauge -->
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Integrated Rainfall Monitoring
+                                </strong>
+
+                                <p>
+                                    The tipping bucket rain gauge is positioned
+                                    as part of the field station to continuously
+                                    measure rainfall while the underground probe
+                                    monitors soil conditions.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Deployment -->
+                        <div class="assembly-feature">
+
+                            <div class="feature-check">✓</div>
+
+                            <div>
+                                <strong>
+                                    Field-Deployable Structure
+                                </strong>
+
+                                <p>
+                                    The supporting stand provides a practical
+                                    mounting platform for the solar panel,
+                                    electronics and monitoring equipment during
+                                    outdoor deployment.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                SYSTEM SUMMARY STRIP
+            ================================================= -->
+
+            <div class="assembly-summary">
+
+                <div>
+                    <strong>3×</strong>
+                    <span>Moisture Sensors</span>
+                </div>
+
+                <div>
+                    <strong>0.173 mm</strong>
+                    <span>Rainfall / Tip</span>
+                </div>
+
+                <div>
+                    <strong>ESP32</strong>
+                    <span>Edge Controller</span>
+                </div>
+
+                <div>
+                    <strong>GSM + GPS</strong>
+                    <span>Connectivity</span>
+                </div>
+
+                <div>
+                    <strong>Solar</strong>
+                    <span>Power System</span>
+                </div>
+
             </div>
+
         </div>
+
+    </section>
+
+    <!-- =====================================================
+     ARCHITECTURE SECTION
+    ===================================================== -->
+
+    <section class="architecture-section" id="architecture">
+
+        <div class="architecture-container">
+
+            <!-- Heading -->
+            <div class="architecture-heading">
+
+                <span class="section-label">
+                    SYSTEM ARCHITECTURE
+                </span>
+
+                <h2>
+                    From Field Sensors to
+                    <span>Cloud Intelligence</span>
+                </h2>
+
+                <p>
+                    SlideSense connects environmental sensing,
+                    embedded processing, cellular communication,
+                    cloud analysis and early-warning services into
+                    one complete monitoring architecture.
+                </p>
+
+            </div>
+
+
+            <!-- Architecture Image -->
+            <div class="architecture-image-wrapper">
+
+                <img
+                    src="assets/architecture/arch.png"
+                    alt="SlideSense system architecture showing field sensors, ESP32, GSM, GPS, AWS cloud, dashboard and alerts"
+                    class="architecture-image"
+                >
+
+            </div>
+
+
+            <!-- Bottom Pipeline -->
+            <div class="architecture-pipeline">
+
+                <div class="pipeline-title">
+
+                    <div class="pipeline-icon">
+                        <img
+                            src="assets/icons/database.png"
+                            alt=""
+                        >
+                    </div>
+
+                    <div>
+                        <span>END-TO-END SYSTEM</span>
+
+                        <strong>
+                            Complete Monitoring Pipeline
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline-flow">
+
+                    <span>Sensors</span>
+                    <b>→</b>
+
+                    <span>ESP32</span>
+                    <b>→</b>
+
+                    <span>GSM / GPS</span>
+                    <b>→</b>
+
+                    <span>AWS IoT Core</span>
+                    <b>→</b>
+
+                    <span>Lambda</span>
+                    <b>→</b>
+
+                    <span>DynamoDB</span>
+                    <b>→</b>
+
+                    <span>Dashboard & Alerts</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </section>
 
 
-    <!-- Team and Supervisor Section -->
-    <section id="team">
-        <div class="con">
-            <div class="shd rev">
-                <div class="stg">06 · The Team</div>
-                <h2>People Behind<br>SlideSense</h2>
-                <p class="sd">A multidisciplinary third-year project team spanning embedded systems, cloud infrastructure, and mobile development.</p>
+    <!-- =====================================================
+     SLIDESENSE MONITORING DASHBOARD
+    ===================================================== -->
+
+    <section class="dashboard-section" id="dashboard">
+
+        <div class="dashboard-container">
+
+            <!-- SECTION HEADING -->
+            <div class="dashboard-heading">
+
+                <span class="section-label">
+                    MONITORING PLATFORM
+                </span>
+
+                <h2>
+                    From Sensor Data to
+                    <span>Actionable Insights</span>
+                </h2>
+
+                <p>
+                    SlideSense includes a dedicated web-based monitoring
+                    dashboard that transforms field sensor data into clear,
+                    accessible information for real-time monitoring and
+                    historical analysis.
+                </p>
+
             </div>
 
-            <!-- Team Members -->
-            <div class="tm-group rev">
-                <div class="tm-group-label">Team Members</div>
-                <div class="tm-row">
 
-                    <div class="tm-card">
-                        <div class="tm-avatar-wrap">
-                            <img src="./images/e21087.jpg" alt="D.M.E.S.Dewagedara" class="tm-avatar-img" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+            <!-- =================================================
+                MAIN DASHBOARD PREVIEW
+            ================================================= -->
+
+            <div class="dashboard-showcase">
+
+                <div class="dashboard-browser">
+
+                    <!-- Fake browser header -->
+                    <div class="browser-bar">
+
+                        <div class="browser-controls">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
-                        <div class="tm-name">Shihara Dewagedara</div>
-                        <div class="tm-id">E/21/087</div>
-                        <a href="#" class="tm-port">On eportfolio</a>
-                        <div class="tm-links">
-                            <a href="https://github.com/Shihara1020" class="tm-ico" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
-                            <a href="https://www.linkedin.com/in/shihara-dewagedara-23109a275/" class="tm-ico" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                            <a href="mailto:e21087@eng.pdn.ac.lk" class="tm-ico" title="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+
+                        <div class="browser-address">
+                            <span class="browser-lock">●</span>
+                            SlideSense Monitoring Dashboard
                         </div>
+
+                        <div class="browser-status">
+                            <span></span>
+                            LIVE
+                        </div>
+
                     </div>
 
-                    <div class="tm-card">
-                        <div class="tm-avatar-wrap">
-                            <img src="./images/e21138.jpg" alt="Fikry" class="tm-avatar-img" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-                        </div>
-                        <div class="tm-name">Fikry</div>
-                        <div class="tm-id">E/21/138</div>
-                        <a href="#" class="tm-port">On eportfolio</a>
-                        <div class="tm-links">
-                            <a href="https://github.com/fikrynuhuman183" class="tm-ico" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
-                            <a href="https://www.linkedin.com/in/fikry-nuhuman/" class="tm-ico" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                            <a href="mailto:e21138@eng.pdn.ac.lk" class="tm-ico" title="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-                        </div>
-                    </div>
 
-                    <div class="tm-card">
-                        <div class="tm-avatar-wrap">
-                            <img src="./images/e21302.jpg" alt="W.S.S. Perera" class="tm-avatar-img" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-                        </div>
-                        <div class="tm-name">Sahandi Perera</div>
-                        <div class="tm-id">E/21/302</div>
-                        <a href="#" class="tm-port">On eportfolio</a>
-                        <div class="tm-links">
-                            <a href="https://github.com/Sahandiperera" class="tm-ico" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
-                            <a href="https://www.linkedin.com/in/sahandi-perera-73aa39274/" class="tm-ico" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                            <a href="mailto:e21302@eng.pdn.ac.lk" class="tm-ico" title="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-                        </div>
-                    </div>
+                    <div class="dashboard-screen">
 
-                    <div class="tm-card">
-                        <div class="tm-avatar-wrap">
-                            <img src="./images/e21452.jpg" alt="zaid" class="tm-avatar-img" onerror="this.style.display='none';this.nextSibling.style.display='flex'">    
-                        </div>
-                        <div class="tm-name">Zaid</div>
-                        <div class="tm-id">E/21/452</div>
-                        <a href="#" class="tm-port">On eportfolio</a>
-                        <div class="tm-links">
-                            <a href="https://github.com/e21452" class="tm-ico" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
-                            <a href="#" class="tm-ico" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                            <a href="mailto:e21452@eng.pdn.ac.lk" class="tm-ico" title="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-                        </div>
+                        <img
+                            src="assets/dashboard/dashboard-main.png"
+                            alt="SlideSense real-time monitoring dashboard"
+                        >
+
                     </div>
 
                 </div>
 
 
-            <!-- Supervisor -->
-            <div class="tm-group tm-supervisor-group rev">
-                <div class="tm-group-label">Supervisors</div>
-                <div class="tm-row tm-row-solo">
-                    <div class="tm-card">
-                        <div class="tm-avatar-wrap">
-                            <img src="./images/isuru-nawinne.png" alt="Dr. Isuru Nawinne" class="tm-avatar-img" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-                        </div>
-                        <div class="tm-name">Dr. Isuru Nawinne</div>
-                        <div class="tm-id">Project Supervisor</div>
-                        <div class="tm-links">
-                            <a href="https://www.linkedin.com/in/isuru-nawinne-73302833/" class="tm-ico" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                            <a href="mailto:isurunawinne@eng.pdn.ac.lk" class="tm-ico" title="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-                        </div>
+                <!-- Floating label -->
+                <div class="dashboard-live-label">
+                    <span></span>
+
+                    <div>
+                        <strong>LIVE MONITORING</strong>
+                        <small>Sensor telemetry dashboard</small>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                DASHBOARD FEATURES
+            ================================================= -->
+
+            <div class="dashboard-features">
+
+                <!-- 01 -->
+                <article class="dashboard-feature">
+
+                    <span class="dashboard-feature-number">
+                        01
+                    </span>
+
+                    <div class="dashboard-feature-icon">
+                        <i data-lucide="activity"></i>
                     </div>
 
-                    <div class="tm-card">
-                        <div class="tm-avatar-wrap">
-                            <img src="./images/yasodha-vimukthi.jpeg" alt="Ms.yasodha" class="tm-avatar-img" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+                    <h3>
+                        Real-Time Sensor Monitoring
+                    </h3>
+
+                    <p>
+                        View the latest measurements received from the
+                        deployed SlideSense monitoring node, including
+                        soil moisture and rainfall information.
+                    </p>
+
+                </article>
+
+
+                <!-- 02 -->
+                <article class="dashboard-feature">
+
+                    <span class="dashboard-feature-number">
+                        02
+                    </span>
+
+                    <div class="dashboard-feature-icon">
+                        <i data-lucide="chart-no-axes-combined"></i>
+                    </div>
+
+                    <h3>
+                        Interactive Sensor Charts
+                    </h3>
+
+                    <p>
+                        Sensor measurements are presented using clear
+                        time-series charts, making changes and trends
+                        easier to identify.
+                    </p>
+
+                </article>
+
+
+                <!-- 03 -->
+                <article class="dashboard-feature">
+
+                    <span class="dashboard-feature-number">
+                        03
+                    </span>
+
+                    <div class="dashboard-feature-icon">
+                        <i data-lucide="history"></i>
+                    </div>
+
+                    <h3>
+                        Historical Data Analysis
+                    </h3>
+
+                    <p>
+                        Previously recorded measurements can be retrieved
+                        and reviewed to understand how environmental
+                        conditions changed over time.
+                    </p>
+
+                </article>
+
+
+                <!-- 04 -->
+                <article class="dashboard-feature">
+
+                    <span class="dashboard-feature-number">
+                        04
+                    </span>
+
+                    <div class="dashboard-feature-icon">
+                        <i data-lucide="triangle-alert"></i>
+                    </div>
+
+                    <h3>
+                        Risk Awareness
+                    </h3>
+
+                    <p>
+                        The dashboard provides a centralized interface for
+                        observing sensor conditions and supporting early
+                        identification of potentially dangerous changes.
+                    </p>
+
+                </article>
+
+            </div>
+
+
+            <!-- =================================================
+                ANALYTICS SCREEN
+            ================================================= -->
+
+            <div class="dashboard-detail">
+
+                <div class="dashboard-detail-content">
+
+                    <span class="dashboard-small-label">
+                        SENSOR ANALYTICS
+                    </span>
+
+                    <h3>
+                        Understand What Is Happening
+                        <span>Below the Surface.</span>
+                    </h3>
+
+                    <p>
+                        Raw sensor values alone can be difficult to
+                        interpret. SlideSense converts collected readings
+                        into visual time-series information that makes
+                        environmental changes easier to understand.
+                    </p>
+
+
+                    <div class="dashboard-capabilities">
+
+                        <div>
+                            <span>01</span>
+
+                            <p>
+                                <strong>Live Readings</strong>
+                                Latest measurements from the field node
+                            </p>
                         </div>
-                        <div class="tm-name">Ms.Yasodha Vimukthi</div>
-                        <div class="tm-id">Project Supervisor</div>
-                        <div class="tm-links">
-                            <a href="https://www.linkedin.com/in/yashodha-vimukthi-586378137/" class="tm-ico" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-                            <a href="mailto:yasodhav@eng.pdn.ac.lk" class="tm-ico" title="Email"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+
+
+                        <div>
+                            <span>02</span>
+
+                            <p>
+                                <strong>Time-Series Visualization</strong>
+                                Observe how sensor values change over time
+                            </p>
                         </div>
+
+
+                        <div>
+                            <span>03</span>
+
+                            <p>
+                                <strong>Historical Records</strong>
+                                Retrieve previously stored sensor measurements
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <span>04</span>
+
+                            <p>
+                                <strong>Trend Analysis</strong>
+                                Compare past and current environmental conditions
+                            </p>
+                        </div>
+
                     </div>
 
                 </div>
+
+
+                <div class="dashboard-detail-image">
+
+                    <img
+                        src="assets/dashboard/dashboard-charts.png"
+                        alt="SlideSense sensor analytics charts"
+                    >
+
+                    <div class="image-caption">
+
+                        <span></span>
+
+                        <div>
+                            <strong>SENSOR ANALYTICS</strong>
+                            <small>Time-series visualization</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                HISTORICAL DATA
+            ================================================= -->
+
+            <div class="dashboard-detail dashboard-detail-reverse">
+
+                <div class="dashboard-detail-content">
+
+                    <span class="dashboard-small-label">
+                        HISTORICAL ANALYSIS
+                    </span>
+
+                    <h3>
+                        Go Beyond
+                        <span>Real-Time Monitoring.</span>
+                    </h3>
+
+                    <p>
+                        SlideSense stores sensor readings so users can
+                        retrieve previous measurements and investigate
+                        environmental behaviour across different periods.
+                    </p>
+
+
+                    <div class="dashboard-history-points">
+
+                        <div>
+                            <span>✓</span>
+                            Select previous monitoring periods
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Review historical sensor readings
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Compare environmental changes
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Support long-term landslide analysis
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-detail-image">
+
+                    <img
+                        src="assets/dashboard/dashboard-history.png"
+                        alt="SlideSense historical sensor data interface"
+                    >
+
+                    <div class="image-caption">
+
+                        <span></span>
+
+                        <div>
+                            <strong>HISTORICAL DATA</strong>
+                            <small>Past sensor records</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
+
+        <!-- dashboard-browser link -->
+        <div class="dashboard-launch">
+
+            <div class="dashboard-launch-info">
+                <span class="dashboard-online-dot"></span>
+
+                <div>
+                    <strong>SlideSense Web Dashboard</strong>
+                    <small>Access the live monitoring and analytics platform</small>
+                </div>
+            </div>
+
+            <a
+                href="YOUR_DASHBOARD_URL"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="dashboard-launch-btn"
+            >
+                <i data-lucide="external-link"></i>
+
+                <span>View Live Dashboard</span>
+            </a>
+
+        </div>
+
+        
+
     </section>
 
 
 
-    <!-- Timeline Section -->
-    <section id="timeline">
-        <div class="con">
-            <div class="shd rev">
-                <div class="stg">07 · Project Timeline</div>
-                <h2>Development<br>Phases</h2>
+    <!-- =====================================================
+     VIDEOS SECTION
+    ===================================================== -->
+
+    <section class="videos-section" id="videos">
+
+        <div class="videos-container">
+
+            <!-- Heading -->
+            <div class="videos-heading">
+
+                <span class="section-label">
+                    PROJECT DEMONSTRATIONS
+                </span>
+
+                <h2>
+                    See SlideSense
+                    <span>in Action</span>
+                </h2>
+
+                <p>
+                    Watch the SlideSense prototype, sensing process,
+                    cloud communication and dashboard workflow in action.
+                </p>
+
             </div>
 
-            <!-- Legend -->
-            <div class="g-legend rev">
-                <div class="g-legend-item"><span class="g-legend-dot" style="background:var(--gms1)"></span>Milestone 01</div>
-                <div class="g-legend-item"><span class="g-legend-dot" style="background:var(--gms2)"></span>Milestone 02</div>
-                <div class="g-legend-item"><span class="g-legend-dot" style="background:var(--gms3)"></span>Milestone 03</div>
-                <div class="g-legend-item"><span class="g-legend-dot" style="background:var(--gms4)"></span>Milestone 04</div>
-                <div class="g-legend-item"><span class="g-legend-dot" style="background:var(--t2);opacity:0.4"></span>Completed</div>
+
+            <!-- Featured Video -->
+            <div class="featured-video">
+
+                <div class="video-frame">
+
+                    <video
+                        controls
+                        preload="metadata"
+                        poster="assets/videos/demo-thumbnail.jpg"
+                    >
+                        <source
+                            src="assets/videos/slidesense-demo.mp4"
+                            type="video/mp4"
+                        >
+
+                        Your browser does not support the video tag.
+
+                    </video>
+
+                </div>
+
+
+                <div class="featured-video-info">
+
+                    <span class="video-label">
+                        FEATURED DEMONSTRATION
+                    </span>
+
+                    <h3>
+                        SlideSense Full System Demo
+                    </h3>
+
+                    <p>
+                        A complete demonstration showing sensor data
+                        collection, ESP32 processing, cloud transmission,
+                        risk analysis and live monitoring.
+                    </p>
+
+                    <div class="video-meta">
+
+                        <span>
+                            System Integration
+                        </span>
+
+                        <span>
+                            Hardware + Cloud
+                        </span>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="gantt-wrap rev">
 
-                <!-- Header -->
-                <div class="g-row g-head">
-                    <div class="gantt-lbl">Process</div>
-                    <div class="gantt-col">Wk 1–3</div>
-                    <div class="gantt-col">Wk 4–6</div>
-                    <div class="gantt-col">Wk 7–9</div>
-                    <div class="gantt-col">Wk 10–11</div>
-                    <div class="gantt-col">Wk 13–15</div>
-                    <div class="gantt-col">Wk 16–18</div>
-                    <div class="gantt-col">Wk 19–21</div>
-                </div>
+            <!-- Other Videos -->
+            <div class="video-grid">
 
-                <!-- Milestone 01 -->
-                <div class="g-row"><div class="gantt-msrow ms1">Milestone 01 — Project Proposal and Planning</div></div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">1. High-Level System Architecture Design</div>
-                    <div class="gantt-col" data-tip="Done"><span class="gbar ms1 done"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">2. Component Selection and Budget Estimation</div>
-                    <div class="gantt-col"></div>
-                    <div class="gantt-col" data-tip="Done"><span class="gbar ms1 done"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">3. Project Planning and Scheduling</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col" data-tip="Done"><span class="gbar ms1 done"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">4. Proposal Documentation and Presentation</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col" data-tip="Done"><span class="gbar ms1 done"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
+                <!-- VIDEO 01 -->
+                <article class="video-card">
 
-                <!-- Milestone 02 -->
-                <div class="g-row"><div class="gantt-msrow ms2">Milestone 02 — System Setup and Preliminary Testing</div></div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">1. Hardware Procurement &amp; Dev Environment Setup</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms2"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">2. Individual Sensor and Connectivity Testing</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms2"></span></div>
-                    <div class="gantt-col"><span class="gbar ms2"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">3. Initial System Integration (Prototype – Breadboard)</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms2"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">4. Detailed Solution Architecture &amp; Budget Verification</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms2"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
+                    <div class="video-card-media">
 
-                <!-- Milestone 03 -->
-                <div class="g-row"><div class="gantt-msrow ms3">Milestone 03 — Working Prototype Development</div></div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">1. Hardware Finalization and Assembly</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms3"></span></div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">2. Cloud Integration and Alert Mechanism Implementation</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms3"></span></div>
-                    <div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">3. Power Optimization Strategy</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms3"></span></div>
-                    <div class="gantt-col"></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">4. Field Testing and Performance Evaluation</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms3"></span></div>
-                    <div class="gantt-col"></div>
-                </div>
+                        <video
+                            controls
+                            preload="metadata"
+                            poster="assets/videos/sensor-thumbnail.jpg"
+                        >
+                            <source
+                                src="assets/videos/sensor-testing.mp4"
+                                type="video/mp4"
+                            >
+                        </video>
 
-                <!-- Milestone 04 -->
-                <div class="g-row"><div class="gantt-msrow ms4">Milestone 04 — Final Product Completion and Deployment</div></div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">1. Technical Documentation (Design Manual)</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms4"></span></div>
-                    <div class="gantt-col"><span class="gbar ms4"></span></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">2. User Documentation (User Manual)</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms4"></span></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">3. Repository and Web Deployment</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms4"></span></div>
-                </div>
-                <div class="g-row g-task-row">
-                    <div class="gantt-lbl">4. Final Demonstration</div>
-                    <div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div><div class="gantt-col"></div>
-                    <div class="gantt-col"><span class="gbar ms4"></span></div>
-                </div>
+                    </div>
 
-            </div><!-- /.gantt-wrap -->
+                    <div class="video-card-content">
 
-            <!-- Footer badge -->
-            <div class="g-footer rev">
-                <span class="g-footer-note">21-week development roadmap &nbsp;·&nbsp; 4 milestones &nbsp;·&nbsp; 16 tasks</span>
-                <span class="g-done-badge">Milestone 01 Completed</span>
+                        <span>
+                            HARDWARE TEST
+                        </span>
+
+                        <h3>
+                            Sensor Testing
+                        </h3>
+
+                        <p>
+                            Testing soil moisture, rainfall,
+                            tilt and vibration sensors.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- VIDEO 02 -->
+                <article class="video-card">
+
+                    <div class="video-card-media">
+
+                        <video
+                            controls
+                            preload="metadata"
+                            poster="assets/videos/cloud-thumbnail.jpg"
+                        >
+                            <source
+                                src="assets/videos/cloud-demo.mp4"
+                                type="video/mp4"
+                            >
+                        </video>
+
+                    </div>
+
+                    <div class="video-card-content">
+
+                        <span>
+                            CLOUD PIPELINE
+                        </span>
+
+                        <h3>
+                            AWS Data Flow
+                        </h3>
+
+                        <p>
+                            Sensor data transmitted through MQTT
+                            and processed using AWS services.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- VIDEO 03 -->
+                <article class="video-card">
+
+                    <div class="video-card-media">
+
+                        <video
+                            controls
+                            preload="metadata"
+                            poster="assets/videos/dashboard-thumbnail.jpg"
+                        >
+                            <source
+                                src="assets/videos/dashboard-demo.mp4"
+                                type="video/mp4"
+                            >
+                        </video>
+
+                    </div>
+
+                    <div class="video-card-content">
+
+                        <span>
+                            USER INTERFACE
+                        </span>
+
+                        <h3>
+                            Live Dashboard
+                        </h3>
+
+                        <p>
+                            Real-time visualization of sensor
+                            readings and landslide risk status.
+                        </p>
+
+                    </div>
+
+                </article>
+
             </div>
 
         </div>
+
+    </section>
+
+    <!-- =====================================================
+        GALLERY SECTION
+    ===================================================== -->
+
+    <section class="gallery-section" id="gallery">
+
+        <div class="gallery-container">
+
+            <!-- Heading -->
+            <div class="gallery-heading">
+
+                <span class="section-label">
+                    PROJECT GALLERY
+                </span>
+
+                <h2>
+                    Building
+                    <span>SlideSense</span>
+                </h2>
+
+                <p>
+                    A closer look at our hardware development,
+                    sensor testing, field setup and project journey.
+                </p>
+
+            </div>
+
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid">
+
+                <figure class="gallery-item gallery-large">
+
+                    <img
+                        src="assets/gallery/prototype.jpg"
+                        alt="SlideSense complete prototype"
+                    >
+
+                    <figcaption>
+                        <span>PROTOTYPE</span>
+                        <strong>Complete SlideSense System</strong>
+                    </figcaption>
+
+                </figure>
+
+
+                <figure class="gallery-item">
+
+                    <img
+                        src="assets/gallery/moisture-testing.jpg"
+                        alt="Soil moisture sensor testing"
+                    >
+
+                    <figcaption>
+                        <span>TESTING</span>
+                        <strong>Soil Moisture Sensors</strong>
+                    </figcaption>
+
+                </figure>
+
+
+                <figure class="gallery-item">
+
+                    <img
+                        src="assets/gallery/rain-gauge.jpg"
+                        alt="Tipping bucket rain gauge testing"
+                    >
+
+                    <figcaption>
+                        <span>HARDWARE</span>
+                        <strong>Rain Gauge Testing</strong>
+                    </figcaption>
+
+                </figure>
+
+
+                <figure class="gallery-item">
+
+                    <img
+                        src="assets/gallery/control-unit.jpg"
+                        alt="SlideSense ESP32 control unit"
+                    >
+
+                    <figcaption>
+                        <span>CONTROL UNIT</span>
+                        <strong>ESP32 Integration</strong>
+                    </figcaption>
+
+                </figure>
+
+
+                <figure class="gallery-item gallery-wide">
+
+                    <img
+                        src="assets/gallery/field-testing.jpg"
+                        alt="SlideSense field testing"
+                    >
+
+                    <figcaption>
+                        <span>FIELD TEST</span>
+                        <strong>Real-World Deployment Testing</strong>
+                    </figcaption>
+
+                </figure>
+
+
+                <figure class="gallery-item">
+
+                    <img
+                        src="assets/gallery/team.jpg"
+                        alt="SlideSense project team"
+                    >
+
+                    <figcaption>
+                        <span>TEAM</span>
+                        <strong>Behind SlideSense</strong>
+                    </figcaption>
+
+                </figure>
+
+            </div>
+
+        </div>
+
     </section>
 
 
 
+    <!-- =====================================================
+     TEAM SECTION
+    ===================================================== -->
 
-    <!-- Budget section -->
-    <section id="budget">
-        <div class="con">
-            <div class="shd rev">
-                <div class="stg">08 · Project Budget</div>
-                <h2>Hardware<br>Budget</h2>
-                <p class="sd">Estimated component costs for a single SlideSense probe unit in Sri Lankan Rupees (LKR).</p>
+    <section class="team-section" id="team">
+
+        <div class="team-container">
+
+            <!-- Heading -->
+            <div class="team-heading">
+
+                <span class="section-label">
+                    OUR TEAM
+                </span>
+
+                <h2>
+                    Meet the People Behind
+                    <span>SlideSense</span>
+                </h2>
+
+                <p>
+                    SlideSense is developed by a multidisciplinary team
+                    of Computer Engineering students with guidance from
+                    academic supervisors at the University of Peradeniya.
+                </p>
+
             </div>
-            <div class="bgt-wrap rev">
-                <table class="bgt">
-                    <thead>
-                        <tr>
-                            <th class="bgt-name">Component</th>
-                            <th>Price (LKR)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="bgt-item">20W 17.87VDC Solar Panel</td><td>3,350.00</td></tr>
-                        <tr><td class="bgt-item">1200mAh 3.7V 383562 Lithium Li-Polymer Rechargeable Battery (Li-Po)</td><td>1,185.00</td></tr>
-                        <tr><td class="bgt-item">CN3791 12V MPPT Solar Charge Controller</td><td>1,450.00</td></tr>
-                        <tr><td class="bgt-item">3.3V Regulator</td><td>120.00</td></tr>
-                        <tr><td class="bgt-item">Capacitive Soil Moisture Sensor (LKR 290 × 3)</td><td>1,160.00</td></tr>
-                        <tr><td class="bgt-item">Tipping Bucket Rain Gauge</td><td>10,000.00</td></tr>
-                        <tr><td class="bgt-item">High Sensitivity Microphone Sensor Module</td><td>200.00</td></tr>
-                        <tr><td class="bgt-item">SIM-900A</td><td>1,450.00</td></tr>
-                        <tr><td class="bgt-item">GPS-NEO-M8N</td><td>2,350.00</td></tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="bgt-total">
-                            <td>Grand Total</td>
-                            <td>21,265.00</td>
-                        </tr>
-                    </tfoot>
-                </table>
+
+
+            <!-- =================================================
+                ENGINEERS
+            ================================================= -->
+
+            <div class="team-category">
+
+                <div class="category-header">
+
+                    <div>
+                        <span class="category-label">
+                            DEVELOPMENT TEAM
+                        </span>
+
+                        <h3>
+                            The <span>Engineers</span>
+                        </h3>
+                    </div>
+
+                    <div class="member-count">
+                        04 MEMBERS
+                    </div>
+
+                </div>
+
+
+                <div class="team-grid">
+
+                    <!-- MEMBER 01 -->
+                    <article class="team-card">
+
+                        <div class="team-photo">
+
+                            <img
+                                src="assets/team/e21087.jpg"
+                                alt="Shihara Dewagedara"
+                            >
+
+                        </div>
+
+                        <div class="team-card-body">
+
+                            <span class="member-id">
+                                E/21/087
+                            </span>
+
+                            <h3>
+                                Shihara Dewagedara
+                            </h3>
+
+                            <div class="member-role">
+                                Hardware & IoT Engineer
+                            </div>
+
+                            <p>
+                                Sensor integration, ESP32 firmware,
+                                embedded systems and hardware development.
+                            </p>
+
+                            <div class="member-links">
+
+                                <a
+                                    href="https://github.com/Shihara1020"
+                                    target="_blank"
+                                    aria-label="GitHub"
+                                >
+                                    GitHub
+                                </a>
+
+                                <a
+                                    href="mailto:e21087@eng.pdn.ac.lk"
+                                >
+                                    Email
+                                </a>
+
+                                <a
+                                    href="https://www.linkedin.com/in/shihara-dewagedara-23109a275/"
+                                    target="_blank"
+                                >
+                                    LinkedIn
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- MEMBER 02 -->
+                    <article class="team-card">
+
+                        <div class="team-photo">
+
+                            <img
+                                src="assets/team/e21138.jpg"
+                                alt="Fikry Nuhuman"
+                            >
+
+                        </div>
+
+                        <div class="team-card-body">
+
+                            <span class="member-id">
+                                E/21/138
+                            </span>
+
+                            <h3>
+                                Fikry Nuhuman
+                            </h3>
+
+                            <div class="member-role">
+                                Software & Backend Engineer
+                            </div>
+
+                            <p>
+                                Backend services, APIs, data ingestion
+                                and monitoring dashboard development.
+                            </p>
+
+                            <div class="member-links">
+
+                                <a
+                                    href="https://github.com/fikrynuhuman183"
+                                    target="_blank"
+                                >
+                                    GitHub
+                                </a>
+
+                                <a
+                                    href="mailto:e21138@eng.pdn.ac.lk"
+                                >
+                                    Email
+                                </a>
+
+                                <a
+                                    href="https://www.linkedin.com/in/fikry-nuhuman/"
+                                    target="_blank"
+                                >
+                                    LinkedIn
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- MEMBER 03 -->
+                    <article class="team-card">
+
+                        <div class="team-photo">
+
+                            <img
+                                src="assets/team/e21302.jpg"
+                                alt="Sahandi Perera"
+                            >
+
+                        </div>
+
+                        <div class="team-card-body">
+
+                            <span class="member-id">
+                                E/21/302
+                            </span>
+
+                            <h3>
+                                Sahandi Perera
+                            </h3>
+
+                            <div class="member-role">
+                                AI & Data Engineer
+                            </div>
+
+                            <p>
+                                Sensor-data analysis, risk assessment
+                                and intelligent prediction model development.
+                            </p>
+
+                            <div class="member-links">
+
+                                <a
+                                    href="https://github.com/Sahandiperera"
+                                    target="_blank"
+                                >
+                                    GitHub
+                                </a>
+
+                                <a
+                                    href="mailto:e21302@eng.pdn.ac.lk"
+                                >
+                                    Email
+                                </a>
+
+                                <a
+                                    href="https://www.linkedin.com/in/sahandi-perera-73aa39274/"
+                                    target="_blank"
+                                >
+                                    LinkedIn
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- MEMBER 04 -->
+                    <article class="team-card">
+
+                        <div class="team-photo">
+
+                            <img
+                                src="assets/team/e21452.jpg"
+                                alt="M. Zaid"
+                            >
+
+                        </div>
+
+                        <div class="team-card-body">
+
+                            <span class="member-id">
+                                E/21/452
+                            </span>
+
+                            <h3>
+                                M. Zaid
+                            </h3>
+
+                            <div class="member-role">
+                                Cloud & DevOps Engineer
+                            </div>
+
+                            <p>
+                                AWS infrastructure, deployment,
+                                cloud integration and telemetry pipelines.
+                            </p>
+
+                            <div class="member-links">
+
+                                <a
+                                    href="https://github.com/e21452"
+                                    target="_blank"
+                                >
+                                    GitHub
+                                </a>
+
+                                <a
+                                    href="mailto:e21452@eng.pdn.ac.lk"
+                                >
+                                    Email
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
             </div>
+
+
+            <!-- =================================================
+                SUPERVISORS
+            ================================================= -->
+
+            <div class="mentor-category">
+
+                <div class="category-header">
+
+                    <div>
+                        <span class="category-label">
+                            ACADEMIC GUIDANCE
+                        </span>
+
+                        <h3>
+                            Our <span>Mentors</span>
+                        </h3>
+                    </div>
+
+                    <div class="member-count">
+                        02 ADVISORS
+                    </div>
+
+                </div>
+
+
+                <div class="mentor-grid">
+
+                    <!-- MENTOR 01 -->
+                    <article class="mentor-card">
+
+                        <div class="mentor-photo">
+
+                            <img
+                                src="assets/team/isuru-nawinne.png"
+                                alt="Dr. Isuru Nawinne"
+                            >
+
+                        </div>
+
+                        <div class="mentor-info">
+
+                            <span class="mentor-role">
+                                PROJECT SUPERVISOR
+                            </span>
+
+                            <h3>
+                                Dr. Isuru Nawinne
+                            </h3>
+
+                            <p>
+                                Department of Computer Engineering<br>
+                                Faculty of Engineering<br>
+                                University of Peradeniya
+                            </p>
+
+                            <div class="member-links">
+
+                                <a
+                                    href="mailto:isurunawinne@eng.pdn.ac.lk"
+                                >
+                                    Email
+                                </a>
+
+                                <a
+                                    href="https://www.linkedin.com/in/isuru-nawinne-73302833/"
+                                    target="_blank"
+                                >
+                                    LinkedIn
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- MENTOR 02 -->
+                    <article class="mentor-card">
+
+                        <div class="mentor-photo">
+
+                            <img
+                                src="assets/team/yasodha-vimukthi.jpeg"
+                                alt="Ms. Yasodha Vimukthi"
+                            >
+
+                        </div>
+
+                        <div class="mentor-info">
+
+                            <span class="mentor-role">
+                                CO-SUPERVISOR
+                            </span>
+
+                            <h3>
+                                Ms. Yasodha Vimukthi
+                            </h3>
+
+                            <p>
+                                Department of Computer Engineering<br>
+                                Faculty of Engineering<br>
+                                University of Peradeniya
+                            </p>
+
+                            <div class="member-links">
+
+                                <a
+                                    href="mailto:yasodhav@eng.pdn.ac.lk"
+                                >
+                                    Email
+                                </a>
+
+                                <a
+                                    href="https://www.linkedin.com/in/yashodha-vimukthi-586378137/"
+                                    target="_blank"
+                                >
+                                    LinkedIn
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
         </div>
+
     </section>
 
 
+    <!-- =====================================================
+     TIMELINE SECTION
+    ===================================================== -->
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="con">
-            <div class="ftr-grid">
+    <section class="timeline-section" id="timeline">
 
-                <!-- Brand -->
-                <div class="ftr-brand">
-                    <div class="ftr-logos">
-                        <img src="./images/peracomlogo.png" alt="Dept. of Computer Science &amp; Engineering" class="ftr-dept-logo" onerror="this.style.display='none'">
-                        <div class="ftr-site-name">Slide<span>Sense</span></div>
+        <div class="timeline-container">
+
+            <!-- Heading -->
+            <div class="timeline-heading">
+
+                <span class="section-label">
+                    PROJECT TIMELINE
+                </span>
+
+                <h2>
+                    From Idea to
+                    <span>Impact</span>
+                </h2>
+
+                <p>
+                    The SlideSense development journey progressed from
+                    system planning and component selection to hardware
+                    integration, cloud connectivity and final field validation.
+                </p>
+
+            </div>
+
+
+            <!-- Timeline -->
+            <div class="timeline-roadmap">
+
+
+                <!-- PHASE 01 -->
+                <article class="timeline-item">
+
+                    <div class="timeline-marker">
+                        <span>01</span>
                     </div>
-                    <p class="ftr-desc">A multi-layered IoT platform for real-time landslide detection and early warning — protecting mountain communities before disaster strikes.</p>
+
+                    <div class="timeline-card">
+
+                        <div class="timeline-card-header">
+
+                            <div>
+                                <span class="timeline-stage">
+                                    PLANNING
+                                </span>
+
+                                <h3>
+                                    Project Proposal &
+                                    System Planning
+                                </h3>
+                            </div>
+
+                            <span class="timeline-status completed">
+                                COMPLETED
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            Defined the system architecture, selected
+                            sensing technologies and established the
+                            development roadmap for SlideSense.
+                        </p>
+
+
+                        <div class="timeline-tasks">
+
+                            <div>
+                                <span>01</span>
+                                <div>
+                                    <strong>Architecture Design</strong>
+                                    <small>
+                                        High-level hardware and cloud topology
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>02</span>
+                                <div>
+                                    <strong>Component Selection</strong>
+                                    <small>
+                                        Sensor and controller evaluation
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>03</span>
+                                <div>
+                                    <strong>Project Scheduling</strong>
+                                    <small>
+                                        Development phases and milestones
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>04</span>
+                                <div>
+                                    <strong>Proposal Defense</strong>
+                                    <small>
+                                        Initial technical presentation
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PHASE 02 -->
+                <article class="timeline-item">
+
+                    <div class="timeline-marker">
+                        <span>02</span>
+                    </div>
+
+                    <div class="timeline-card">
+
+                        <div class="timeline-card-header">
+
+                            <div>
+                                <span class="timeline-stage">
+                                    SETUP & TESTING
+                                </span>
+
+                                <h3>
+                                    Hardware Setup &
+                                    Preliminary Testing
+                                </h3>
+                            </div>
+
+                            <span class="timeline-status completed">
+                                COMPLETED
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            Individual sensors and communication modules
+                            were tested and calibrated before being
+                            integrated into the complete monitoring node.
+                        </p>
+
+
+                        <div class="timeline-tasks">
+
+                            <div>
+                                <span>01</span>
+                                <div>
+                                    <strong>Hardware Procurement</strong>
+                                    <small>
+                                        ESP32, sensors and communication modules
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>02</span>
+                                <div>
+                                    <strong>Sensor Calibration</strong>
+                                    <small>
+                                        Moisture and rainfall calibration
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>03</span>
+                                <div>
+                                    <strong>Module Testing</strong>
+                                    <small>
+                                        GSM, GPS and sensor interfaces
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>04</span>
+                                <div>
+                                    <strong>Initial Integration</strong>
+                                    <small>
+                                        ESP32-based prototype development
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PHASE 03 -->
+                <article class="timeline-item">
+
+                    <div class="timeline-marker">
+                        <span>03</span>
+                    </div>
+
+                    <div class="timeline-card">
+
+                        <div class="timeline-card-header">
+
+                            <div>
+                                <span class="timeline-stage">
+                                    DEVELOPMENT
+                                </span>
+
+                                <h3>
+                                    Working Prototype &
+                                    Cloud Integration
+                                </h3>
+                            </div>
+
+                            <span class="timeline-status completed">
+                                COMPLETED
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            Hardware sensing, cellular communication
+                            and AWS cloud services were integrated into
+                            a complete working SlideSense prototype.
+                        </p>
+
+
+                        <div class="timeline-tasks">
+
+                            <div>
+                                <span>01</span>
+                                <div>
+                                    <strong>Probe Assembly</strong>
+                                    <small>
+                                        Multi-sensor field probe construction
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>02</span>
+                                <div>
+                                    <strong>MQTT Communication</strong>
+                                    <small>
+                                        ESP32 telemetry transmission
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>03</span>
+                                <div>
+                                    <strong>AWS Integration</strong>
+                                    <small>
+                                        IoT Core, Lambda and DynamoDB
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>04</span>
+                                <div>
+                                    <strong>Dashboard Integration</strong>
+                                    <small>
+                                        Live sensor-data visualization
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PHASE 04 -->
+                <article class="timeline-item">
+
+                    <div class="timeline-marker current">
+                        <span>04</span>
+                    </div>
+
+                    <div class="timeline-card timeline-current">
+
+                        <div class="timeline-card-header">
+
+                            <div>
+                                <span class="timeline-stage">
+                                    VALIDATION & DELIVERY
+                                </span>
+
+                                <h3>
+                                    Final Validation &
+                                    Project Demonstration
+                                </h3>
+                            </div>
+
+                            <span class="timeline-status current">
+                                FINAL STAGE
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            The final phase focuses on complete system
+                            validation, demonstration, documentation and
+                            evaluation of the SlideSense prototype.
+                        </p>
+
+
+                        <div class="timeline-tasks">
+
+                            <div>
+                                <span>01</span>
+                                <div>
+                                    <strong>System Testing</strong>
+                                    <small>
+                                        End-to-end hardware and cloud validation
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>02</span>
+                                <div>
+                                    <strong>Field Evaluation</strong>
+                                    <small>
+                                        Real sensor and environmental testing
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>03</span>
+                                <div>
+                                    <strong>Documentation</strong>
+                                    <small>
+                                        Final report and technical documentation
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span>04</span>
+                                <div>
+                                    <strong>Final Demonstration</strong>
+                                    <small>
+                                        Complete SlideSense system presentation
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- Journey Progress -->
+            <div class="timeline-progress">
+
+                <div class="progress-item completed">
+                    <span>01</span>
+                    <div>
+                        <strong>Planning</strong>
+                        <small>System Blueprint</small>
+                    </div>
                 </div>
 
-                <!-- Columns group -->
-                <div class="ftr-cols">
+                <div class="progress-line completed"></div>
 
-                    <!-- Contact -->
-                    <div class="ftr-col">
-                        <p class="ftr-heading">Get In Touch</p>
-                        <address class="ftr-address">
-                            <p>Dept. of Computer Science &amp; Engineering<br>Faculty of Engineering<br>University of Peradeniya, Sri Lanka.</p>
-                            <p><a href="mailto:slidesense@eng.pdn.ac.lk" class="ftr-link">slidesense@eng.pdn.ac.lk</a></p>
-                        </address>
+                <div class="progress-item completed">
+                    <span>02</span>
+                    <div>
+                        <strong>Setup</strong>
+                        <small>Sensor Testing</small>
                     </div>
+                </div>
 
-                    <!-- Quick Links -->
-                    <div class="ftr-col">
-                        <p class="ftr-heading">Quick Links</p>
-                        <ul class="ftr-nav">
-                            <li><a href="#problem" class="ftr-link">Problem</a></li>
-                            <li><a href="#architecture" class="ftr-link">Architecture</a></li>
-                            <li><a href="#techstack" class="ftr-link">Tech Stack</a></li>
-                            <li><a href="#features" class="ftr-link">Features</a></li>
-                            <li><a href="#team" class="ftr-link">Team</a></li>
-                            <li><a href="#budget" class="ftr-link">Budget</a></li>
-                        </ul>
+                <div class="progress-line completed"></div>
+
+                <div class="progress-item completed">
+                    <span>03</span>
+                    <div>
+                        <strong>Development</strong>
+                        <small>Prototype & Cloud</small>
                     </div>
+                </div>
 
-                    <!-- Research Areas -->
-                    <div class="ftr-col">
-                        <p class="ftr-heading">Research Areas</p>
-                        <ul class="ftr-nav">
-                            <li><span class="ftr-link">IoT &amp; Embedded Systems</span></li>
-                            <li><span class="ftr-link">Cloud Infrastructure</span></li>
-                            <li><span class="ftr-link">Mobile Applications</span></li>
-                            <li><span class="ftr-link">Landslide Detection</span></li>
-                        </ul>
+                <div class="progress-line"></div>
+
+                <div class="progress-item current">
+                    <span>04</span>
+                    <div>
+                        <strong>Validation</strong>
+                        <small>Final Delivery</small>
                     </div>
-
-                </div><!-- /.ftr-cols -->
+                </div>
 
             </div>
 
-            <div class="ftr-bottom">
-                <p class="ftr-copy">Copyright &copy; 2025–2026 SlideSense · 3YP Project · Faculty of Engineering, University of Peradeniya. All rights reserved.</p>
-            </div>
         </div>
+
+    </section>
+
+
+    <!-- =====================================================
+     FINAL CTA SECTION
+    ===================================================== -->
+
+    <section class="final-section">
+
+        <!-- Background accents -->
+        <div class="final-background"></div>
+        <div class="final-glow"></div>
+
+        <div class="final-container">
+
+            <!-- Radar visual -->
+            <div class="final-radar-wrap" aria-hidden="true">
+
+                <div class="final-radar">
+
+                    <div class="radar-ring ring-1"></div>
+                    <div class="radar-ring ring-2"></div>
+                    <div class="radar-ring ring-3"></div>
+
+                    <div class="radar-line radar-line-horizontal"></div>
+                    <div class="radar-line radar-line-vertical"></div>
+
+                    <div class="radar-node node-1">
+                        <span></span>
+                        <small>NODE 01</small>
+                    </div>
+
+                    <div class="radar-node node-2">
+                        <span></span>
+                        <small>NODE 04</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Main content -->
+            <div class="final-content">
+
+                <div class="final-badge">
+
+                    <span class="final-badge-dot"></span>
+
+                    <span>
+                        NEXT-GENERATION LANDSLIDE MONITORING
+                    </span>
+
+                </div>
+
+
+                <!-- Logo -->
+                <div class="final-logo-wrapper">
+
+                    <img
+                        src="assets/slidesense-logo.png"
+                        alt="SlideSense"
+                        class="final-logo"
+                    >
+
+                </div>
+
+
+                <!-- Title -->
+                <h2>
+                    Early Detection.
+                    <span>Safer Tomorrow.</span>
+                </h2>
+
+
+                <!-- Description -->
+                <p>
+                    SlideSense combines multi-sensor field monitoring,
+                    intelligent cloud analysis and real-time early warnings
+                    to support safer communities in landslide-prone regions.
+                </p>
+
+
+                <!-- CTA buttons -->
+                <div class="final-actions">
+
+                    <a
+                        href="#home"
+                        class="final-button final-button-primary"
+                    >
+                        <span>
+                            Back to Top
+                        </span>
+
+                        <img
+                            src="assets/icons/up-arrow.png"
+                            alt=""
+                        >
+                    </a>
+
+
+                    <a
+                        href="#team"
+                        class="final-button final-button-secondary"
+                    >
+                        Meet the Team
+                    </a>
+
+                </div>
+
+
+                <!-- status row -->
+                <div class="final-status">
+
+                    <div>
+                        <span class="status-dot"></span>
+
+                        <div>
+                            <strong>SlideSense</strong>
+                            <small>Early Warning System</small>
+                        </div>
+                    </div>
+
+
+                    <div class="status-divider"></div>
+
+
+                    <div>
+                        <strong>University of Peradeniya</strong>
+                        <small>Department of Computer Engineering</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+     FOOTER
+    ===================================================== -->
+
+    <footer class="slidesense-footer">
+
+        <div class="footer-container">
+
+            <!-- BRAND -->
+            <div class="footer-brand">
+
+                <a href="#home" class="footer-logo-link">
+                    <img
+                        src="assets/slidesense-logo.png"
+                        alt="SlideSense"
+                        class="footer-logo"
+                    >
+                </a>
+
+                <p class="footer-brand-desc">
+                    An AI-enhanced IoT landslide monitoring and early-warning
+                    platform combining field sensing, cloud intelligence and
+                    real-time community alerts.
+                </p>
+
+                <div class="footer-project-tag">
+                    <span></span>
+                    3YP PROJECT · UNIVERSITY OF PERADENIYA
+                </div>
+
+            </div>
+
+
+            <!-- CONTACT -->
+            <div class="footer-column">
+
+                <h3>
+                    Get In Touch
+                </h3>
+
+                <div class="footer-title-line"></div>
+
+                <div class="footer-contact">
+
+                    <div class="footer-contact-item">
+
+                        <div class="footer-contact-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+
+                        </div>
+
+                        <p>
+                            <strong>
+                                Department of Computer Engineering
+                            </strong>
+
+                            <span>
+                                Faculty of Engineering
+                            </span>
+
+                            <span>
+                                University of Peradeniya, Sri Lanka
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="mailto:slidesense@eng.pdn.ac.lk"
+                        class="footer-email"
+                    >
+
+                        <div class="footer-contact-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <rect
+                                    width="20"
+                                    height="16"
+                                    x="2"
+                                    y="4"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <span>
+                            slidesense@eng.pdn.ac.lk
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK LINKS -->
+            <div class="footer-column">
+
+                <h3>
+                    Quick Links
+                </h3>
+
+                <div class="footer-title-line"></div>
+
+                <ul class="footer-links">
+
+                    <li>
+                        <a href="#about">
+                            About SlideSense
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#solution">
+                            Our Solution
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#components">
+                            Components
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#architecture">
+                            Architecture
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#videos">
+                            Videos & Gallery
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#timeline">
+                            Project Timeline
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#team">
+                            Our Team
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- RESEARCH AREAS -->
+            <div class="footer-column">
+
+                <h3>
+                    Research Areas
+                </h3>
+
+                <div class="footer-title-line"></div>
+
+                <ul class="footer-research-list">
+
+                    <li>
+                        <span class="research-dot"></span>
+
+                        <div>
+                            <strong>
+                                IoT & Embedded Systems
+                            </strong>
+
+                            <small>
+                                Environmental sensing and edge processing
+                            </small>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <span class="research-dot"></span>
+
+                        <div>
+                            <strong>
+                                Cloud Infrastructure
+                            </strong>
+
+                            <small>
+                                AWS IoT Core, Lambda and DynamoDB
+                            </small>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <span class="research-dot"></span>
+
+                        <div>
+                            <strong>
+                                Intelligent Risk Analysis
+                            </strong>
+
+                            <small>
+                                Multi-sensor landslide risk evaluation
+                            </small>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <span class="research-dot"></span>
+
+                        <div>
+                            <strong>
+                                Early Warning Systems
+                            </strong>
+
+                            <small>
+                                Dashboard, SMS and community alerts
+                            </small>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- Bottom Footer -->
+        <div class="footer-bottom">
+
+            <div class="footer-bottom-inner">
+
+                <div class="footer-copyright">
+
+                    <p>
+                        © 2025–2026
+                        <strong>SlideSense</strong>
+                        · Third Year Project
+                    </p>
+
+                    <span>
+                        Faculty of Engineering · University of Peradeniya
+                    </span>
+
+                </div>
+
+
+                <div class="footer-bottom-actions">
+
+                    <span class="footer-chip">
+                        IoT Monitoring
+                    </span>
+
+                    <span class="footer-chip">
+                        Early Warning
+                    </span>
+
+
+                    <a
+                        href="#home"
+                        class="footer-top-button"
+                        aria-label="Back to top"
+                    >
+                        <span>Top</span>
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        >
+                            <path d="m18 15-6-6-6 6"/>
+                        </svg>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </footer>
 
-    <!-- Link to External JavaScript -->
+
+  </main>
+
     <script src="script.js"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 {
     "idf.currentSetup": "/home/fikry/.espressif/v6.0.1/esp-idf",
-    "idf.port": "/dev/ttyS10"
+    "idf.port": "/dev/ttyS10",
+    "liveServer.settings.port": 5501
 }
