@@ -600,4 +600,44 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNavbar();
     updateActiveNavigation();
 
+    /* =====================================================
+       IMAGE MODAL
+    ===================================================== */
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("full-image");
+    const captionText = document.getElementById("modal-caption");
+    const closeModal = document.querySelector(".close-modal");
+    
+    if (modal && modalImg && closeModal) {
+        const galleryImages = document.querySelectorAll(".gallery-item img");
+        galleryImages.forEach(img => {
+            img.addEventListener("click", function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                
+                // Try to find a caption inside the figure
+                const figcaption = this.closest('figure').querySelector('figcaption strong');
+                captionText.innerHTML = figcaption ? figcaption.innerHTML : this.alt;
+            });
+        });
+
+        closeModal.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        // Close on background click
+        modal.addEventListener("click", function(e) {
+            if (e.target !== modalImg) {
+                modal.style.display = "none";
+            }
+        });
+        
+        // Close on Escape key
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape" && modal.style.display === "block") {
+                modal.style.display = "none";
+            }
+        });
+    }
+
 });
